@@ -69,13 +69,13 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + user_id +
-                ", userName='" + user_pwd + '\'' +
-                ", passWord='" + user_phone + '\'' +
-                ", realName='" + user_name + '\'' +
-                ", realName='" + user_nickname + '\'' +
-                ", realName='" + user_picture + '\'' +
+                "user_id='" + user_id + '\'' +
+                ", user_pwd='" + user_pwd + '\'' +
+                ", user_phone='" + user_phone + '\'' +
+                ", user_name='" + user_name + '\'' +
+                ", user_nickname='" + user_nickname + '\'' +
+                ", user_picture='" + user_picture + '\'' +
+                ", user_gender=" + user_gender +
                 '}';
     }
-
 }

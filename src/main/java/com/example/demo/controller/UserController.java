@@ -1,16 +1,12 @@
 package com.example.demo.controller;
 
 
-
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+import com.example.demo.tools.JsonResult;
+import com.example.demo.tools.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.System;
-
-import com.example.demo.tools.*;
 
 
 @RestController
