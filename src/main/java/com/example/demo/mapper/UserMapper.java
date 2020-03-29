@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface UserMapper {
 
     User Sel(int id);
-    User login_user(int phone, String pwd);
-    boolean register_user();
+    User login_user(String phone, String pwd);
+    boolean save_user(User user);
+
+    User findusernickname(String name);
+    User finduserphone(String phone);
 }

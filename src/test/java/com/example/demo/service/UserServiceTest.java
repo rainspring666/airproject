@@ -19,7 +19,14 @@ public class UserServiceTest {
 
     @Test
     public void sel() {
-        User user = userService.Sel(1111);
+        User user = userService.Sel(1);
         System.out.println(user.getUser_id());
     }
+    @Test
+    public void testLogin_user()
+    {
+        User user = userService.login_user("17786029999","123");
+        System.out.println(user.getUser_name());
+    }
+
 }
