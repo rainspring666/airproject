@@ -18,7 +18,6 @@ public class UserService {
 
      */
     public User login_user(String user_phone, String user_pwd){
-        System.out.println(user_pwd);
         return userMapper.login_user(user_phone,user_pwd);
     }
 

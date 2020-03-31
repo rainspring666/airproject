@@ -2,22 +2,10 @@ package com.example.demo.tools;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 public class Tool {
-    public String intToString(int num_int)
-    {
-        return Integer.toString(num_int);
-    }
-    public int stringToInt(String str)
-    {
-        return Integer.parseInt(str);
-    }
 
     public  String pwdMD5(String pwd)  {
         try {
@@ -39,4 +27,8 @@ public class Tool {
         return s;
     }
 
+    public static String createOrderId() {
+        String uniqueId = UUID.randomUUID().toString().replaceAll("-", "");
+        return uniqueId;
+    }
 }
