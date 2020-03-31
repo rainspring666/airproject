@@ -32,12 +32,11 @@ public class Tool {
         }
     }
 
-    public long createUserId(int areaCode,int identity) {
-        Date date=new Date();
+    public String createUserId(int areaCode,int identity) {
+        Date date = new Date();
         String timestamp = String.valueOf(date.getTime());
-        String s=areaCode+timestamp+identity;
-        long uniqueId = Long.parseLong(s);
-        return uniqueId;
+        String s = areaCode + timestamp + identity;
+        return s;
     }
 
 }

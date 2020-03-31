@@ -22,9 +22,11 @@ public class UserService {
         return userMapper.login_user(user_phone,user_pwd);
     }
 
-    public void save_user( User user)
+    public boolean save_user(User user)
     {
-        userMapper.save_user(user);
+        if(userMapper.save_user(user))
+            return true;
+        return false;
 
     }
 
