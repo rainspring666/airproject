@@ -7,9 +7,9 @@ import com.example.demo.tools.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,14 +26,18 @@ public class OrderController
 
     @RequestMapping(value ="/add")
     public JsonResult addOrder(@RequestBody Order order) {
-        System.out.println(order.toString());
+        // 设置订单号
+        order.setOrderId(tools.createOrderId());
+        // 创建订单生成时间
+        order.setOrderCreatetime(new Date());
         if(orderService.insert(order)){
             return JsonResult.buildData(order);
         }
         return JsonResult.errorMsg("add order error");
     }
     @RequestMapping(value ="/delete")
-    public JsonResult deleteOrder(@RequestParam("order_id") String orderId) {
+    public JsonResult deleteOrder(String orderId) {
+        System.out.println(orderId);
         if(orderService.deleteByPrimaryKey(orderId)){
             return JsonResult.buildData("ok");
         }
@@ -41,7 +45,7 @@ public class OrderController
     }
 
     @RequestMapping(value ="/search/byOrderId")
-    public JsonResult searchOrderByOrderId(@RequestParam("order_id") String orderId) {
+    public JsonResult searchOrderByOrderId(String orderId) {
         Order order = orderService.selectByPrimaryKey(orderId);
         if(null != order){
             return JsonResult.buildData(order);
@@ -50,7 +54,7 @@ public class OrderController
     }
 
     @RequestMapping(value ="/search/byUserId")
-    public JsonResult searchOrderByUserId(@RequestParam("user_id") String userId) {
+    public JsonResult searchOrderByUserId(String userId) {
         List<Order> orders = orderService.selectByUserId(userId);
         if(!orders.isEmpty()){
             return JsonResult.buildData(orders);

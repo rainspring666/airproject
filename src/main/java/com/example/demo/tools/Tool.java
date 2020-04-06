@@ -27,7 +27,7 @@ public class Tool {
         return s;
     }
 
-    public static String createOrderId() {
+    public  String createOrderId() {
         String uniqueId = UUID.randomUUID().toString().replaceAll("-", "");
         return uniqueId;
     }

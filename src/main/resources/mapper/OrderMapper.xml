@@ -6,7 +6,7 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="op_id" jdbcType="VARCHAR" property="opId" />
     <result column="order_state" jdbcType="INTEGER" property="orderState" />
-    <result column="order_creattime" jdbcType="TIMESTAMP" property="orderCreattime" />
+    <result column="order_createtime" jdbcType="TIMESTAMP" property="orderCreatetime" />
     <result column="order_time" jdbcType="TIMESTAMP" property="orderTime" />
     <result column="evaluation_id" jdbcType="VARCHAR" property="evaluationId" />
     <result column="order_class" jdbcType="INTEGER" property="orderClass" />
@@ -22,19 +22,19 @@
     <result column="order_moremoney" jdbcType="BIT" property="orderMoremoney" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from order
+    delete from userorder
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.Order">
-    insert into order (order_id, user_id, op_id, 
-      order_state, order_creattime, order_time, 
+    insert into userorder (order_id, user_id, op_id,
+      order_state, order_createtime, order_time, 
       evaluation_id, order_class, order_modelf, 
       order_scope, order_descripe, order_address, 
       order_contact, order_phone, order_others, 
       order_cost, order_pollution, order_moremoney
       )
     values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{opId,jdbcType=VARCHAR}, 
-      #{orderState,jdbcType=INTEGER}, #{orderCreattime,jdbcType=TIMESTAMP}, #{orderTime,jdbcType=TIMESTAMP}, 
+      #{orderState,jdbcType=INTEGER}, #{orderCreatetime,jdbcType=TIMESTAMP}, #{orderTime,jdbcType=TIMESTAMP}, 
       #{evaluationId,jdbcType=VARCHAR}, #{orderClass,jdbcType=INTEGER}, #{orderModelf,jdbcType=VARCHAR}, 
       #{orderScope,jdbcType=REAL}, #{orderDescripe,jdbcType=VARCHAR}, #{orderAddress,jdbcType=VARCHAR}, 
       #{orderContact,jdbcType=VARCHAR}, #{orderPhone,jdbcType=VARCHAR}, #{orderOthers,jdbcType=VARCHAR}, 
@@ -42,11 +42,11 @@
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Order">
-    update order
+    update userorder
     set user_id = #{userId,jdbcType=VARCHAR},
       op_id = #{opId,jdbcType=VARCHAR},
       order_state = #{orderState,jdbcType=INTEGER},
-      order_creattime = #{orderCreattime,jdbcType=TIMESTAMP},
+      order_createtime = #{orderCreatetime,jdbcType=TIMESTAMP},
       order_time = #{orderTime,jdbcType=TIMESTAMP},
       evaluation_id = #{evaluationId,jdbcType=VARCHAR},
       order_class = #{orderClass,jdbcType=INTEGER},
@@ -63,23 +63,23 @@
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select order_id, user_id, op_id, order_state, order_creattime, order_time, evaluation_id, 
+    select order_id, user_id, op_id, order_state, order_createtime, order_time, evaluation_id, 
     order_class, order_modelf, order_scope, order_descripe, order_address, order_contact, 
     order_phone, order_others, order_cost, order_pollution, order_moremoney
-    from order
+    from userorder
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
-  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select order_id, user_id, op_id, order_state, order_creattime, order_time, evaluation_id,
-    order_class, order_modelf, order_scope, order_descripe, order_address, order_contact,
-    order_phone, order_others, order_cost, order_pollution, order_moremoney
-    from order
-    where user_id = #{userId,jdbcType=VARCHAR}
-  </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select order_id, user_id, op_id, order_state, order_creattime, order_time, evaluation_id, 
+    select order_id, user_id, op_id, order_state, order_createtime, order_time, evaluation_id, 
     order_class, order_modelf, order_scope, order_descripe, order_address, order_contact, 
     order_phone, order_others, order_cost, order_pollution, order_moremoney
-    from order
+    from userorder
+  </select>
+  <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select order_id, user_id, op_id, order_state, order_createtime, order_time, evaluation_id,
+    order_class, order_modelf, order_scope, order_descripe, order_address, order_contact,
+    order_phone, order_others, order_cost, order_pollution, order_moremoney
+    from userorder
+    where user_id = #{userId,jdbcType=VARCHAR}
   </select>
 </mapper>

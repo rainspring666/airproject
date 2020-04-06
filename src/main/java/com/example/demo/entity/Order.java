@@ -1,8 +1,5 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Order {
@@ -14,10 +11,8 @@ public class Order {
 
     private Integer orderState;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date orderCreattime;
+    private Date orderCreatetime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date orderTime;
 
     private String evaluationId;
@@ -76,12 +71,12 @@ public class Order {
         this.orderState = orderState;
     }
 
-    public Date getOrderCreattime() {
-        return orderCreattime;
+    public Date getOrderCreatetime() {
+        return orderCreatetime;
     }
 
-    public void setOrderCreattime(Date orderCreattime) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    public void setOrderCreatetime(Date orderCreatetime) {
+        this.orderCreatetime = orderCreatetime;
     }
 
     public Date getOrderTime() {
@@ -195,7 +190,7 @@ public class Order {
                 ", userId='" + userId + '\'' +
                 ", opId='" + opId + '\'' +
                 ", orderState=" + orderState +
-                ", orderCreattime=" + orderCreattime +
+                ", orderCreatetime=" + orderCreatetime +
                 ", orderTime=" + orderTime +
                 ", evaluationId='" + evaluationId + '\'' +
                 ", orderClass=" + orderClass +
