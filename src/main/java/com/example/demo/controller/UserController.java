@@ -36,6 +36,8 @@ public class UserController {
                               @RequestParam("user_pwd") String userPwd)
     {
         // 进行MD5加密，并取16位
+        System.out.println(userPhone);
+        System.out.println(userPwd);
         String pwdMD5 = tools.pwdMD5(userPwd).substring(8, 24);
         User user = userService.login_user(userPhone, pwdMD5);
         if(user != null)

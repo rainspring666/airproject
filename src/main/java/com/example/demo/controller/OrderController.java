@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,12 +43,13 @@ public class OrderController
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
         order.setUserId(user_id);
-        order.setOrderCreattime(new Date());
+        order.setOrderCreatetime(new Date());
         //暂时不分配操作员
         //费用计算方式
         order.setOrderCost((float)0);
 
         System.out.println(order.toString());
+
         if(orderService.insert(order)){
             return MyJsonResult.buildData("ok");
         }
