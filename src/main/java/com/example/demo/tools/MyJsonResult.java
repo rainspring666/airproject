@@ -1,6 +1,6 @@
 package com.example.demo.tools;
 
-public class JsonResult {
+public class MyJsonResult {
 
     //响应状态码
     private Integer status;
@@ -35,34 +35,34 @@ public class JsonResult {
         this.data = data;
     }
 
-    public JsonResult(Integer status, String msg, Object data) {
+    public MyJsonResult(Integer status, String msg, Object data) {
         super();
         this.status = status;
         this.msg = msg;
         this.data = data;
     }
 
-    public JsonResult(Object data) {
+    public MyJsonResult(Object data) {
         super();
         this.status = 200;
         this.msg = "OK";
         this.data = data;
     }
 
-    public JsonResult() {
+    public MyJsonResult() {
         super();
     }
 
-    public static JsonResult build(Integer status,String msg,Object data) {
-        return new JsonResult(status,msg,data);
+    public static MyJsonResult build(Integer status, String msg, Object data) {
+        return new MyJsonResult(status,msg,data);
     }
 
-    public static JsonResult buildData(Object data) {
-        return new JsonResult(data);
+    public static MyJsonResult buildData(Object data) {
+        return new MyJsonResult(data);
     }
 
-    public static JsonResult errorMsg(String msg) {
-        return new JsonResult(500, msg, null);
+    public static MyJsonResult errorMsg(String msg) {
+        return new MyJsonResult(500, msg, null);
     }
 
 
