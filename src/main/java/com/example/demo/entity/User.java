@@ -6,8 +6,8 @@ public class User {
     private String user_pwd;
     private String user_phone;
     private String user_name;
-    private String user_nickname;
-    private String user_picture;
+    private String user_nickname;//不在使用
+    private String user_picture;//不在使用
     private int user_gender;
 
     public String getUser_id() {

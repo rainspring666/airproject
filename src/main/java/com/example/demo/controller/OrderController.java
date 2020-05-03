@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.MyJsonResult;
@@ -37,13 +39,14 @@ public class OrderController
     @PostMapping(value ="/add")
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
+
         String user_id = request.getSession().getAttribute("openid").toString();
 
         //创建订单id
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
         order.setUserId(user_id);
-        order.setOrderCreatetime(new Date());
+        order.setOrderCreatetime(new Date().toString());
         //暂时不分配操作员
         //费用计算方式
         order.setOrderCost((float)0);
@@ -80,13 +83,10 @@ public class OrderController
 
     @RequestMapping(value ="/show_my_orders")
     @ResponseBody
-    public MyJsonResult searchOrderByUserId(HttpServletRequest request) {
+    public JSONArray searchOrderByUserId(HttpServletRequest request) {
         String userId = request.getSession().getAttribute("openid").toString();
         List<Order> orders = orderService.selectByUserId(userId);
-        if(!orders.isEmpty()){
-            return MyJsonResult.buildData(orders);
-        }
-        return MyJsonResult.errorMsg("not found");
+        return JSONArray.parseArray(JSON.toJSONString(orders));
     }
     @RequestMapping(value ="/update")
     public MyJsonResult updateOrder(@RequestBody Order order)

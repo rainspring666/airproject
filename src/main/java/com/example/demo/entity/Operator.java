@@ -5,9 +5,17 @@ public class Operator {
     private String op_name;
     private String op_pwd;
     private String op_phone;
-    private String OP_photo;
-    private String op_score;
+    private String OP_photo;//丢弃
+    private String op_score;//丢弃
     private int op_state;
+    private String wx_openid;//新增字段 用来绑定微信的ID
+
+    public String getWx_openid(){
+        return wx_openid;
+    }
+    public void setWx_openid(String id){
+        this.wx_openid = id;
+    }
 
     public String getOp_id() {
         return op_id;

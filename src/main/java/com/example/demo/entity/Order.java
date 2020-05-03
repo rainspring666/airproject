@@ -11,9 +11,9 @@ public class Order {
 
     private Integer orderState;
 
-    private Date orderCreatetime;
+    private String orderCreatetime;
 
-    private Date orderTime;
+    private String orderTime;
 
     private String evaluationId;
 
@@ -37,7 +37,7 @@ public class Order {
 
     private Integer orderPollution;
 
-    private Boolean orderMoremoney;
+    private Integer orderReport;
 
     public String getOrderId() {
         return orderId;
@@ -71,19 +71,19 @@ public class Order {
         this.orderState = orderState;
     }
 
-    public Date getOrderCreatetime() {
+    public String getOrderCreatetime() {
         return orderCreatetime;
     }
 
-    public void setOrderCreatetime(Date orderCreatetime) {
+    public void setOrderCreatetime(String orderCreatetime) {
         this.orderCreatetime = orderCreatetime;
     }
 
-    public Date getOrderTime() {
+    public String getOrderTime() {
         return orderTime;
     }
 
-    public void setOrderTime(Date orderTime) {
+    public void setOrderTime(String orderTime) {
         this.orderTime = orderTime;
     }
 
@@ -175,12 +175,12 @@ public class Order {
         this.orderPollution = orderPollution;
     }
 
-    public Boolean getOrderMoremoney() {
-        return orderMoremoney;
+    public Integer getOrderReport() {
+        return orderReport;
     }
 
-    public void setOrderMoremoney(Boolean orderMoremoney) {
-        this.orderMoremoney = orderMoremoney;
+    public void setOrderReport(Integer orderReport) {
+        this.orderReport = orderReport;
     }
 
     @Override
@@ -203,7 +203,7 @@ public class Order {
                 ", orderOthers='" + orderOthers + '\'' +
                 ", orderCost=" + orderCost +
                 ", orderPollution=" + orderPollution +
-                ", orderMoremoney=" + orderMoremoney +
+                ", orderMoremoney=" + orderReport +
                 '}';
     }
 }

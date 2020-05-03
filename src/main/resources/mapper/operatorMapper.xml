@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.OperatorMapper">
+
+
+    <select id="wx_login_operator" resultType="com.example.demo.entity.Operator">
+        select * from operator where op_id = #{phone} and op_pwd = #{pwd}
+    </select>
+
+    <update id="wx_bind" parameterType="java.lang.String">
+        update operator
+        set wx_openid = #{openid}
+        where op_id=#{id}
+    </update>
+
+    <insert id="bg_add_operator" parameterType="com.example.demo.entity.Operator">
+        insert into operator (op_id,op_name,op_pwd,op_phone,op_state,wx_openid)
+        values
+        (#{op_id},#{op_name},#{op_pwd},#{op_phone},#{op_state},#{wx_phone})
+    </insert>
+
+    <select id="wx_show_orders" parameterType="java.lang.String" resultMap="com.example.demo.entity.Operator">
+        select * from userorder
+        where op_id = #{op_id}
+    </select>
+
+</mapper>

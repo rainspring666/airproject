@@ -1,6 +1,9 @@
 package com.example.demo.entity;
+/*
+派单人
 
-public class Paidan {
+ */
+public class Distribute {
     private  String id;
     private String pwd;
 

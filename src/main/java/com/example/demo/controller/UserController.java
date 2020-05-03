@@ -24,13 +24,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("getUser/{id}")
-    public String GetUser(@PathVariable int id){
-        System.out.println(id);
-        return userService.Sel(id).toString();
-    }
-
-
     @GetMapping(value = "/login")
     public MyJsonResult login(@RequestParam("user_phone") String userPhone,
                               @RequestParam("user_pwd") String userPwd)
@@ -48,7 +41,7 @@ public class UserController {
         return MyJsonResult.errorMsg("not such user");
     }
 
-    @PostMapping("/wx_login")
+    @PostMapping("/wx_login_user")
     @ResponseBody
     public MyJsonResult wx_login(@RequestParam("user_phone") String userPhone,
                                  @RequestParam("user_pwd") String userPwd,
@@ -64,25 +57,25 @@ public class UserController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        String session_key = jsonObject.get("session_key").toString();
         String open_id = jsonObject.get("openid").toString();
-        //注册sessionid
-        request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-        request.getSession().setAttribute("openid",open_id);//用户名存入该用户的session 中
-        String sessionid = request.getSession().getId();
 
         String pwdMD5 = tools.pwdMD5(userPwd).substring(8, 24);
         User user = userService.login_user(userPhone, pwdMD5);
 
         if(user != null)
         {
+            //注册sessionid
+            request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
+            request.getSession().setAttribute("openid",open_id);//用户名存入该用户的session 中
+            String sessionid = request.getSession().getId();
             return MyJsonResult.buildData(sessionid);
         }
         return MyJsonResult.errorMsg("请先注册绑定");
 
     }
 
-    @RequestMapping(value ="/register/check")
+    //异步检查用户手机号是否已经注册---id-phone 都是唯一的等效
+    @RequestMapping(value ="/register/check_phone")
     public MyJsonResult checkPhone(@RequestParam("user_phone") String userPhone) {
         //判断手机号是否注册
         if (userService.findUserPhone(userPhone)) {
@@ -127,15 +120,9 @@ public class UserController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        String session_key = jsonObject.get("session_key").toString();
         String open_id = jsonObject.get("openid").toString();
-        //注册sessionid
-        // request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-        // request.getSession().setAttribute("openid",open_id);//用户名存入该用户的session 中
-        // String sessionid = request.getSession().getId();
-
         user.setUser_id(open_id);
-        user.setUser_picture("temp_path");
+        // user.setUser_picture("temp_path");//参数禁用
         // 对用户密码进行MD5加密,取16位
         String pwd = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         user.setUser_pwd(pwd);

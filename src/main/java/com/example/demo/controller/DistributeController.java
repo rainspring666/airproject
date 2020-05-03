@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/paidan")
-public class PaidanController {
+public class DistributeController {
 
     //登录login
 
