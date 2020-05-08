@@ -9,6 +9,7 @@ import com.example.demo.service.OperatorService;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/operator")
 public class OperatorController {
-    Tool tools = new Tool();
+    @Autowired
+    private Tool tools;
+
     private OperatorService operatorService;
 
     //登录

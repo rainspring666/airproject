@@ -19,7 +19,8 @@ import java.util.Map;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private Tool tools = new Tool();
+    @Autowired
+    private Tool tools;
 
     @Autowired
     private UserService userService;

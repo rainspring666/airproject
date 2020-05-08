@@ -1,10 +1,13 @@
 package com.example.demo.tools;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Date;
 import java.util.UUID;
 
+@Component
 public class Tool {
     // 请求的网址
     public static final String WX_LOGIN_URL = "https://api.weixin.qq.com/sns/jscode2session";

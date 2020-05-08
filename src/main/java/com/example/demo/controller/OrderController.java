@@ -32,7 +32,9 @@ import java.util.List;
 @RequestMapping("/api/order")
 public class OrderController
 {
-    Tool tools  = new Tool();
+    @Autowired
+    private  Tool tools;
+
     @Autowired
     private OrderService orderService;
 
