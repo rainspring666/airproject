@@ -8,6 +8,7 @@ import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-@RestController
+@Controller
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -44,39 +45,40 @@ public class UserController {
 
     @PostMapping("/wx_login_user")
     @ResponseBody
-    public MyJsonResult wx_login(@RequestParam("user_phone") String userPhone,
-                                 @RequestParam("user_pwd") String userPwd,
-                                 @RequestParam("code") String code,
+    public MyJsonResult wx_login(@RequestBody User user,
                                  HttpServletRequest request){
         // 获取openid
         Map<String, String> param = new HashMap<>();
         param.put("appid", tools.WX_LOGIN_APPID);
         param.put("secret", tools.WX_LOGIN_SECRET);
-        param.put("js_code", code);
+        param.put("js_code", user.getUser_id());
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        String open_id = jsonObject.get("openid").toString();
 
-        String pwdMD5 = tools.pwdMD5(userPwd).substring(8, 24);
-        User user = userService.login_user(userPhone, pwdMD5);
 
-        if(user != null)
+        String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
+        User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
+        System.out.println(user.toString());
+        System.out.println(user.getUser_phone()+user.getUser_phone()+user.getUser_id());
+        //String open_id = jsonObject.get("openid").toString();
+        if(myuser != null)
         {
             //注册sessionid
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-            request.getSession().setAttribute("openid",open_id);//用户名存入该用户的session 中
+            request.getSession().setAttribute("openid",myuser.getUser_id());//用户名存入该用户的session 中
             String sessionid = request.getSession().getId();
             return MyJsonResult.buildData(sessionid);
         }
-        return MyJsonResult.errorMsg("请先注册绑定");
+        return MyJsonResult.errorMsg("密码错误");
 
     }
 
     //异步检查用户手机号是否已经注册---id-phone 都是唯一的等效
-    @RequestMapping(value ="/register/check_phone")
+    @GetMapping(value ="/register/check_phone")
+    @ResponseBody
     public MyJsonResult checkPhone(@RequestParam("user_phone") String userPhone) {
         //判断手机号是否注册
         if (userService.findUserPhone(userPhone)) {
@@ -107,7 +109,7 @@ public class UserController {
         return MyJsonResult.errorMsg("register error");
     }
 
-    @RequestMapping(value ="/wx_register")
+    @PostMapping(value ="/wx_register")
     @ResponseBody
     public MyJsonResult wx_register(@RequestBody User user,
                                   HttpServletRequest request) {
@@ -118,15 +120,22 @@ public class UserController {
         param.put("js_code", user.getUser_id());//前台把code通过这个参数临时传过来，后面改成openid
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
+        System.out.println(user.getUser_id());
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        String open_id = jsonObject.get("openid").toString();
-        user.setUser_id(open_id);
+        System.out.println(jsonObject);
+        //String open_id = jsonObject.get("openid").toString();
+        user.setUser_id(tools.createUserId(0,1));
         // user.setUser_picture("temp_path");//参数禁用
         // 对用户密码进行MD5加密,取16位
         String pwd = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         user.setUser_pwd(pwd);
+        user.setUser_name("张三");
+        user.setUser_picture("default");
+        user.setUser_gender(1);
+        user.setUser_nickname("张三昵称");
+
 
         // 存入数据库
         if(userService.save_user(user)){

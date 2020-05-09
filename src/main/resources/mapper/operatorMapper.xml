@@ -19,7 +19,7 @@
         (#{op_id},#{op_name},#{op_pwd},#{op_phone},#{op_state},#{wx_phone})
     </insert>
 
-    <select id="wx_show_orders" parameterType="java.lang.String" resultMap="com.example.demo.entity.Operator">
+    <select id="wx_show_orders" parameterType="java.lang.String" resultType="com.example.demo.entity.Operator">
         select * from userorder
         where op_id = #{op_id}
     </select>

@@ -6,6 +6,7 @@ import com.example.demo.entity.Order;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
+import com.sun.xml.bind.v2.runtime.reflect.opt.TransducedAccessor_field_Boolean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
@@ -42,12 +43,12 @@ public class OrderController
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
 
-        String user_id = request.getSession().getAttribute("openid").toString();
+        //String user_id = request.getSession().getAttribute("openid").toString();
 
         //创建订单id
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
-        order.setUserId(user_id);
+        order.setUserId("1");
         order.setOrderCreatetime(new Date().toString());
         //暂时不分配操作员
         //费用计算方式
@@ -119,15 +120,18 @@ public class OrderController
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            String user_id = request.getSession().getAttribute("openid").toString();
+            //String user_id = request.getSession().getAttribute("openid").toString();
+            System.out.println(file);
+
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
+                System.out.println(fileName);
 
                 String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {
                     if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
                         // 自定义的文件名称 以后还要加上orderid 区分多张图片
-                        String trueFileName = String.valueOf(user_id + System.currentTimeMillis()) + fileName;
+                        String trueFileName = String.valueOf("user_id" + System.currentTimeMillis()) + fileName;
                         // 设置存放图片文件的路径
                         path = tools.UPLOAD_PICTURE_PATH  + trueFileName;
                         File dir = new File(tools.UPLOAD_PICTURE_PATH);

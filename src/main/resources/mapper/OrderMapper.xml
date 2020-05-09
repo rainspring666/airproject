@@ -38,7 +38,7 @@
       #{evaluationId,jdbcType=VARCHAR}, #{orderClass,jdbcType=INTEGER}, #{orderModelf,jdbcType=VARCHAR}, 
       #{orderScope,jdbcType=REAL}, #{orderDescripe,jdbcType=VARCHAR}, #{orderAddress,jdbcType=VARCHAR}, 
       #{orderContact,jdbcType=VARCHAR}, #{orderPhone,jdbcType=VARCHAR}, #{orderOthers,jdbcType=VARCHAR}, 
-      #{orderCost,jdbcType=REAL}, #{orderPollution,jdbcType=INTEGER}, #{orderMoremoney,jdbcType=BIT}
+      #{orderCost,jdbcType=REAL}, #{orderPollution,jdbcType=INTEGER}, #{orderReport,jdbcType=BIT}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Order">

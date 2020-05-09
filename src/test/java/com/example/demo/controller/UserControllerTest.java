@@ -45,7 +45,7 @@ class UserControllerTest {
 
     @Test
     void getUser() throws Exception {
-        System.out.println(userController.GetUser(1111));
+        //System.out.println(userController.GetUser(1111));
         mvc.perform(MockMvcRequestBuilders.get("/testBoot/getUser/1111")
 //                .contentType(MediaType.APPLICATION_JSON_UTF8)
 //                .accept(MediaType.APPLICATION_JSON_UTF8)
