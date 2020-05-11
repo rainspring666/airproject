@@ -61,14 +61,13 @@ public class UserController {
 
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
-        System.out.println(user.toString());
-        System.out.println(user.getUser_phone()+user.getUser_phone()+user.getUser_id());
-        //String open_id = jsonObject.get("openid").toString();
+        System.out.println("login："+myuser.toString());
+        String open_id = jsonObject.get("openid").toString();
         if(myuser != null)
         {
             //注册sessionid
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-            request.getSession().setAttribute("openid",myuser.getUser_id());//用户名存入该用户的session 中
+            request.getSession().setAttribute("userid",myuser.getUser_id());//用户名存入该用户的session 中
             String sessionid = request.getSession().getId();
             return MyJsonResult.buildData(sessionid);
         }
@@ -124,8 +123,8 @@ public class UserController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        System.out.println(jsonObject);
-        //String open_id = jsonObject.get("openid").toString();
+        System.out.println("注册jsonObject："+jsonObject);
+        String open_id = jsonObject.get("openid").toString();
         user.setUser_id(tools.createUserId(0,1));
         // user.setUser_picture("temp_path");//参数禁用
         // 对用户密码进行MD5加密,取16位

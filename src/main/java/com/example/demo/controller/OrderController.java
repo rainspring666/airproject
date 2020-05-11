@@ -43,7 +43,7 @@ public class OrderController
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
 
-        //String user_id = request.getSession().getAttribute("openid").toString();
+        //String user_id = request.getSession().getAttribute("userid").toString();
 
         //创建订单id
         order.setOrderId(tools.createOrderId());
@@ -120,8 +120,9 @@ public class OrderController
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            //String user_id = request.getSession().getAttribute("openid").toString();
-            System.out.println(file);
+            System.out.println(request.getSession().getId());
+            //String user_id = request.getSession().getAttribute("userid").toString();
+            System.out.println("upload pic:"+file);
 
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
@@ -131,7 +132,7 @@ public class OrderController
                 if (type != null) {
                     if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
                         // 自定义的文件名称 以后还要加上orderid 区分多张图片
-                        String trueFileName = String.valueOf("user_id" + System.currentTimeMillis()) + fileName;
+                        String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
                         // 设置存放图片文件的路径
                         path = tools.UPLOAD_PICTURE_PATH  + trueFileName;
                         File dir = new File(tools.UPLOAD_PICTURE_PATH);
