@@ -9,6 +9,8 @@ import com.example.demo.service.OperatorService;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +28,10 @@ public class OperatorController {
     @Autowired
     private Tool tools;
 
+    @Autowired
     private OperatorService operatorService;
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     //登录
     @PostMapping("/wx_login_operator")
@@ -51,18 +56,18 @@ public class OperatorController {
         Operator operator = operatorService.wx_login_operator(phone,pwdMD5);
 
         request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-        request.getSession().setAttribute("openid",open_id);//用户名存入该用户的session 中
-        request.getSession().setAttribute("userID",operator.getOp_id());
         String sessionid = request.getSession().getId();
 
         if(operator != null)
         {
             String wx_openid = operator.getWx_openid();
+            logger.info("操作员登录："+operator.getOp_phone());
             if(wx_openid==null){
                 operatorService.wx_bind(operator.getOp_id(),open_id);//绑定微信
-
-                return MyJsonResult.build(200,"该操作员尚未绑定微信，请授权微信登录绑定",sessionid);
+                operator.setWx_openid(open_id);
+                return MyJsonResult.build(200,"初次登陆 已绑定当前微信",sessionid);
             }else{
+                request.getSession().setAttribute("operator",operator);
                 return MyJsonResult.build(200,"",sessionid);
             }
 

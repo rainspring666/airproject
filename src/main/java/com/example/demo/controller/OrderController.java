@@ -3,9 +3,12 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.example.demo.entity.Order;
+import com.example.demo.entity.User;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,31 +34,27 @@ public class OrderController
     @Autowired
     private OrderService orderService;
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     @PostMapping(value ="/add")
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
 
-        //String user_id = request.getSession().getAttribute("userid").toString();
-
-        System.out.println("order:"+order.toString());
-        System.out.println("add sessionid:"+request.getSession().getId());
+        String user_id = request.getSession().getAttribute("userid").toString();
         //创建订单id
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
-        order.setUserId("1");
-        order.setOpId("1");
-        order.setOrderCost((float)100.9);
+        order.setUserId(user_id);
+        order.setOpId("1");//暂时不分配操作员
+        order.setOrderCost((float)100.9); //费用计算方式
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
         order.setOrderCreatetime(dateString);
-        //暂时不分配操作员
-        //费用计算方式
-
-        System.out.println("order add:"+order.toString());
 
         if(orderService.insert(order)){
+            logger.info("成功添加了一个订单："+order.toString());
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("add order error");
@@ -77,6 +76,7 @@ public class OrderController
     @ResponseBody
     public MyJsonResult deleteOrder(@RequestParam("order_id") String orderId,HttpServletRequest request) {
         if(orderService.deleteByPrimaryKey(orderId)){
+            logger.info("成功删除订单："+orderId);
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("delete order error");
@@ -86,8 +86,10 @@ public class OrderController
     @RequestMapping(value ="/show_my_orders")
     @ResponseBody
     public JSONArray searchOrderByUserId(HttpServletRequest request) {
-        String userId = request.getSession().getAttribute("openid").toString();
+        String userId = request.getSession().getAttribute("userid").toString();
+        User myuser = (User) request.getSession().getAttribute("myuser");
         List<Order> orders = orderService.selectByUserId(userId);
+        logger.info("用户:{}请求了他的所有订单，共:{}条",myuser.getUser_phone(),orders.size());
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
     @RequestMapping(value ="/update")
@@ -119,13 +121,10 @@ public class OrderController
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            System.out.println("upload_pictures session："+request.getSession().getId());
-            //String user_id = request.getSession().getAttribute("userid").toString();
-
+            String user_id = request.getSession().getAttribute("userid").toString();
+            logger.info("上传图片:"+user_id);
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
-                System.out.println("fileName："+fileName);
-
                 String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {
                     if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
@@ -150,6 +149,7 @@ public class OrderController
         } catch (IOException e){
             System.out.println("图片上传这里有异常");
         }
+        logger.info("上传成功 路径:"+path);
         return MyJsonResult.buildData(path);//成功的话 返回图片在服务器的路径 暂时只能一张图片
     }
 

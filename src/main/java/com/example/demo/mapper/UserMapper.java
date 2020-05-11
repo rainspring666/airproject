@@ -11,4 +11,5 @@ public interface UserMapper {
     User login_user(String phone, String pwd);
     boolean save_user(User user);
     User finduserphone(String phone);
+    User getuserbyopenid(String openid);
 }

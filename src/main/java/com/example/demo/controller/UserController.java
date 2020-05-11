@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Controller
 @RequestMapping("/api/user")
@@ -26,21 +29,35 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/login")
-    public MyJsonResult login(@RequestParam("user_phone") String userPhone,
-                              @RequestParam("user_pwd") String userPwd)
+    Logger logger = LoggerFactory.getLogger(getClass());
+
+    @PostMapping(value = "/login_by_code")
+    @ResponseBody
+    public MyJsonResult login(@RequestParam("code") String code,HttpServletRequest request)
     {
-        // 进行MD5加密，并取16位
-        System.out.println(userPhone);
-        System.out.println(userPwd);
-        String pwdMD5 = tools.pwdMD5(userPwd).substring(8, 24);
-        User user = userService.login_user(userPhone, pwdMD5);
+        // 获取openid
+        Map<String, String> param = new HashMap<>();
+        param.put("appid", tools.WX_LOGIN_APPID);
+        param.put("secret", tools.WX_LOGIN_SECRET);
+        param.put("js_code", code);//code
+        param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
+        // 发送请求
+        String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
+        JSONObject jsonObject = JSONObject.parseObject(wxResult);
+        // 获取参数返回的
+        String open_id = jsonObject.get("openid").toString();
+        User user = userService.getUserByOpenid(open_id);
         if(user != null)
         {
-            user.setUser_pwd("");
-            return MyJsonResult.buildData(user);
+            //注册sessionid
+            request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
+            request.getSession().setAttribute("userid",user.getUser_id());//用户名存入该用户的session 中
+            request.getSession().setAttribute("myuser",user);
+            String sessionid = request.getSession().getId();
+            logger.info("login-by-openid:"+user.getUser_phone());
+            return MyJsonResult.buildData(sessionid);
         }
-        return MyJsonResult.errorMsg("not such user");
+        return MyJsonResult.errorMsg("请使用账号密码登录");
     }
 
     @PostMapping("/wx_login_user")
@@ -51,26 +68,27 @@ public class UserController {
         Map<String, String> param = new HashMap<>();
         param.put("appid", tools.WX_LOGIN_APPID);
         param.put("secret", tools.WX_LOGIN_SECRET);
-        param.put("js_code", user.getUser_id());
+        param.put("js_code", user.getUser_id());//code
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-
-
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
-        System.out.println("login："+myuser.toString());
         String open_id = jsonObject.get("openid").toString();
         if(myuser != null)
         {
             //注册sessionid
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
             request.getSession().setAttribute("userid",myuser.getUser_id());//用户名存入该用户的session 中
+            request.getSession().setAttribute("myuser",myuser);
+            request.getSession().setAttribute("openid",open_id);
             String sessionid = request.getSession().getId();
+            logger.info("login:"+myuser.getUser_phone());
             return MyJsonResult.buildData(sessionid);
         }
+        logger.info("login 失败："+user.getUser_phone());
         return MyJsonResult.errorMsg("密码错误");
 
     }
@@ -123,18 +141,18 @@ public class UserController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
-        System.out.println("注册jsonObject："+jsonObject);
         String open_id = jsonObject.get("openid").toString();
         user.setUser_id(tools.createUserId(0,1));
         // 对用户密码进行MD5加密,取16位
-        String pwd = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
-        user.setUser_pwd(pwd);
-        user.setUser_name("张三");
-        user.setUser_gender(1);
+        String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
+        user.setUser_pwd(pwdMD5);
+        user.setUser_name("");//默认名字为空
+        user.setUser_gender(1);//默认性别为男
         // 保存open_id
         user.setOpen_id(open_id);
         // 存入数据库
         if(userService.save_user(user)){
+            logger.trace("新注册了一个用户："+user.getUser_phone());
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("register error");

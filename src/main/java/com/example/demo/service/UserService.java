@@ -37,5 +37,8 @@ public class UserService {
         return false;
     }
 
+    public User getUserByOpenid(String id){
+        return userMapper.getuserbyopenid(id);
+    }
 
 }
