@@ -1,8 +1,11 @@
 package com.example.demo.mapper;
 
 import com.example.demo.entity.Operator;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+@Repository
 
 public interface OperatorMapper {
     Operator wx_login_operator(String phone,String pwd);

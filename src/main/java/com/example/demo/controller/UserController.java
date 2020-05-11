@@ -126,16 +126,13 @@ public class UserController {
         System.out.println("注册jsonObject："+jsonObject);
         String open_id = jsonObject.get("openid").toString();
         user.setUser_id(tools.createUserId(0,1));
-        // user.setUser_picture("temp_path");//参数禁用
         // 对用户密码进行MD5加密,取16位
         String pwd = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         user.setUser_pwd(pwd);
         user.setUser_name("张三");
-        user.setUser_picture("default");
         user.setUser_gender(1);
-        user.setUser_nickname("张三昵称");
-
-
+        // 保存open_id
+        user.setOpen_id(open_id);
         // 存入数据库
         if(userService.save_user(user)){
             return MyJsonResult.buildData("ok");

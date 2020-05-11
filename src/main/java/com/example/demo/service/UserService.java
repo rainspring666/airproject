@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     UserMapper userMapper;
+
     public User Sel(int id){
         return userMapper.Sel(id);
     }
@@ -29,13 +30,6 @@ public class UserService {
 
     }
 
-    public boolean findUserNickname(String name)
-    {
-        if(userMapper.findusernickname(name) != null)
-            return true;
-        return false;
-
-    }
     public boolean findUserPhone(String phone)
     {
         if(userMapper.finduserphone(phone)!=null)

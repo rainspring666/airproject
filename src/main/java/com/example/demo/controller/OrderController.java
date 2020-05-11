@@ -6,17 +6,8 @@ import com.example.demo.entity.Order;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
-import com.sun.xml.bind.v2.runtime.reflect.opt.TransducedAccessor_field_Boolean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +44,6 @@ public class OrderController
         order.setOrderState(0);
         order.setUserId("1");
         order.setOpId("1");
-        order.setEvaluationId("1");
         order.setOrderCost((float)100.9);
 
         Date date = new Date();

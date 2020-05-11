@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import java.util.Date;
-
 public class Order {
     private String orderId;
 
@@ -15,9 +13,7 @@ public class Order {
 
     private String orderTime;
 
-    private String evaluationId;
-
-    private Integer orderClass;
+    private String orderClass;
 
     private String orderModelf;
 
@@ -35,16 +31,17 @@ public class Order {
 
     private Float orderCost;
 
-    private Integer orderPollution;
+    private String orderPollution;
 
-    private Integer orderReport;
+    private Integer orderMoremoney;
+
 
     public String getOrderId() {
         return orderId;
     }
 
     public void setOrderId(String orderId) {
-        this.orderId = orderId == null ? null : orderId.trim();
+        this.orderId = orderId;
     }
 
     public String getUserId() {
@@ -52,7 +49,7 @@ public class Order {
     }
 
     public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+        this.userId = userId;
     }
 
     public String getOpId() {
@@ -60,7 +57,7 @@ public class Order {
     }
 
     public void setOpId(String opId) {
-        this.opId = opId == null ? null : opId.trim();
+        this.opId = opId;
     }
 
     public Integer getOrderState() {
@@ -87,19 +84,11 @@ public class Order {
         this.orderTime = orderTime;
     }
 
-    public String getEvaluationId() {
-        return evaluationId;
-    }
-
-    public void setEvaluationId(String evaluationId) {
-        this.evaluationId = evaluationId == null ? null : evaluationId.trim();
-    }
-
-    public Integer getOrderClass() {
+    public String getOrderClass() {
         return orderClass;
     }
 
-    public void setOrderClass(Integer orderClass) {
+    public void setOrderClass(String orderClass) {
         this.orderClass = orderClass;
     }
 
@@ -108,7 +97,7 @@ public class Order {
     }
 
     public void setOrderModelf(String orderModelf) {
-        this.orderModelf = orderModelf == null ? null : orderModelf.trim();
+        this.orderModelf = orderModelf;
     }
 
     public Float getOrderScope() {
@@ -124,7 +113,7 @@ public class Order {
     }
 
     public void setOrderDescripe(String orderDescripe) {
-        this.orderDescripe = orderDescripe == null ? null : orderDescripe.trim();
+        this.orderDescripe = orderDescripe;
     }
 
     public String getOrderAddress() {
@@ -132,7 +121,7 @@ public class Order {
     }
 
     public void setOrderAddress(String orderAddress) {
-        this.orderAddress = orderAddress == null ? null : orderAddress.trim();
+        this.orderAddress = orderAddress;
     }
 
     public String getOrderContact() {
@@ -140,7 +129,7 @@ public class Order {
     }
 
     public void setOrderContact(String orderContact) {
-        this.orderContact = orderContact == null ? null : orderContact.trim();
+        this.orderContact = orderContact;
     }
 
     public String getOrderPhone() {
@@ -148,7 +137,7 @@ public class Order {
     }
 
     public void setOrderPhone(String orderPhone) {
-        this.orderPhone = orderPhone == null ? null : orderPhone.trim();
+        this.orderPhone = orderPhone;
     }
 
     public String getOrderOthers() {
@@ -156,7 +145,7 @@ public class Order {
     }
 
     public void setOrderOthers(String orderOthers) {
-        this.orderOthers = orderOthers == null ? null : orderOthers.trim();
+        this.orderOthers = orderOthers;
     }
 
     public Float getOrderCost() {
@@ -167,20 +156,20 @@ public class Order {
         this.orderCost = orderCost;
     }
 
-    public Integer getOrderPollution() {
+    public String getOrderPollution() {
         return orderPollution;
     }
 
-    public void setOrderPollution(Integer orderPollution) {
+    public void setOrderPollution(String orderPollution) {
         this.orderPollution = orderPollution;
     }
 
-    public Integer getOrderReport() {
-        return orderReport;
+    public Integer getOrderMoremoney() {
+        return orderMoremoney;
     }
 
-    public void setOrderReport(Integer orderReport) {
-        this.orderReport = orderReport;
+    public void setOrderMoremoney(Integer orderMoremoney) {
+        this.orderMoremoney = orderMoremoney;
     }
 
     @Override
@@ -190,10 +179,9 @@ public class Order {
                 ", userId='" + userId + '\'' +
                 ", opId='" + opId + '\'' +
                 ", orderState=" + orderState +
-                ", orderCreatetime=" + orderCreatetime +
-                ", orderTime=" + orderTime +
-                ", evaluationId='" + evaluationId + '\'' +
-                ", orderClass=" + orderClass +
+                ", orderCreatetime='" + orderCreatetime + '\'' +
+                ", orderTime='" + orderTime + '\'' +
+                ", orderClass='" + orderClass + '\'' +
                 ", orderModelf='" + orderModelf + '\'' +
                 ", orderScope=" + orderScope +
                 ", orderDescripe='" + orderDescripe + '\'' +
@@ -202,8 +190,8 @@ public class Order {
                 ", orderPhone='" + orderPhone + '\'' +
                 ", orderOthers='" + orderOthers + '\'' +
                 ", orderCost=" + orderCost +
-                ", orderPollution=" + orderPollution +
-                ", orderMoremoney=" + orderReport +
+                ", orderPollution='" + orderPollution + '\'' +
+                ", orderMoremoney=" + orderMoremoney +
                 '}';
     }
 }

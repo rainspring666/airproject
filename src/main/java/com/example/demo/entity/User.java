@@ -2,13 +2,13 @@ package com.example.demo.entity;
 
 
 public class User {
+
     private String user_id;
     private String user_pwd;
     private String user_phone;
     private String user_name;
-    private String user_nickname;//不在使用
-    private String user_picture;//不在使用
     private int user_gender;
+    private String open_id;
 
     public String getUser_id() {
         return user_id;
@@ -42,28 +42,20 @@ public class User {
         this.user_name = user_name;
     }
 
-    public String getUser_nickname() {
-        return user_nickname;
-    }
-
-    public void setUser_nickname(String user_nickname) {
-        this.user_nickname = user_nickname;
-    }
-
-    public String getUser_picture() {
-        return user_picture;
-    }
-
-    public void setUser_picture(String user_picture) {
-        this.user_picture = user_picture;
-    }
-
     public int getUser_gender() {
         return user_gender;
     }
 
     public void setUser_gender(int user_gender) {
         this.user_gender = user_gender;
+    }
+
+    public String getOpen_id() {
+        return open_id;
+    }
+
+    public void setOpen_id(String open_id) {
+        this.open_id = open_id;
     }
 
     @Override
@@ -73,9 +65,8 @@ public class User {
                 ", user_pwd='" + user_pwd + '\'' +
                 ", user_phone='" + user_phone + '\'' +
                 ", user_name='" + user_name + '\'' +
-                ", user_nickname='" + user_nickname + '\'' +
-                ", user_picture='" + user_picture + '\'' +
                 ", user_gender=" + user_gender +
+                ", open_id='" + open_id + '\'' +
                 '}';
     }
 }
