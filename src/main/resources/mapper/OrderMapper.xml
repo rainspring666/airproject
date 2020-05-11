@@ -27,7 +27,7 @@
   </delete>
   <insert id="insert" parameterType="com.example.demo.entity.Order">
     insert into userorder (order_id, user_id, op_id,
-      order_state, order_createtime, order_time, 
+      order_state, order_creattime, order_time,
       evaluation_id, order_class, order_modelf, 
       order_scope, order_descripe, order_address, 
       order_contact, order_phone, order_others, 

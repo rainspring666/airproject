@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -45,16 +46,24 @@ public class OrderController
 
         //String user_id = request.getSession().getAttribute("userid").toString();
 
+        System.out.println("order:"+order.toString());
+        System.out.println("add sessionid:"+request.getSession().getId());
         //创建订单id
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
         order.setUserId("1");
-        order.setOrderCreatetime(new Date().toString());
+        order.setOpId("1");
+        order.setEvaluationId("1");
+        order.setOrderCost((float)100.9);
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(date);
+        order.setOrderCreatetime(dateString);
         //暂时不分配操作员
         //费用计算方式
-        order.setOrderCost((float)0);
 
-        System.out.println(order.toString());
+        System.out.println("order add:"+order.toString());
 
         if(orderService.insert(order)){
             return MyJsonResult.buildData("ok");
@@ -120,13 +129,12 @@ public class OrderController
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            System.out.println(request.getSession().getId());
+            System.out.println("upload_pictures session："+request.getSession().getId());
             //String user_id = request.getSession().getAttribute("userid").toString();
-            System.out.println("upload pic:"+file);
 
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
-                System.out.println(fileName);
+                System.out.println("fileName："+fileName);
 
                 String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {
