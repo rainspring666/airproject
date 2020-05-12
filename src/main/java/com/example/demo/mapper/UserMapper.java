@@ -12,4 +12,5 @@ public interface UserMapper {
     boolean save_user(User user);
     User finduserphone(String phone);
     User getuserbyopenid(String openid);
-}
+    boolean update_info(String id,String name,int gender)
+;}

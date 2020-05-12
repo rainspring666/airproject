@@ -41,4 +41,7 @@ public class UserService {
         return userMapper.getuserbyopenid(id);
     }
 
+    public boolean update_info(String id,String name,int gender){
+        return userMapper.update_info(id,name,gender);
+    }
 }

@@ -18,5 +18,10 @@
 		insert into user(user_id, user_pwd,user_phone,user_name,user_gender,open_id)
 		values(#{user_id},#{user_pwd},#{user_phone},#{user_name},#{user_gender},#{open_id})
     </insert>
+    <update id="update_info">
+        update user
+        set user_name=#{name},user_gender=#{gender}
+        where user_id=#{id}
+    </update>
 
 </mapper>

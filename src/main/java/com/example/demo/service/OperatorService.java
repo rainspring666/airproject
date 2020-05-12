@@ -2,9 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Operator;
 import com.example.demo.mapper.OperatorMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class OperatorService {
     OperatorMapper operatorMapper;
     public Operator wx_login_operator(String phone,String pwd){

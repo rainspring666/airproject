@@ -55,7 +55,8 @@ public class UserController {
             request.getSession().setAttribute("myuser",user);
             String sessionid = request.getSession().getId();
             logger.info("login-by-openid:"+user.getUser_phone());
-            return MyJsonResult.buildData(sessionid);
+            user.setUser_pwd("");
+            return MyJsonResult.build(200,sessionid,user);
         }
         return MyJsonResult.errorMsg("请使用账号密码登录");
     }
@@ -86,7 +87,8 @@ public class UserController {
             request.getSession().setAttribute("openid",open_id);
             String sessionid = request.getSession().getId();
             logger.info("login:"+myuser.getUser_phone());
-            return MyJsonResult.buildData(sessionid);
+            myuser.setUser_pwd("");
+            return MyJsonResult.build(200,sessionid,myuser);
         }
         logger.info("login 失败："+user.getUser_phone());
         return MyJsonResult.errorMsg("密码错误");
@@ -156,6 +158,21 @@ public class UserController {
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("register error");
+    }
+    @PostMapping(value ="/change_user_info")
+    @ResponseBody
+    public MyJsonResult change_user_info(@RequestBody User user,HttpServletRequest request){
+        User myuser = (User) request.getSession().getAttribute("myuser");
+        if(myuser != null){
+            String name = user.getUser_name();
+            int gender = user.getUser_gender();
+            myuser.setUser_name(name);
+            myuser.setUser_gender(gender);
+            userService.update_info(myuser.getUser_id(),name,gender);
+            return MyJsonResult.buildData("ok");
+        }
+        return MyJsonResult.errorMsg("请先登录");
+
     }
 
 }
