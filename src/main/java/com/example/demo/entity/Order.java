@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import java.io.File;
+
 public class Order {
     private String orderId;
 
@@ -35,6 +37,25 @@ public class Order {
 
     private Integer orderMoremoney;
 
+    // public Order(String orderId, String userId, String opId, Integer orderState, String orderCreatetime, String orderTime, String orderClass, String orderModelf, Float orderScope, String orderDescripe, String orderAddress, String orderContact, String orderPhone, String orderOthers, Float orderCost, String orderPollution, Integer orderMoremoney) {
+    //     this.orderId = orderId;
+    //     this.userId = userId;
+    //     this.opId = opId;
+    //     this.orderState = orderState;
+    //     this.orderCreatetime = orderCreatetime;
+    //     this.orderTime = orderTime;
+    //     this.orderClass = orderClass;
+    //     this.orderModelf = orderModelf;
+    //     this.orderScope = orderScope;
+    //     this.orderDescripe = orderDescripe;
+    //     this.orderAddress = orderAddress;
+    //     this.orderContact = orderContact;
+    //     this.orderPhone = orderPhone;
+    //     this.orderOthers = orderOthers;
+    //     this.orderCost = orderCost;
+    //     this.orderPollution = orderPollution;
+    //     this.orderMoremoney = orderMoremoney;
+    // }
 
     public String getOrderId() {
         return orderId;

@@ -54,7 +54,7 @@ public class OrderController
         order.setOrderCreatetime(dateString);
 
         if(orderService.insert(order)){
-            logger.info("成功添加了一个订单："+order.toString());
+            logger.info("add an order："+order.toString());
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("add order error");
@@ -76,20 +76,26 @@ public class OrderController
     @ResponseBody
     public MyJsonResult deleteOrder(@RequestParam("order_id") String orderId,HttpServletRequest request) {
         if(orderService.deleteByPrimaryKey(orderId)){
-            logger.info("成功删除订单："+orderId);
+            logger.info("delete an order："+orderId);
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("delete order error");
     }
 
 
-    @RequestMapping(value ="/show_my_orders")
+    @GetMapping(value ="/show_my_orders")
     @ResponseBody
     public JSONArray searchOrderByUserId(HttpServletRequest request) {
-        String userId = request.getSession().getAttribute("userid").toString();
         User myuser = (User) request.getSession().getAttribute("myuser");
+        String userId = myuser.getUser_id();
         List<Order> orders = orderService.selectByUserId(userId);
-        logger.info("用户:{}请求了他的所有订单，共:{}条",myuser.getUser_phone(),orders.size());
+        Order order;
+        for(int i=0;i<orders.size();i++){
+            order = orders.get(i);
+            order.setOrderClass("家居");
+            order.setOpId("张三");
+        }
+        logger.info("user:{} 's orders，共:{}条",userId,orders.size());
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
     @RequestMapping(value ="/update")
@@ -118,11 +124,10 @@ public class OrderController
     @ResponseBody
     public MyJsonResult upload(HttpServletRequest request,
                                @RequestParam(value = "file", required = false) MultipartFile file) {
+        String user_id = request.getSession().getAttribute("userid").toString();
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            String user_id = request.getSession().getAttribute("userid").toString();
-            logger.info("上传图片:"+user_id);
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
                 String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
@@ -149,7 +154,7 @@ public class OrderController
         } catch (IOException e){
             System.out.println("图片上传这里有异常");
         }
-        logger.info("上传成功 路径:"+path);
+        logger.info("user {} upload picture:{}",user_id,path);
         return MyJsonResult.buildData(path);//成功的话 返回图片在服务器的路径 暂时只能一张图片
     }
 

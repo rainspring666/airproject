@@ -64,7 +64,8 @@ public class UserController {
     @PostMapping("/wx_login_user")
     @ResponseBody
     public MyJsonResult wx_login(@RequestBody User user,
-                                 HttpServletRequest request){
+                                 HttpServletRequest request
+                                 ){
         // 获取openid
         Map<String, String> param = new HashMap<>();
         param.put("appid", tools.WX_LOGIN_APPID);
@@ -77,20 +78,20 @@ public class UserController {
         // 获取参数返回的
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
-        String open_id = jsonObject.get("openid").toString();
+        //String open_id = jsonObject.get("openid").toString();
         if(myuser != null)
         {
             //注册sessionid
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
             request.getSession().setAttribute("userid",myuser.getUser_id());//用户名存入该用户的session 中
             request.getSession().setAttribute("myuser",myuser);
-            request.getSession().setAttribute("openid",open_id);
+            //request.getSession().setAttribute("openid",open_id);
             String sessionid = request.getSession().getId();
-            logger.info("login:"+myuser.getUser_phone());
+            logger.info("user {} login:",myuser.getUser_phone());
             myuser.setUser_pwd("");
             return MyJsonResult.build(200,sessionid,myuser);
         }
-        logger.info("login 失败："+user.getUser_phone());
+        logger.info("user {} login failure：",user.getUser_phone());
         return MyJsonResult.errorMsg("密码错误");
 
     }
@@ -139,7 +140,7 @@ public class UserController {
         param.put("js_code", user.getUser_id());//前台把code通过这个参数临时传过来，后面改成openid
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
-        System.out.println(user.getUser_id());
+        //System.out.println(user.getUser_id());
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
@@ -154,7 +155,7 @@ public class UserController {
         user.setOpen_id(open_id);
         // 存入数据库
         if(userService.save_user(user)){
-            logger.trace("新注册了一个用户："+user.getUser_phone());
+            logger.trace("new user {} register ",user.getUser_phone());
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("register error");

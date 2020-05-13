@@ -19,7 +19,7 @@ public class Tool {
     public static final String WX_LOGIN_GRANT_TYPE = "authorization_code";
 
     //服务器上传图片的总目录
-    public static final String UPLOAD_PICTURE_PATH= "/Users/pengyuquan/Desktop";
+    public static final String UPLOAD_PICTURE_PATH= "/Users/pengyuquan/Desktop/";
 
     public  String pwdMD5(String pwd)  {
         try {
