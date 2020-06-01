@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Operator;
-import com.example.demo.entity.User;
+import com.example.demo.entity.Order;
+import com.example.demo.entity.Process;
 import com.example.demo.service.OperatorService;
+import com.example.demo.service.ProcessService;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
@@ -30,6 +32,9 @@ public class OperatorController {
 
     @Autowired
     private OperatorService operatorService;
+
+    @Autowired
+    private ProcessService processService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -81,11 +86,19 @@ public class OperatorController {
     @ResponseBody
     public JSONArray wx_show_orders(HttpServletRequest request){
         String userId = request.getSession().getAttribute("userID").toString();//获取存储的操作员id
-        List<Operator> list = operatorService.wx_show_orders(userId);
+        List<Order> list = operatorService.wx_show_orders(userId);
         return JSONArray.parseArray(JSON.toJSONString(list));
 
     }
 
+    //展示操作员的所有流程信息 别忘记筛选
+    @PostMapping("wx_show_processes")
+    @ResponseBody
+    public JSONArray wx_show_processes(HttpServletRequest request){
+        Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
+        List<Process> list = processService.get_my_process(operator.getOp_id());
+        return JSONArray.parseArray(JSON.toJSONString(list));
+    }
 
     //查看一个订单的详情--显示对应的流程
 

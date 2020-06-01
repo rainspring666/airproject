@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
@@ -18,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -34,6 +37,9 @@ public class OrderController
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OperatorService operatorService;
+
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @PostMapping(value ="/add")
@@ -45,7 +51,7 @@ public class OrderController
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
         order.setUserId(user_id);
-        order.setOpId("1");//暂时不分配操作员
+        order.setOpId("00000000");//默认操作员-待分配
         order.setOrderCost((float)100.9); //费用计算方式
 
         Date date = new Date();
@@ -89,11 +95,24 @@ public class OrderController
         User myuser = (User) request.getSession().getAttribute("myuser");
         String userId = myuser.getUser_id();
         List<Order> orders = orderService.selectByUserId(userId);
-        Order order;
+
+        //组装操作员信息
+        List<Operator> op_list = operatorService.all_op_info();
+        HashMap<String, String> op_map=new HashMap<String,String>();
+        HashMap<Integer, String> class_map=new HashMap<Integer, String>();
+        for(int i=0;i<op_list.size();i++){
+            Operator operator = op_list.get(i);
+            op_map.put(operator.getOp_id(),operator.getOp_name());
+        }
+        class_map.put(1,"家居");
+        class_map.put(2,"车辆");
+        class_map.put(3,"其他");
+
+        //组装给前端显示的信息
         for(int i=0;i<orders.size();i++){
-            order = orders.get(i);
-            order.setOrderClass("家居");
-            order.setOpId("张三");
+            Order order = orders.get(i);
+            order.setOrderClass(class_map.get(order.getOrderClass()));
+            order.setOpId(op_map.get(order.getOpId()));
         }
         logger.info("user:{} 's orders，共:{}条",userId,orders.size());
         return JSONArray.parseArray(JSON.toJSONString(orders));
