@@ -15,6 +15,24 @@ public class Process {
     private String pro_endtime;
     private String pro_pictures;
     private String ddata_id;
+    private String express_id;
+    private String express_name;
+
+    public String getExpress_id() {
+        return express_id;
+    }
+
+    public void setExpress_id(String express_id) {
+        this.express_id = express_id;
+    }
+
+    public String getExpress_name() {
+        return express_name;
+    }
+
+    public void setExpress_name(String express_name) {
+        this.express_name = express_name;
+    }
 
     public String getProcess_id() {
         return process_id;

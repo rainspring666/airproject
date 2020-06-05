@@ -11,6 +11,7 @@ import java.util.List;
 public class OperatorService {
     @Autowired
     OperatorMapper operatorMapper;
+
     public Operator wx_login_operator(String phone,String pwd){
         return operatorMapper.wx_login_operator(phone,pwd);
     }

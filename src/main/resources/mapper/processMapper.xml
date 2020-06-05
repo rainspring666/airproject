@@ -3,9 +3,37 @@
 <mapper namespace="com.example.demo.mapper.ProcessMapper">
 
 
-    <select id="get_my_process" resultType="com.example.demo.entity.ProcessMapper">
+    <select id="get_my_process" resultType="com.example.demo.entity.Process">
         select * from process where process_id = #{id}
+        order by pro_state DESC
     </select>
+    <select id="get_one_info" resultType="com.example.demo.entity.Process">
+        select * from process
+        where process_id = #{process_id}
+    </select>
+    <select id="get_one_info2" resultType="com.example.demo.entity.Process">
+        select * from process
+        where order_id = #{order_id}
+    </select>
+    <update id="update_info" parameterType="com.example.demo.entity.Process">
+        update process
+        set ddata_id = #{data_id},
+        user_id = #{user_id},
+        order_id = #{order_id},
+        pro_generator = #{pro_generator},
+        pro_sampler = #{pro_sampler},
+        pro_report = #{pro_report},
+        pro_result = #{pro_result},
+        pro_eq = #{pro_eq},
+        pro_material =#{pro_material},
+        pro_starttime = #{pro_starttime},
+        pro_state = #{pro_state},
+        pro_endtime = #{pro_endtime},
+        pro_pictures = #{pro_pictures},
+        express_id = #{express_id},
+        express_name = #{express_name}
+        where process_id = #{process_id}
+    </update>
 
 
 </mapper>

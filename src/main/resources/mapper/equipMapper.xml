@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EquipMapper">
+
+
+    <select id="get_equipment_info" resultType="com.example.demo.entity.Equipment">
+        select * from equipment
+        order by eq_type
+    </select>
+
+    <select id="get_one_info" resultType="com.example.demo.entity.Equipment">
+        select * from equipment
+        where op_id = #{op_id}
+    </select>
+
+    <update id="update_equipment_info" parameterType="com.example.demo.entity.Equipment">
+        update equipment
+        set eq_name = #{eq_name},
+        eq_type=#{eq_type},
+        eq_inner_num=#{eq_inner_num},
+        eq_create_time=#{eq_create_time},
+        eq_add_time=#{eq_inner_num},
+        eq_state=#{eq_state},
+        eq_other=#{eq_other}
+        where eq_id=#{eq_id}
+    </update>
+
+    <insert id="add_equipment_info" parameterType="com.example.demo.entity.Equipment">
+        insert into equipment (eq_id,eq_name,eq_type,eq_inner_num,eq_create_time,eq_add_time,eq_state,eq_other)
+        values
+        (#{eq_id},#{eq_name},#{eq_type},#{eq_inner_num},#{eq_create_time},#{eq_add_time},#{eq_state},#{eq_other})
+    </insert>
+
+    <delete id="del_equipment_info" parameterType="java.lang.String">
+        delete from equipment
+        where eq_id = #{eq_id}
+    </delete>
+
+</mapper>

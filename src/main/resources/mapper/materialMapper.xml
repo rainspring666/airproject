@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.MaterialMapper">
+
+
+    <select id="get_material_info" resultType="com.example.demo.entity.Material">
+        select * from material
+    </select>
+
+    <select id="get_one_info" resultType="com.example.demo.entity.Material">
+        select * from material
+        where material_id = #{material_id}
+    </select>
+
+    <update id="update_material_info" parameterType="com.example.demo.entity.Material">
+        update material
+        set ma_other = #{ma_other},ma_number=#{ma_number},ma_name=#{ma_name}
+        where material_id=#{material_id}
+    </update>
+
+    <insert id="add_material_info" parameterType="com.example.demo.entity.Material">
+        insert into material (material_id,ma_name,ma_number,ma_other)
+        values
+        (#{material_id},#{ma_name},#{ma_number},#{ma_other})
+    </insert>
+
+    <delete id="del_material_info" parameterType="java.lang.String">
+        delete from material
+        where material_id = #{material_id}
+    </delete>
+
+</mapper>

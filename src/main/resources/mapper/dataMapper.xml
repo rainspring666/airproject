@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.DataMapper">
+
+    <insert id="add_data" parameterType="com.example.demo.entity.Data">
+        insert into detectiondata (ddata_id,ddata_time,process_id,pm1_0,um0_3,
+        um2_5,pm2_5,um0_5,um5_0,pm10,um1_0,um10,hcho,tvoc,co2,temp,rh)
+        values
+        (#{ddata_id},#{ddata_time},#{process_id},#{pm1_0},
+        #{um0_3},#{um2_5},#{pm2_5},#{um0_5}
+        #{um5_0},#{pm10},#{um1_0},#{um10}
+        #{hcho},#{tvoc},#{co2},#{temp},#{rh})
+    </insert>
+
+
+</mapper>

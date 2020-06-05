@@ -51,7 +51,7 @@ public class OrderController
         order.setOrderId(tools.createOrderId());
         order.setOrderState(0);
         order.setUserId(user_id);
-        order.setOpId("00000000");//默认操作员-待分配
+        order.setOpId("1");//默认操作员-待分配
         order.setOrderCost((float)100.9); //费用计算方式
 
         Date date = new Date();
