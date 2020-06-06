@@ -2,11 +2,13 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
@@ -130,13 +132,42 @@ public class OrderController
         return MyJsonResult.errorMsg("update order error");
     }
 
-    //这个函数暂时无用
+
     @RequestMapping(value = "/all")
     public MyJsonResult selectAllOrder()
     {
         List<Order> orders = orderService.selectAll();
+
+        /*组装响应数据  start  便于前端显示*/
+        List<Operator> op_list = operatorService.all_op_info();
+
+        // 组装操作员数据
+        HashMap<String, String> op_map = new HashMap<String,String>();
+        for (Operator operator : op_list) {
+            op_map.put(operator.getOp_id(), operator.getOp_name());
+        }
+        // 组装订单数据
+        HashMap<Integer, String> class_map = new HashMap<Integer, String>();
+        class_map.put(1,"家居");
+        class_map.put(2,"车辆");
+        class_map.put(3,"其他");
+
+        //组装给前端显示的信息
+        for (Order order : orders) {
+            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
+            order.setOpId(op_map.get(order.getOpId()));
+        }
+        /*               END                */
+
+        // 组装Json数据
+        int total = orders.size();
+        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
+        JSONObject data = new JSONObject();
+        data.put("total",total);
+        data.put("item",item);
+
         if (!orders.isEmpty()){
-            return MyJsonResult.buildData(orders);
+            return MyJsonResult.build(0,"msg",data);
         }
         return MyJsonResult.errorMsg("no order");
     }

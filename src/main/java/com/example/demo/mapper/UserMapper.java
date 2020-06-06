@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper {
-
-    User Sel(int id);
+    User Sel(String id);
     User login_user(String phone, String pwd);
     boolean save_user(User user);
     User finduserphone(String phone);

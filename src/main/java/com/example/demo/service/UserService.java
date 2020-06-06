@@ -12,7 +12,7 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public User Sel(int id){
+    public User Sel(String id){
         return userMapper.Sel(id);
     }
     /*
