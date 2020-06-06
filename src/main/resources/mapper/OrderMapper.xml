@@ -73,6 +73,13 @@
     order_phone, order_others, order_cost, order_pollution, order_moremoney
     from userorder
   </select>
+  <select id="selectByOrderState" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select order_id, user_id, op_id, order_state, order_createtime, order_time,
+    order_class, order_modelf, order_scope, order_descripe, order_address, order_contact,
+    order_phone, order_others, order_cost, order_pollution, order_moremoney
+    from userorder
+    where order_state = #{orderState,jdbcType=INTEGER}
+  </select>
   <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select order_id, user_id, op_id, order_state, order_createtime, order_time,
     order_class, order_modelf, order_scope, order_descripe, order_address, order_contact,

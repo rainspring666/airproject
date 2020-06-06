@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author mhh
@@ -111,12 +112,13 @@ public class OrderController
         //组装给前端显示的信息
         for(int i=0;i<orders.size();i++){
             Order order = orders.get(i);
-            order.setOrderClass(class_map.get(order.getOrderClass()));
+            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
             order.setOpId(op_map.get(order.getOpId()));
         }
         logger.info("user:{} 's orders，共:{}条",userId,orders.size());
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
+
     @RequestMapping(value ="/update")
     public MyJsonResult updateOrder(@RequestBody Order order)
     {
@@ -129,10 +131,53 @@ public class OrderController
     }
 
     //这个函数暂时无用
-    @RequestMapping(value = "/All")
+    @RequestMapping(value = "/all")
     public MyJsonResult selectAllOrder()
     {
         List<Order> orders = orderService.selectAll();
+        if (!orders.isEmpty()){
+            return MyJsonResult.buildData(orders);
+        }
+        return MyJsonResult.errorMsg("no order");
+    }
+
+
+    /**
+     *  按照订单的状态查询订单
+     * @param id 订单状态：0----未处理; 1------处理中; 2----完成
+     * @return jsonResult
+     *
+     */
+    @RequestMapping(value = "/orderState")
+    public MyJsonResult selectByOrderState(Integer id)
+    {
+        List<Order> orders = orderService.selectByOrderState(id);
+
+        /*组装响应数据  start  便于前端显示*/
+        List<Operator> op_list = operatorService.all_op_info();
+        // 组装操作员数据
+        HashMap<String, String> op_map = new HashMap<String,String>();
+        for (Operator operator : op_list) {
+            op_map.put(operator.getOp_id(), operator.getOp_name());
+        }
+        // 组装订单数据
+        HashMap<Integer, String> class_map = new HashMap<Integer, String>();
+        class_map.put(1,"家居");
+        class_map.put(2,"车辆");
+        class_map.put(3,"其他");
+
+//        HashMap<Integer, String> state_map = new HashMap<Integer, String>();
+//        state_map.put(0,"未处理");
+//        state_map.put(1,"处理中");
+//        state_map.put(2,"已完成");
+
+        //组装给前端显示的信息
+        for (Order order : orders) {
+            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
+            order.setOpId(op_map.get(order.getOpId()));
+        }
+
+//        logger.info("orderState:{}, orders:共:{}条",state_map.get(id),orders.size());
         if (!orders.isEmpty()){
             return MyJsonResult.buildData(orders);
         }

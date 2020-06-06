@@ -38,6 +38,10 @@ public class OrderService {
     {
         return orderMapper.selectAll();
     }
+    public List<Order> selectByOrderState(Integer orderState)
+    {
+        return orderMapper.selectByOrderState(orderState);
+    }
 
 }
 

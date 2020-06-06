@@ -18,4 +18,7 @@ public interface OrderMapper {
     boolean updateByPrimaryKey(Order record);
 
     List<Order> selectByUserId(String userId);
+
+    List<Order> selectByOrderState(Integer orderState);
+
 }

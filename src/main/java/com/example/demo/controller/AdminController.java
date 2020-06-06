@@ -16,6 +16,6 @@ public class AdminController {
     @RequestMapping("/index.html")
     public String login(){
         logger.info("admin");
-        return "admin";
+        return "distributer";
     }
 }
