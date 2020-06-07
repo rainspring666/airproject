@@ -10,6 +10,8 @@ import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
+import com.example.demo.tools.OrderClassEnum;
+import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,19 +104,14 @@ public class OrderController
         //组装操作员信息
         List<Operator> op_list = operatorService.all_op_info();
         HashMap<String, String> op_map=new HashMap<String,String>();
-        HashMap<Integer, String> class_map=new HashMap<Integer, String>();
         for(int i=0;i<op_list.size();i++){
             Operator operator = op_list.get(i);
             op_map.put(operator.getOp_id(),operator.getOp_name());
         }
-        class_map.put(1,"家居");
-        class_map.put(2,"车辆");
-        class_map.put(3,"其他");
-
         //组装给前端显示的信息
         for(int i=0;i<orders.size();i++){
             Order order = orders.get(i);
-            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
+            order.setOrderClass(OrderClassEnum.getName(order.getOrderClass()));
             order.setOpId(op_map.get(order.getOpId()));
         }
         logger.info("user:{} 's orders，共:{}条",userId,orders.size());
@@ -141,27 +138,31 @@ public class OrderController
         /*组装响应数据  start  便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();
 
-        // 组装操作员数据
+        // 获得Op_id----------->Op_name
         HashMap<String, String> op_map = new HashMap<String,String>();
         for (Operator operator : op_list) {
             op_map.put(operator.getOp_id(), operator.getOp_name());
         }
-        // 组装订单数据
-        HashMap<Integer, String> class_map = new HashMap<Integer, String>();
-        class_map.put(1,"家居");
-        class_map.put(2,"车辆");
-        class_map.put(3,"其他");
-
-        //组装给前端显示的信息
-        for (Order order : orders) {
-            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
-            order.setOpId(op_map.get(order.getOpId()));
-        }
-        /*               END                */
 
         // 组装Json数据
         int total = orders.size();
         JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
+        // 调整返回数据
+        JSONObject tempJsonObject = null;
+        for(int i=0;i<item.size();i++) {
+            tempJsonObject = item.getJSONObject(i);
+            // 组装操作员信息
+            String opId = tempJsonObject.getString("opId");
+            tempJsonObject.fluentPut("opId",op_map.get(opId));
+            // 组装订单类别信息
+            String orderClass = tempJsonObject.getString("orderClass");
+            tempJsonObject.fluentPut("orderClass",OrderClassEnum.getName(orderClass));
+            // 组装订单状态信息
+            Integer orderState = tempJsonObject.getInteger("orderState");
+            tempJsonObject.fluentPut("orderState", OrderStateEnum.getName(orderState));
+        }
+
+
         JSONObject data = new JSONObject();
         data.put("total",total);
         data.put("item",item);
@@ -175,7 +176,7 @@ public class OrderController
 
     /**
      *  按照订单的状态查询订单
-     * @param id 订单状态：0----未处理; 1------处理中; 2----完成
+     * @param id 参数范围以及意义：订单状态：0----未处理; 1------处理中; 2----完成
      * @return jsonResult
      *
      */
@@ -191,26 +192,24 @@ public class OrderController
         for (Operator operator : op_list) {
             op_map.put(operator.getOp_id(), operator.getOp_name());
         }
-        // 组装订单数据
-        HashMap<Integer, String> class_map = new HashMap<Integer, String>();
-        class_map.put(1,"家居");
-        class_map.put(2,"车辆");
-        class_map.put(3,"其他");
 
-//        HashMap<Integer, String> state_map = new HashMap<Integer, String>();
-//        state_map.put(0,"未处理");
-//        state_map.put(1,"处理中");
-//        state_map.put(2,"已完成");
-
-        //组装给前端显示的信息
-        for (Order order : orders) {
-            order.setOrderClass(class_map.get(Integer.parseInt(order.getOrderClass())));
-            order.setOpId(op_map.get(order.getOpId()));
+        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
+        // 调整返回数据
+        JSONObject tempJsonObject = null;
+        for(int i=0;i<item.size();i++) {
+            tempJsonObject = item.getJSONObject(i);
+            // 组装操作员信息
+            String opId = tempJsonObject.getString("opId");
+            tempJsonObject.fluentPut("opId",op_map.get(opId));
+            // 组装订单类别信息
+            String orderClass = tempJsonObject.getString("orderClass");
+            tempJsonObject.fluentPut("orderClass",OrderClassEnum.getName(orderClass));
+            // 组装订单状态信息
+            Integer orderState = tempJsonObject.getInteger("orderState");
+            tempJsonObject.fluentPut("orderState", OrderStateEnum.getName(orderState));
         }
-
-//        logger.info("orderState:{}, orders:共:{}条",state_map.get(id),orders.size());
         if (!orders.isEmpty()){
-            return MyJsonResult.buildData(orders);
+            return MyJsonResult.buildData(item);
         }
         return MyJsonResult.errorMsg("no order");
     }
