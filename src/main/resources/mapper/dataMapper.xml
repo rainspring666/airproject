@@ -7,8 +7,8 @@
         um2_5,pm2_5,um0_5,um5_0,pm10,um1_0,um10,hcho,tvoc,co2,temp,rh)
         values
         (#{ddata_id},#{ddata_time},#{process_id},#{pm1_0},
-        #{um0_3},#{um2_5},#{pm2_5},#{um0_5}
-        #{um5_0},#{pm10},#{um1_0},#{um10}
+        #{um0_3},#{um2_5},#{pm2_5},#{um0_5},
+        #{um5_0},#{pm10},#{um1_0},#{um10},
         #{hcho},#{tvoc},#{co2},#{temp},#{rh})
     </insert>
 

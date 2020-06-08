@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.Data;
-import com.example.demo.entity.Material;
-import com.example.demo.entity.Operator;
-import com.example.demo.entity.Order;
+import com.example.demo.entity.*;
 import com.example.demo.entity.Process;
 import com.example.demo.service.DataService;
 import com.example.demo.service.EquipService;
@@ -47,6 +44,7 @@ public class OperatorController {
     private MaterialService materialService;
     @Autowired
     private EquipService equipService;
+    @Autowired
     private DataService dataService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -54,15 +52,12 @@ public class OperatorController {
     //登录
     @PostMapping("/wx_login_operator")
     @ResponseBody
-    public MyJsonResult wx_login(@RequestParam("user_phone") String phone,
-                                 @RequestParam("user_pwd") String pwd,
-                                 @RequestParam("code") String code,
-                                 HttpServletRequest request){
+    public MyJsonResult wx_login(@RequestBody Operator operator,HttpServletRequest request){
         // 获取openid
         Map<String, String> param = new HashMap<>();
         param.put("appid", tools.WX_LOGIN_APPID);
         param.put("secret", tools.WX_LOGIN_SECRET);
-        param.put("js_code", code);
+        param.put("js_code", operator.getOp_id());
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
@@ -70,42 +65,47 @@ public class OperatorController {
         // 获取参数返回的
         String open_id = jsonObject.get("openid").toString();
 
-        String pwdMD5 = tools.pwdMD5(pwd).substring(8, 24);
-        Operator operator = operatorService.wx_login_operator(phone,pwdMD5);
+//        String pwdMD5 = tools.pwdMD5(pwd).substring(8, 24);
+//        Operator operator = operatorService.wx_login_operator(phone,pwdMD5);
+
+        Operator tempOperator = operatorService.wx_login_operator(operator.getOp_phone(),operator.getOp_pwd());
 
         request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
         String sessionid = request.getSession().getId();
 
-        if(operator != null)
+        if(tempOperator != null)
         {
-            String wx_openid = operator.getWx_openid();
-            logger.info("操作员登录："+operator.getOp_phone());
+            String wx_openid = tempOperator.getWx_openid();
+            logger.info("操作员登录："+tempOperator.getOp_phone());
             if(wx_openid==null){
-                operatorService.wx_bind(operator.getOp_id(),open_id);//绑定微信
+                operatorService.wx_bind(tempOperator.getOp_id(),open_id);//绑定微信
                 operator.setWx_openid(open_id);
+                request.getSession().setAttribute("operator",tempOperator);
                 return MyJsonResult.build(200,"初次登陆 已绑定当前微信",sessionid);
             }else{
-                request.getSession().setAttribute("operator",operator);
+                request.getSession().setAttribute("operator",tempOperator);
                 return MyJsonResult.build(200,"",sessionid);
             }
 
         }
+
         return MyJsonResult.errorMsg("not found you");
 
     }
 
     //显示所有自己的订单 byopid
-    @PostMapping("/wx_show_orders")
+    @GetMapping("/wx_show_orders")
     @ResponseBody
     public JSONArray wx_show_orders(HttpServletRequest request){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
         List<Order> list = operatorService.wx_show_orders(operator.getOp_id());
+        logger.info(JSON.toJSONString(list));
         return JSONArray.parseArray(JSON.toJSONString(list));
 
     }
 
     //展示操作员的所有流程信息 别忘记筛选
-    @PostMapping("/wx_show_processes")
+    @GetMapping("/wx_show_processes")
     @ResponseBody
     public JSONArray wx_show_processes(HttpServletRequest request){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
@@ -134,22 +134,24 @@ public class OperatorController {
     //上传空气监测数据
     @PostMapping("/upload_detection_data")
     @ResponseBody
-    public MyJsonResult upload_detection_data(HttpServletRequest request, @RequestBody Data data,
-                                              @RequestParam("process_id") String process_id){
+    public MyJsonResult upload_detection_data(@RequestBody Data data, HttpServletRequest request){
         String data_id = tools.createOrderId();
         data.setDdata_id(data_id);
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
         data.setDdata_time(dateString);
+        data.setProcess_id("123124124");
 
-        Process process = processService.get_one_info(process_id);
-        if(process==null)
-            return MyJsonResult.errorMsg("error--");
-        process.setDdata_id(data_id);//补充process的dataid
 
+//        Process process = processService.get_one_info(data.getProcess_id());
+//        if(process == null){
+//            return MyJsonResult.errorMsg("error--");
+//        }
+//        process.setDdata_id(data_id);//补充process的dataid
+        logger.info(data.toString());
         if(dataService.add_data(data)){
-            processService.update_info(process);
+//            processService.update_info(process);
             return MyJsonResult.buildData("ok");
         }
         else

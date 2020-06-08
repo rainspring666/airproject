@@ -18,17 +18,17 @@ public class OrderService {
     {
         return orderMapper.insert(order);
     }
-    public List<Order> selectByUserId(String userId)
+    public List<Order> selectByUserId(String user_id)
     {
-        return orderMapper.selectByUserId(userId);
+        return orderMapper.selectByUserId(user_id);
     }
-    public Order selectByPrimaryKey(String orderId)
+    public Order selectByPrimaryKey(String order_id)
     {
-        return orderMapper.selectByPrimaryKey(orderId);
+        return orderMapper.selectByPrimaryKey(order_id);
     }
-    public boolean deleteByPrimaryKey(String orderId)
+    public boolean deleteByPrimaryKey(String order_id)
     {
-        return orderMapper.deleteByPrimaryKey(orderId);
+        return orderMapper.deleteByPrimaryKey(order_id);
     }
     public boolean updateByPrimaryKey(Order order)
     {
@@ -38,9 +38,8 @@ public class OrderService {
     {
         return orderMapper.selectAll();
     }
-    public List<Order> selectByOrderState(Integer orderState)
-    {
-        return orderMapper.selectByOrderState(orderState);
+    public List<Order> selectByOrderState(Integer order_state) {
+        return orderMapper.selectByOrderState(order_state);
     }
 
 }

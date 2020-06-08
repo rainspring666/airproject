@@ -8,7 +8,6 @@ import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
-import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
@@ -26,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author mhh
@@ -53,16 +51,16 @@ public class OrderController
 
         String user_id = request.getSession().getAttribute("userid").toString();
         //创建订单id
-        order.setOrderId(tools.createOrderId());
-        order.setOrderState(0);
-        order.setUserId(user_id);
-        order.setOpId("1");//默认操作员-待分配
-        order.setOrderCost((float)100.9); //费用计算方式
+        order.setOrder_id(tools.createOrderId());
+        order.setOrder_state(0);
+        order.setUser_id(user_id);
+        order.setOp_id("1");//默认操作员-待分配
+        order.setOrder_cost((float)100.9); //费用计算方式
 
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
-        order.setOrderCreatetime(dateString);
+        order.setOrder_createtime(dateString);
 
         if(orderService.insert(order)){
             logger.info("add an order："+order.toString());
@@ -73,9 +71,9 @@ public class OrderController
 
     @GetMapping("/check_detail")
     @ResponseBody
-    public MyJsonResult checkByOrder(@RequestParam("order_id") String orderId,
+    public MyJsonResult checkByOrder(@RequestParam("order_id") String order_id,
                                      HttpServletRequest request){
-        Order order = orderService.selectByPrimaryKey(orderId);
+        Order order = orderService.selectByPrimaryKey(order_id);
         if(null != order){
             return MyJsonResult.buildData(order);
         }
@@ -111,8 +109,8 @@ public class OrderController
         //组装给前端显示的信息
         for(int i=0;i<orders.size();i++){
             Order order = orders.get(i);
-            order.setOrderClass(OrderClassEnum.getName(order.getOrderClass()));
-            order.setOpId(op_map.get(order.getOpId()));
+            order.setOrder_class(OrderClassEnum.getName(order.getOrder_class()));
+            order.setOp_id(op_map.get(order.getOp_id()));
         }
         logger.info("user:{} 's orders，共:{}条",userId,orders.size());
         return JSONArray.parseArray(JSON.toJSONString(orders));
@@ -152,14 +150,14 @@ public class OrderController
         for(int i=0;i<item.size();i++) {
             tempJsonObject = item.getJSONObject(i);
             // 组装操作员信息
-            String opId = tempJsonObject.getString("opId");
-            tempJsonObject.fluentPut("opId",op_map.get(opId));
+            String opId = tempJsonObject.getString("op_id");
+            tempJsonObject.fluentPut("op_id",op_map.get(opId));
             // 组装订单类别信息
-            String orderClass = tempJsonObject.getString("orderClass");
-            tempJsonObject.fluentPut("orderClass",OrderClassEnum.getName(orderClass));
+            String orderClass = tempJsonObject.getString("order_class");
+            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
             // 组装订单状态信息
-            Integer orderState = tempJsonObject.getInteger("orderState");
-            tempJsonObject.fluentPut("orderState", OrderStateEnum.getName(orderState));
+            Integer orderState = tempJsonObject.getInteger("order_state");
+            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
         }
 
 
@@ -199,14 +197,14 @@ public class OrderController
         for(int i=0;i<item.size();i++) {
             tempJsonObject = item.getJSONObject(i);
             // 组装操作员信息
-            String opId = tempJsonObject.getString("opId");
-            tempJsonObject.fluentPut("opId",op_map.get(opId));
+            String opId = tempJsonObject.getString("op_id");
+            tempJsonObject.fluentPut("op_id",op_map.get(opId));
             // 组装订单类别信息
-            String orderClass = tempJsonObject.getString("orderClass");
-            tempJsonObject.fluentPut("orderClass",OrderClassEnum.getName(orderClass));
+            String orderClass = tempJsonObject.getString("order_class");
+            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
             // 组装订单状态信息
-            Integer orderState = tempJsonObject.getInteger("orderState");
-            tempJsonObject.fluentPut("orderState", OrderStateEnum.getName(orderState));
+            Integer orderState = tempJsonObject.getInteger("order_state");
+            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
         }
         if (!orders.isEmpty()){
             return MyJsonResult.buildData(item);

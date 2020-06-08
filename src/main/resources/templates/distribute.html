@@ -7,13 +7,14 @@
 	</head>
 	<body>
 		<script th:src="@{/layui.js}"></script>
+		<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
 
 		<table class="layui-hide" id="table" lay-filter="orderDistribute"></table>
 
 		<script type="text/html" id="operatorBar">
 			<a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
 			<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="confirm">派单</a>
+			<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="distribute">派单</a>
 		</script>
 
 		<script>
@@ -55,20 +56,56 @@
 					// 获得当前行数据
 					var data = obj.data;
 					const layEvent = obj.event;
-					
-					if (layEvent === 'detail') {
-						layer.open({
-							type: 1 ,
-							title: '订单信息',
-							area: ['500px', '570px'],
-							shade: 0.4,
-							btn:['确定'],
-							scrollbar: false
-						});
-					} else if (layEvent === 'confirm') {
-						layer.msg('派单操作');
-					} else if (layEvent === 'edit') {
-						layer.msg('编辑操作');
+					switch(layEvent) {
+						case 'detail':
+							var index = layer.open({
+								type: 2,
+								title: "订单详情页面",
+								area: ['30%', '60%'],
+								fix: false,
+								maxmin: true,
+								shadeClose: true,
+								shade: 0.4,
+								skin: 'layui-layer-rim',
+								content: ["/api/bg/admin/order/detail", "no"],
+							});
+							break;
+						case 'distribute':
+							var index = layer.open({
+								type: 2,
+								title: "编辑投诉页面",
+								area: ['30%', '60%'],
+								fix: false,
+								maxmin: true,
+								shadeClose: true,
+								shade: 0.4,
+								skin: 'layui-layer-rim',
+								content: ["/medicaladmin/complain/complainEdit", "no"],
+							});
+							break;
+						case 'edit':
+							// var delIndex = layer.confirm('真的删除id为' + data.id + "的信息吗?", function(delIndex) {
+							// 	$.ajax({
+							// 		url: '/medicaladmin/complain/delete/'+data.id,
+							// 		type: "post",
+							// 		success: function(suc) {
+							// 			if(suc.code == 200) {
+							// 				obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+							// 				layer.close(delIndex);
+							// 				console.log(delIndex);
+							// 				layer.msg("删除成功", {
+							// 					icon: 1
+							// 				});
+							// 			} else {
+							// 				layer.msg("删除失败", {
+							// 					icon: 5
+							// 				});
+							// 			}
+							// 		}
+							// 	});
+							// 	layer.close(delIndex);
+							// });
+							break;
 					}
 				});
 
