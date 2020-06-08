@@ -248,7 +248,8 @@ public class OperatorController {
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            String op_id = request.getSession().getAttribute("userID").toString();
+            Operator operator = (Operator)request.getSession().getAttribute("operator");
+            String op_id = operator.getOp_id();
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
 
