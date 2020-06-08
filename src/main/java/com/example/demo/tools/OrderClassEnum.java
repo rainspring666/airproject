@@ -5,7 +5,7 @@ package com.example.demo.tools;
  * @date 2020/6/7
  */
 public enum OrderClassEnum {
-    PENDING("家居", "1"), PROCESSING("车辆", "2"), FINISH("其他", "3");
+    one("家居", "1"), two("车辆", "2"), three("工装", "3"),four("其他", "4");;
 
     private String name;
     private String index;

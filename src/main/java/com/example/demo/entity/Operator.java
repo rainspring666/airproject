@@ -72,4 +72,18 @@ public class Operator {
     public void setOp_state(int op_state) {
         this.op_state = op_state;
     }
+
+    @Override
+    public String toString() {
+        return "Operator{" +
+                "op_id='" + op_id + '\'' +
+                ", op_name='" + op_name + '\'' +
+                ", op_pwd='" + op_pwd + '\'' +
+                ", op_phone='" + op_phone + '\'' +
+                ", OP_photo='" + OP_photo + '\'' +
+                ", op_score='" + op_score + '\'' +
+                ", op_state=" + op_state +
+                ", wx_openid='" + wx_openid + '\'' +
+                '}';
+    }
 }

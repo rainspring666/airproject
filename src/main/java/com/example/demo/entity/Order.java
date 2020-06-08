@@ -1,219 +1,196 @@
 package com.example.demo.entity;
 
-import java.io.File;
-
 public class Order {
-    private String orderId;
+    private String order_id;
 
-    private String userId;
+    private String user_id;
 
-    private String opId;
+    private String op_id;
 
-    private Integer orderState;
+    private Integer order_state;
 
-    private String orderCreatetime;
+    private String order_createtime;
 
-    private String orderTime;
+    private String order_time;
 
-    private String orderClass;
+    private String order_class;
 
-    private String orderModelf;
+    private String order_modelf;
 
-    private Float orderScope;
+    private Float order_scope;
 
-    private String orderDescripe;
+    private String order_descripe;
 
-    private String orderAddress;
+    private String order_address;
 
-    private String orderContact;
+    private String order_contact;
 
-    private String orderPhone;
+    private String order_phone;
 
-    private String orderOthers;
+    private String order_others;
 
-    private Float orderCost;
+    private Float order_cost;
 
-    private String orderPollution;
+    private String order_pollution;
 
-    private Integer orderMoremoney;
+    private Integer order_moremoney;
 
-    // public Order(String orderId, String userId, String opId, Integer orderState, String orderCreatetime, String orderTime, String orderClass, String orderModelf, Float orderScope, String orderDescripe, String orderAddress, String orderContact, String orderPhone, String orderOthers, Float orderCost, String orderPollution, Integer orderMoremoney) {
-    //     this.orderId = orderId;
-    //     this.userId = userId;
-    //     this.opId = opId;
-    //     this.orderState = orderState;
-    //     this.orderCreatetime = orderCreatetime;
-    //     this.orderTime = orderTime;
-    //     this.orderClass = orderClass;
-    //     this.orderModelf = orderModelf;
-    //     this.orderScope = orderScope;
-    //     this.orderDescripe = orderDescripe;
-    //     this.orderAddress = orderAddress;
-    //     this.orderContact = orderContact;
-    //     this.orderPhone = orderPhone;
-    //     this.orderOthers = orderOthers;
-    //     this.orderCost = orderCost;
-    //     this.orderPollution = orderPollution;
-    //     this.orderMoremoney = orderMoremoney;
-    // }
-
-    public String getOrderId() {
-        return orderId;
+    public String getOrder_id() {
+        return order_id;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
-    public String getOpId() {
-        return opId;
+    public String getOp_id() {
+        return op_id;
     }
 
-    public void setOpId(String opId) {
-        this.opId = opId;
+    public void setOp_id(String op_id) {
+        this.op_id = op_id;
     }
 
-    public Integer getOrderState() {
-        return orderState;
+    public Integer getOrder_state() {
+        return order_state;
     }
 
-    public void setOrderState(Integer orderState) {
-        this.orderState = orderState;
+    public void setOrder_state(Integer order_state) {
+        this.order_state = order_state;
     }
 
-    public String getOrderCreatetime() {
-        return orderCreatetime;
+    public String getOrder_createtime() {
+        return order_createtime;
     }
 
-    public void setOrderCreatetime(String orderCreatetime) {
-        this.orderCreatetime = orderCreatetime;
+    public void setOrder_createtime(String order_createtime) {
+        this.order_createtime = order_createtime;
     }
 
-    public String getOrderTime() {
-        return orderTime;
+    public String getOrder_time() {
+        return order_time;
     }
 
-    public void setOrderTime(String orderTime) {
-        this.orderTime = orderTime;
+    public void setOrder_time(String order_time) {
+        this.order_time = order_time;
     }
 
-    public String getOrderClass() {
-        return orderClass;
+    public String getOrder_class() {
+        return order_class;
     }
 
-    public void setOrderClass(String orderClass) {
-        this.orderClass = orderClass;
+    public void setOrder_class(String order_class) {
+        this.order_class = order_class;
     }
 
-    public String getOrderModelf() {
-        return orderModelf;
+    public String getOrder_modelf() {
+        return order_modelf;
     }
 
-    public void setOrderModelf(String orderModelf) {
-        this.orderModelf = orderModelf;
+    public void setOrder_modelf(String order_modelf) {
+        this.order_modelf = order_modelf;
     }
 
-    public Float getOrderScope() {
-        return orderScope;
+    public Float getOrder_scope() {
+        return order_scope;
     }
 
-    public void setOrderScope(Float orderScope) {
-        this.orderScope = orderScope;
+    public void setOrder_scope(Float order_scope) {
+        this.order_scope = order_scope;
     }
 
-    public String getOrderDescripe() {
-        return orderDescripe;
+    public String getOrder_descripe() {
+        return order_descripe;
     }
 
-    public void setOrderDescripe(String orderDescripe) {
-        this.orderDescripe = orderDescripe;
+    public void setOrder_descripe(String order_descripe) {
+        this.order_descripe = order_descripe;
     }
 
-    public String getOrderAddress() {
-        return orderAddress;
+    public String getOrder_address() {
+        return order_address;
     }
 
-    public void setOrderAddress(String orderAddress) {
-        this.orderAddress = orderAddress;
+    public void setOrder_address(String order_address) {
+        this.order_address = order_address;
     }
 
-    public String getOrderContact() {
-        return orderContact;
+    public String getOrder_contact() {
+        return order_contact;
     }
 
-    public void setOrderContact(String orderContact) {
-        this.orderContact = orderContact;
+    public void setOrder_contact(String order_contact) {
+        this.order_contact = order_contact;
     }
 
-    public String getOrderPhone() {
-        return orderPhone;
+    public String getOrder_phone() {
+        return order_phone;
     }
 
-    public void setOrderPhone(String orderPhone) {
-        this.orderPhone = orderPhone;
+    public void setOrder_phone(String order_phone) {
+        this.order_phone = order_phone;
     }
 
-    public String getOrderOthers() {
-        return orderOthers;
+    public String getOrder_others() {
+        return order_others;
     }
 
-    public void setOrderOthers(String orderOthers) {
-        this.orderOthers = orderOthers;
+    public void setOrder_others(String order_others) {
+        this.order_others = order_others;
     }
 
-    public Float getOrderCost() {
-        return orderCost;
+    public Float getOrder_cost() {
+        return order_cost;
     }
 
-    public void setOrderCost(Float orderCost) {
-        this.orderCost = orderCost;
+    public void setOrder_cost(Float order_cost) {
+        this.order_cost = order_cost;
     }
 
-    public String getOrderPollution() {
-        return orderPollution;
+    public String getOrder_pollution() {
+        return order_pollution;
     }
 
-    public void setOrderPollution(String orderPollution) {
-        this.orderPollution = orderPollution;
+    public void setOrder_pollution(String order_pollution) {
+        this.order_pollution = order_pollution;
     }
 
-    public Integer getOrderMoremoney() {
-        return orderMoremoney;
+    public Integer getOrder_moremoney() {
+        return order_moremoney;
     }
 
-    public void setOrderMoremoney(Integer orderMoremoney) {
-        this.orderMoremoney = orderMoremoney;
+    public void setOrder_moremoney(Integer order_moremoney) {
+        this.order_moremoney = order_moremoney;
     }
 
     @Override
     public String toString() {
         return "Order{" +
-                "orderId='" + orderId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", opId='" + opId + '\'' +
-                ", orderState=" + orderState +
-                ", orderCreatetime='" + orderCreatetime + '\'' +
-                ", orderTime='" + orderTime + '\'' +
-                ", orderClass='" + orderClass + '\'' +
-                ", orderModelf='" + orderModelf + '\'' +
-                ", orderScope=" + orderScope +
-                ", orderDescripe='" + orderDescripe + '\'' +
-                ", orderAddress='" + orderAddress + '\'' +
-                ", orderContact='" + orderContact + '\'' +
-                ", orderPhone='" + orderPhone + '\'' +
-                ", orderOthers='" + orderOthers + '\'' +
-                ", orderCost=" + orderCost +
-                ", orderPollution='" + orderPollution + '\'' +
-                ", orderMoremoney=" + orderMoremoney +
+                "order_id='" + order_id + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", op_id='" + op_id + '\'' +
+                ", order_state=" + order_state +
+                ", order_createtime='" + order_createtime + '\'' +
+                ", order_time='" + order_time + '\'' +
+                ", order_class='" + order_class + '\'' +
+                ", order_modelf='" + order_modelf + '\'' +
+                ", order_scope=" + order_scope +
+                ", order_descripe='" + order_descripe + '\'' +
+                ", order_address='" + order_address + '\'' +
+                ", order_contact='" + order_contact + '\'' +
+                ", order_phone='" + order_phone + '\'' +
+                ", order_others='" + order_others + '\'' +
+                ", order_cost=" + order_cost +
+                ", order_pollution='" + order_pollution + '\'' +
+                ", order_moremoney=" + order_moremoney +
                 '}';
     }
-
 }
