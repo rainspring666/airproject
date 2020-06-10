@@ -15,7 +15,7 @@ public interface OrderMapper {
 
     List<Order> selectAll();
 
-    boolean updateByPrimaryKey(Order record);
+    boolean updateOpByPrimaryKey(String order_id,String op_id);
 
     List<Order> selectByUserId(String user_id);
 

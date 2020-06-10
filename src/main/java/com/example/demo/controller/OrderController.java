@@ -116,18 +116,6 @@ public class OrderController
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
 
-    @RequestMapping(value ="/update")
-    public MyJsonResult updateOrder(@RequestBody Order order)
-    {
-        //更新那些东西还没确定啊 先不写的
-        if(orderService.updateByPrimaryKey(order))
-        {
-            return MyJsonResult.buildData("ok");
-        }
-        return MyJsonResult.errorMsg("update order error");
-    }
-
-
     @RequestMapping(value = "/all")
     public MyJsonResult selectAllOrder()
     {

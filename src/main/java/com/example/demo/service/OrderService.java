@@ -30,9 +30,9 @@ public class OrderService {
     {
         return orderMapper.deleteByPrimaryKey(order_id);
     }
-    public boolean updateByPrimaryKey(Order order)
+    public boolean updateOpByPrimaryKey(String order_id,String op_id)
     {
-        return orderMapper.updateByPrimaryKey(order);
+        return orderMapper.updateOpByPrimaryKey(order_id,op_id);
     }
     public List<Order> selectAll()
     {

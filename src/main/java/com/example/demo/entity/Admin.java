@@ -1,40 +1,49 @@
 package com.example.demo.entity;
 
 public class Admin {
-    private String id;
-    private String pwd;
-    private String phone;
-    private Integer role;
+    private String admin_id;
+    private String admin_name;
+    private String admin_pwd;
+    private String admin_phone;
+    private Integer admin_role;
 
-    public String getId() {
-        return id;
+    public String getAdmin_id() {
+        return admin_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAdmin_id(String admin_id) {
+        this.admin_id = admin_id;
     }
 
-    public String getPwd() {
-        return pwd;
+    public String getAdmin_name() {
+        return admin_name;
     }
 
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
+    public void setAdmin_name(String admin_name) {
+        this.admin_name = admin_name;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getAdmin_pwd() {
+        return admin_pwd;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setAdmin_pwd(String admin_pwd) {
+        this.admin_pwd = admin_pwd;
     }
 
-    public Integer getRole() {
-        return role;
+    public String getAdmin_phone() {
+        return admin_phone;
     }
 
-    public void setRole(Integer role) {
-        this.role = role;
+    public void setAdmin_phone(String admin_phone) {
+        this.admin_phone = admin_phone;
+    }
+
+    public Integer getAdmin_role() {
+        return admin_role;
+    }
+
+    public void setAdmin_role(Integer admin_role) {
+        this.admin_role = admin_role;
     }
 }

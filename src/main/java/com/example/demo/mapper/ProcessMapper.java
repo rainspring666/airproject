@@ -11,4 +11,5 @@ public interface ProcessMapper {
     Process get_one_info(String process_id);
     Process get_one_info2(String process_id);
     boolean update_info(Process process);
+    boolean add_process(Process process);
 }

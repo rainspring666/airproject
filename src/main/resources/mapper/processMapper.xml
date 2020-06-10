@@ -34,6 +34,9 @@
         express_name = #{express_name}
         where process_id = #{process_id}
     </update>
-
+    <insert id="add_process" parameterType="com.example.demo.entity.Process">
+        insert into process (process_id, user_id, order_id)
+        values (#{process_id}, #{user_id}, #{order_id})
+    </insert>
 
 </mapper>
