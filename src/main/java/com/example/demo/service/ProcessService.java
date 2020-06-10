@@ -24,4 +24,7 @@ public class ProcessService {
     public List<Process> get_my_process(String id){
         return processMapper.get_my_process(id);
     }
+    public boolean add_process(Process process){
+        return processMapper.add_process(process);
+    }
 }

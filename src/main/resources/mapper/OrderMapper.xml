@@ -22,24 +22,9 @@
       #{order_cost}, #{order_pollution}, #{order_moremoney}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Order">
+  <update id="updateOpByPrimaryKey">
     update userorder
-    set user_id = #{user_id},
-      op_id = #{op_id},
-      order_state = #{order_state},
-      order_createtime = #{order_createtime},
-      order_time = #{order_time},
-      order_class = #{order_class},
-      order_modelf = #{order_modelf},
-      order_scope = #{order_scope},
-      order_descripe = #{order_descripe},
-      order_address = #{order_address},
-      order_contact = #{order_contact},
-      order_phone = #{order_phone},
-      order_others = #{order_others},
-      order_cost = #{order_cost},
-      order_pollution = #{order_pollution},
-      order_moremoney = #{order_moremoney}
+    set  op_id = #{op_id}
     where order_id = #{order_id}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">

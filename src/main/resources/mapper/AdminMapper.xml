@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.AdminMapper">
+
+    <select id="findAdminById" resultType="com.example.demo.entity.Admin">
+        select * from admin where admin_id = #{admin_id}
+    </select>
+    <select id="doLoginAdmin" resultType="com.example.demo.entity.Admin">
+        select  * from admin where admin_phone = #{admin_phone} and admin_pwd =#{admin_pwd}
+    </select>
+    <select id="findAdminByPhone" resultType="com.example.demo.entity.Admin">
+        select * from admin where admin_phone = #{admin_phone}
+    </select>
+    <insert id="addAdmin">
+		insert into admin(admin_id,admin_name,admin_pwd,admin_phone,admin_role)
+		values(#{admin_id},#{admin_name},#{admin_pwd},#{admin_phone},#{admin_role})
+    </insert>
+</mapper>
