@@ -5,7 +5,9 @@ package com.example.demo.tools;
  * @date 2020/6/7
  */
 public enum OrderStateEnum {
-    PENDING("未处理", 0), PROCESSING("处理中", 1), FINISH("已完成", 2);
+    PENDING("未处理", 0), PROCESSING("处理中", 1), FINISH("已完成", 2),
+    WORKING("工作中",10),KONGXIAN("空闲",11),XIUJIA("休假",12);
+    //操作员状态
 
     private String name;
     private int index;

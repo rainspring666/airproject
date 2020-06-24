@@ -7,7 +7,7 @@ public class Order {
 
     private String op_id;
 
-    private Integer order_state;
+    private String order_state;
 
     private String order_createtime;
 
@@ -59,11 +59,11 @@ public class Order {
         this.op_id = op_id;
     }
 
-    public Integer getOrder_state() {
+    public String getOrder_state() {
         return order_state;
     }
 
-    public void setOrder_state(Integer order_state) {
+    public void setOrder_state(String order_state) {
         this.order_state = order_state;
     }
 

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+
+<body>
+
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 15px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <div carousel-item>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 1200px;padding-top: 15px;">
+                                    <div class="layui-row layui-col-space10">
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单ID:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_id}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">用户姓名:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.user_id}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">操作员姓名:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.op_id}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单状态:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_state}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">创建时间:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_createtime}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">预约时间:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_time}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">订单类别:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_class}"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">户型/车座位:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_scope}">平米</div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">户/车型描述</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_descripe}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">联系人:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_contact}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">联系地址:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_address}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">户型/车型图:</label>
+                                                    <div id="layer-photos-demo" class="layer-photos-demo" style="padding: 10px;">
+                                                        <img th:src="@{${order.order_modelf}}"}
+                                                             width="100px" height="50px" style="margin: 3px; border: black 2px;"/>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">联系电话:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_phone}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">其他要求:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_others}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">特殊污染源:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_pollution}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">检测报告:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_moremoney}">null</div>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">预估费用:</label>
+                                                <div class="layui-input-block">
+                                                    <div class="layui-form-mid layui-word-aux">
+                                                        <span style="font-size: 18px;color: #333;" th:text="${order.order_cost}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 460px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">操作员分配:</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input" id="demo2" lay-verify="required" lay-reqtext="请分配操作员">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">点位图上传:</label>
+                                        <div class="layui-input-inline">
+                                        <div id="zyupload" class="zyupload"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2">
+                                                &emsp;确认&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
+                                        分配成功
+                                    </div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 20px;">请关闭当前页面</div>
+                                </div>
+                                <div style="text-align: center;margin-top: 50px;">
+                                    <button class="layui-btn next">查看详情</button>
+                                    <button class="layui-btn layui-btn-primary">撤销操作</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
+                        <h3>说明</h3><br>
+<!--                        <h4>入款到保险箱</h4>-->
+                        <p>核验预约信息：请审查预约信息的完整性和有效性，如有误，请联系处理。</p>
+                        <p>预约处理：请分配预约信息的操作员，同时上传点位分布图。</p>
+<!--                        <br><h4>入款到现金</h4>-->
+<!--                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script th:src="@{/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        // 初始化插件
+        $("#zyupload").zyUpload({
+            width: "450px",                 // 宽度
+            height: "250px",                 // 宽度
+            itemWidth: "100px",                 // 文件项的宽度
+            itemHeight: "70px",                 // 文件项的高度
+            url: "api/upload",  // 上传文件的路径
+            fileType: ["jpg", "png"],// 上传文件的类型
+            fileSize: 51200000,                // 上传文件的大小
+            multiple: true,                    // 是否可以多个文件上传
+            dragDrop: true,                    // 是否可以拖动上传文件
+            tailor: true,                    // 是否可以裁剪图片
+            del: true,                    // 是否可以删除文件
+            finishDel: false,  				  // 是否在上传文件完成后删除预览
+            /* 外部获得的回调接口 */
+            onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+                console.info("当前选择了以下文件：");
+                console.info(selectFiles);
+            },
+            onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+                console.info("当前删除了此文件：");
+                console.info(file.name);
+            },
+            onSuccess: function (file, response) {          // 文件上传成功的回调方法
+                console.info("此文件上传成功：");
+                console.info(file.name);
+                console.info("此文件上传到服务器地址：");
+                console.info(response);
+                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
+            },
+            onFailure: function (file, response) {          // 文件上传失败的回调方法
+                console.info("此文件上传失败：");
+                console.info(file.name);
+            },
+            onComplete: function (response) {           	  // 上传完成的回调方法
+                console.info("文件上传完成");
+                console.info(response);
+            }
+        });
+
+    });
+</script>
+<script>
+    layui.use(['form', 'step','tableSelect','layer'], function () {
+        var $ = layui.$,
+            form = layui.form,
+            step = layui.step,
+            tableSelect = layui.tableSelect,
+            layer = layui.layer,
+            chooseOpID = 0;
+
+
+        layer.photos({
+            photos: '#layer-photos-demo'
+            , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+        });
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        tableSelect.render({
+            elem: '#demo2',
+            checkedKey: 'id',
+            table: {
+                url: '/api/bg/admin/getalloperatorinfo',
+                cols: [
+                    [
+                        { type: 'radio' },
+                        { field: 'op_id', title: '工号' },
+                        { field: 'op_name', title: '姓名' },
+                        { field: 'op_phone', title: '手机号' },
+                        { field: 'op_score', title: '状态' }
+                    ]
+                ]
+            },
+            done: function (elem, data) {
+                var NEWJSON = []
+                layui.each(data.data, function (index, item) {
+                    NEWJSON.push(item.op_name)
+                    chooseOpID = item.op_id//选中的操作员
+                })
+                elem.val(NEWJSON.join(","))
+            }
+        });
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            stepWidth: '1200px',
+            height: '500px',
+            stepItems: [{
+                title: '核验预约信息'
+            }, {
+                title: '预约处理'
+            }, {
+                title: '完成'
+            }]
+        });
+
+
+        form.on('submit(formStep)', function (data) {
+            step.next('#stepForm');
+            return false;
+        });
+
+        form.on('submit(formStep2)', function (data) {
+            //后台更新数据
+
+            step.next('#stepForm');
+            return false;
+        });
+
+        $('.pre').click(function () {
+            step.pre('#stepForm');
+        });
+
+        $('.next').click(function () {
+            step.next('#stepForm');
+        });
+    })
+</script>
+</body>
+</html>

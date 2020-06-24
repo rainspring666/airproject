@@ -29,4 +29,8 @@ public class OperatorService {
     public List<Operator> all_op_info(){
         return operatorMapper.all_op_info();
     }
+
+    public Operator selectByOpID(String op_id){
+        return operatorMapper.selectByOpID(op_id);
+    }
 }

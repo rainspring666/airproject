@@ -14,4 +14,6 @@ public interface OperatorMapper {
     boolean bg_add(Operator operator);
     List<Order> wx_show_orders(String op_id);
     List<Operator> all_op_info();
+
+    Operator selectByOpID(String op_id);
 }
