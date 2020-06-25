@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+
+<body>
+
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 15px;">
+                    <div carousel-item>
+                    <form class="layui-form" style="margin: 0 auto;max-width: 1200px;padding-top: 15px;">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">订单ID:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_id}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">用户姓名:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.user_id}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">操作员姓名:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.op_id}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">订单状态:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_state}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">创建时间:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_createtime}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">预约时间:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_time}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">订单类别:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_class}"></div>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">户型/车座位:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_scope}">平米</div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">户/车型描述</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_descripe}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">联系人:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_contact}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">联系地址:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_address}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">户型/车型图:</label>
+                                    <div id="layer-photos-demo" class="layer-photos-demo" style="padding: 10px;">
+                                        <img th:src="@{${order.order_modelf}}"}
+                                             width="100px" height="50px" style="margin: 3px; border: black 2px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md4">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">联系电话:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_phone}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">其他要求:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_others}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">特殊污染源:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_pollution}"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">检测报告:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux" th:text="${order.order_moremoney}">null</div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">预估费用:</label>
+                                    <div class="layui-input-block">
+                                        <div class="layui-form-mid layui-word-aux">
+                                            <span style="font-size: 18px;color: #333;" th:text="${order.order_cost}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

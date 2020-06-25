@@ -45,21 +45,6 @@ public class AdminController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    @RequestMapping("/oldindex.html")
-    public String login(){
-        logger.info("admin");
-        return "admin";
-    }
-    @RequestMapping("/order/distribute.html")
-    public String distribute(){
-        logger.info("admin");
-        return "distribute";
-    }
-    @RequestMapping("/order/detail.html")
-    public String detail(){
-        logger.info("admin");
-        return "detail";
-    }
 
     @GetMapping(value = "/getallorderinfo")
     @ResponseBody
@@ -69,7 +54,7 @@ public class AdminController {
         PageHelper.startPage(page, limit);
         List<Order> orders = orderService.selectAll();
 
-        /*组装响应数据  start  便于前端显示*/
+        /*组装响应数据 便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();
         List<User> users = userService.selectAllUserInfo();
 
@@ -111,7 +96,7 @@ public class AdminController {
             map.put("msg","操作成功");
             return map;
         }
-        map.put("msg","操作shibai");
+        map.put("msg","操作失败");
         return map;
     }
     @GetMapping(value = "/getalloperatorinfo")

@@ -278,12 +278,12 @@
                 ]
             },
             done: function (elem, data) {
-                var NEWJSON = []
+                var NEWJSON = [];
                 layui.each(data.data, function (index, item) {
-                    NEWJSON.push(item.op_name)
-                    chooseOpID = item.op_id//选中的操作员
-                })
-                elem.val(NEWJSON.join(","))
+                    NEWJSON.push(item.op_name);
+                    chooseOpID = item.op_id;//选中的操作员
+                });
+                elem.val(NEWJSON.join(","));
             }
         });
 

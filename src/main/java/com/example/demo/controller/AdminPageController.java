@@ -1,18 +1,18 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -160,8 +160,20 @@ public class AdminPageController {
         order.setOp_id(operatorService.selectByOpID(order.getOp_id()).getOp_name());
         order.setOrder_class(OrderClassEnum.getName(order.getOrder_class()));
         order.setOrder_state(OrderStateEnum.getName(Integer.parseInt(order.getOrder_state())));
+        logger.info(order.toString());
         model.addAttribute("order",order);
-        return "page/table/dis_process.html";
+        return "page/table/dis_process";
+    }
+
+    @GetMapping ("/page/table/order_detail")
+    public String order_detail(@RequestParam("order") String strOrder, Model model){
+        logger.info("/page/table/order_detail.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Order order = jsonOrder.toJavaObject(Order.class);
+        logger.info(order.toString());
+        model.addAttribute("order",order);
+        return "page/table/order_detail";
     }
 
 

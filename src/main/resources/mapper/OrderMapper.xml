@@ -22,9 +22,10 @@
       #{order_cost}, #{order_pollution}, #{order_moremoney}
       )
   </insert>
+<!--  派单员更新订单表-->
   <update id="updateOpByPrimaryKey">
     update userorder
-    set  op_id = #{op_id}
+    set  op_id = #{op_id}, order_state = 1;
     where order_id = #{order_id}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
