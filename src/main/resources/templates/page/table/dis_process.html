@@ -20,7 +20,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">订单ID:</label>
                                                 <div class="layui-input-block">
-                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_id}"></div>
+                                                    <div class="layui-form-mid layui-word-aux" id="orderid" th:text="${order.order_id}"></div>
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
@@ -249,7 +249,9 @@
             step = layui.step,
             tableSelect = layui.tableSelect,
             layer = layui.layer,
-            chooseOpID = 0;
+            chooseOpID = 0,
+            chooseOrderID = document.getElementById("orderid").textContent,
+            dwpicture = "点位图";//还有点位图上传的接口没写
 
 
         layer.photos({
@@ -310,6 +312,25 @@
 
         form.on('submit(formStep2)', function (data) {
             //后台更新数据
+            //异步传输
+            $.ajax({
+                type: "post",
+                url:"/api/distribute/distribute_order",
+                data:{
+                    "chooseOpID": chooseOpID,
+                    "chooseOrderID": chooseOrderID,
+                    //图片另外写
+                },
+                dataType:"json",
+                success:function (data) {
+                    if(data.data=="ok"){
+                        layer.msg("ok");
+                    } else {
+                        layer.msg("失败");
+                    }
+
+                }
+            });
 
             step.next('#stepForm');
             return false;
@@ -320,8 +341,11 @@
         });
 
         $('.next').click(function () {
-            step.next('#stepForm');
+            // step.next('#stepForm');
+            //查看详情
+
         });
+
     })
 </script>
 </body>

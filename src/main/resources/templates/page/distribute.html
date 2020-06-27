@@ -129,6 +129,9 @@
                     area: [openWH[0] + 'px', openWH[1] + 'px'],
                     offset: [openWH[2] + 'px', openWH[3] + 'px'],
                     content: content,
+                    end:function(){
+                        location.reload();//弹出层结束后，刷新主页面
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -184,7 +187,7 @@
                     shade: 0.2,
                     maxmin:false,
                     shadeClose: true,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    area: ['1200px', '470px'],
                     offset: [openWH[2] + 'px', openWH[3] + 'px'],
                     content: content,
                     anim: 2,
