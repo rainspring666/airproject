@@ -23,5 +23,12 @@
         set user_name=#{name},user_gender=#{gender}
         where user_id=#{id}
     </update>
+    <select id="selectAllUserInfo" resultType="com.example.demo.entity.User">
+        select * from user
+    </select>
+
+    <select id="selectByUserID" resultType="com.example.demo.entity.User">
+        select * from user where user_id = #{userId}
+    </select>
 
 </mapper>

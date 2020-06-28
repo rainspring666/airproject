@@ -23,6 +23,7 @@ import sun.util.resources.ms.CalendarData_ms_MY;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -269,10 +270,17 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error load data");
 
     }
-    //开始监测 记录开始时间 更新状态
+
+    /**
+     * 开始监测 记录开始时间 更新状态
+     *
+     * @param process_id 流程ID
+     * @param pro_counttime 倒计时时长 单位为s
+     * @return MyJsonResult
+     */
     @PostMapping("/start_detection")
     @ResponseBody
-    public MyJsonResult start_1(HttpServletRequest request,@RequestParam("process_id") String process_id){
+    public MyJsonResult start_1(HttpServletRequest request,@RequestParam("process_id")String process_id,@RequestParam("pro_counttime")int pro_counttime){
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
@@ -282,13 +290,39 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         process.setPro_starttime(dateString);
         process.setPro_state("1");
+        // 存储倒计时长
+        process.setPro_counttime(pro_counttime);
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
             return MyJsonResult.errorMsg("error");
 
     }
-
+    @PostMapping("/get_counttime")
+    @ResponseBody
+    public MyJsonResult getCountTime(HttpServletRequest request,@RequestParam("process_id")String process_id){
+        Process process = processService.get_one_info(process_id);
+        if(process == null){
+            return MyJsonResult.errorMsg("error--");
+        } else{
+            try {
+                // 计算倒计时
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String pro_starttime = process.getPro_starttime();
+                Date date = formatter.parse(pro_starttime);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                cal.add(Calendar.SECOND, process.getPro_counttime());
+                // 加上倒计时后的时间(开始时间+倒计时时间）
+                date = cal.getTime();
+                String countTime = formatter.format(date);
+                return MyJsonResult.buildData(countTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return MyJsonResult.errorMsg("error--");
+            }
+        }
+    }
 
     //结束监测 记录结束时间
     @PostMapping("/end_detection")
@@ -361,7 +395,8 @@ public class OperatorController {
         String path = null;
         try {
             request.setCharacterEncoding("UTF-8");
-            String op_id = request.getSession().getAttribute("userID").toString();
+            Operator operator = (Operator)request.getSession().getAttribute("operator");
+            String op_id = operator.getOp_id();
             if (!file.isEmpty()) {
                 String fileName = file.getOriginalFilename();
 

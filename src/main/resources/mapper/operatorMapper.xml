@@ -28,5 +28,10 @@
         select * from operator
 
     </select>
+    <select id="selectByOpID" resultType="com.example.demo.entity.Operator">
+        select * from operator
+        where op_id = #{op_id}
+
+    </select>
 
 </mapper>

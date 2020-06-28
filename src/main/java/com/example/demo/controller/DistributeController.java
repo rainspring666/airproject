@@ -58,19 +58,22 @@ public class DistributeController {
     //给订单分配操作员--分发
     @PostMapping("/distribute_order")
     @ResponseBody
-    public MyJsonResult distributeOrder(String order_id,String user_id,String op_id){
+    public MyJsonResult distributeOrder(@RequestParam("chooseOrderID") String order_id,
+                                        @RequestParam("chooseOpID") String op_id){
         // 创建process_id
         Process process = new Process();
         String process_id = tools.createOrderId();
         process.setProcess_id(process_id);
         // process表设置user_id和order_id
         process.setOrder_id(order_id);
+        String user_id = orderService.selectByPrimaryKey(order_id).getUser_id();
         process.setUser_id(user_id);
 
         // 更新数据库
         boolean isUpdateOp = orderService.updateOpByPrimaryKey(order_id, op_id);
         boolean isAddProcess = processService.add_process(process);
 
+        // return MyJsonResult.buildData("ok");
         if(isUpdateOp && isAddProcess){
             return MyJsonResult.buildData("ok");
         } else{

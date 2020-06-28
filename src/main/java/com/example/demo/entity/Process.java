@@ -17,6 +17,7 @@ public class Process {
     private String ddata_id;
     private String express_id;
     private String express_name;
+    private int pro_counttime;
 
     public String getExpress_id() {
         return express_id;
@@ -145,4 +146,36 @@ public class Process {
     public void setDdata_id(String ddata_id) {
         this.ddata_id = ddata_id;
     }
+
+    public int getPro_counttime() {
+        return pro_counttime;
+    }
+
+    public void setPro_counttime(int pro_counttime) {
+        this.pro_counttime = pro_counttime;
+    }
+
+    @Override
+    public String toString() {
+        return "Process{" +
+                "process_id='" + process_id + '\'' +
+                ", user_id='" + user_id + '\'' +
+                ", order_id='" + order_id + '\'' +
+                ", pro_generator='" + pro_generator + '\'' +
+                ", pro_sampler='" + pro_sampler + '\'' +
+                ", pro_report='" + pro_report + '\'' +
+                ", pro_result='" + pro_result + '\'' +
+                ", pro_eq='" + pro_eq + '\'' +
+                ", pro_material='" + pro_material + '\'' +
+                ", pro_starttime='" + pro_starttime + '\'' +
+                ", pro_state='" + pro_state + '\'' +
+                ", pro_endtime='" + pro_endtime + '\'' +
+                ", pro_pictures='" + pro_pictures + '\'' +
+                ", ddata_id='" + ddata_id + '\'' +
+                ", express_id='" + express_id + '\'' +
+                ", express_name='" + express_name + '\'' +
+                ", pro_counttime=" + pro_counttime +
+                '}';
+    }
+
 }

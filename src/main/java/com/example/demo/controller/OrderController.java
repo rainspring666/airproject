@@ -52,7 +52,7 @@ public class OrderController
         String user_id = request.getSession().getAttribute("userid").toString();
         //创建订单id
         order.setOrder_id(tools.createOrderId());
-        order.setOrder_state(0);
+        order.setOrder_state("0");
         order.setUser_id(user_id);
         order.setOp_id("1");//默认操作员-待分配
         order.setOrder_cost((float)100.9); //费用计算方式

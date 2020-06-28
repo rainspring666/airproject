@@ -6,6 +6,8 @@ import com.example.demo.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class UserService {
@@ -43,5 +45,13 @@ public class UserService {
 
     public boolean update_info(String id,String name,int gender){
         return userMapper.update_info(id,name,gender);
+    }
+
+    public List<User> selectAllUserInfo(){
+        return userMapper.selectAllUserInfo();
+    }
+
+    public User selectByUserID(String userId){
+        return userMapper.selectByUserID(userId);
     }
 }

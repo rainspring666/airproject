@@ -19,4 +19,6 @@ public interface OperatorMapper {
 
     List<Operator> all_op_info();
 
+    Operator selectByOpID(String op_id);
+
 }
