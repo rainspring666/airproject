@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DataMapper {
-    public boolean add_data(Data data);
+    boolean add_data(Data data);
 }

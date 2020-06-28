@@ -19,7 +19,7 @@
         eq_type=#{eq_type},
         eq_inner_num=#{eq_inner_num},
         eq_create_time=#{eq_create_time},
-        eq_add_time=#{eq_inner_num},
+        eq_add_time=#{eq_add_time},
         eq_state=#{eq_state},
         eq_other=#{eq_other}
         where eq_id=#{eq_id}

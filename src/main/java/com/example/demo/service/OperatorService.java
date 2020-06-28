@@ -15,13 +15,16 @@ public class OperatorService {
     public Operator wx_login_operator(String phone,String pwd){
         return operatorMapper.wx_login_operator(phone,pwd);
     }
+
     public boolean wx_bind(String id,String openid){
         return operatorMapper.wx_bind(id,openid);
     }
+
     public boolean bg_add(Operator operator)
     {
-        return operatorMapper.bg_add(operator);
+        return operatorMapper.bg_add_operator(operator);
     }
+
     public List<Order> wx_show_orders(String op_id){
         return operatorMapper.wx_show_orders(op_id);
     }

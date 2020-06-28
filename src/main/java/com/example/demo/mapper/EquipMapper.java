@@ -8,9 +8,14 @@ import java.util.List;
 @Repository
 
 public interface EquipMapper {
-    public List<Equipment> get_material_info();
-    public boolean update_material_info(Equipment equipment);
-    public boolean add_material_info(Equipment equipment);
-    public boolean del_material_info(String ep_id);
-    public Equipment get_one_info(String ep_id);
+    List<Equipment> get_equipment_info();
+
+    boolean update_equipment_info(Equipment equipment);
+
+    boolean add_equipment_info(Equipment equipment);
+
+    boolean del_equipment_info(String ep_id);
+
+    Equipment get_one_info(String ep_id);
+
 }

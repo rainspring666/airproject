@@ -24,10 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/operator")
@@ -114,19 +111,133 @@ public class OperatorController {
     }
 
 
-    //申请物料--没完成啊-不知道怎么写好
+
+    //物料列表返回给前台
+    @GetMapping("/wx_show_material")
+    @ResponseBody
+    public JSONArray wx_show_material(HttpServletRequest request){
+        List<Material> list = materialService.get_material_info();
+        logger.info(JSON.toJSONString(list));
+        return JSONArray.parseArray(JSON.toJSONString(list));
+    }
+
+    //物料列表返回给前台
+    @GetMapping("/wx_show_equipment")
+    @ResponseBody
+    public JSONArray wx_show_equipment(HttpServletRequest request){
+        List<Equipment> list = equipService.get_equipment_info();
+        logger.info(JSON.toJSONString(list));
+        return JSONArray.parseArray(JSON.toJSONString(list));
+    }
+
+    static class MaterialHolder{
+        // 静态内部类
+        public String material_id;
+        public String apply_num;
+    }
+
+    //申请物料--     !是否要加入回滚的机制？
     @PostMapping("/check_material")
     @ResponseBody
-    public MyJsonResult apply_ma(HttpServletRequest request){
-        Material material;
+    public MyJsonResult apply_ma(@RequestBody MaterialHolder[] list, HttpServletRequest request){
+        /*
+        * 前台以json数组的形式传入后台{material_id:id;apply_num:num},{...}
+        * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
+        * 进行物料请求操作
+        * */
+//        for (MaterialHolder h: list) {
+//            System.out.println(h.material_id +" !!"+ h.apply_num);
+//        }
+//        System.out.println("123");
 
+        List<Material> materialList = materialService.get_material_info();
+        Map<String, Material> materialMap = new HashMap<>();
+        for (Material m: materialList) {
+            materialMap.put(m.getMaterial_id(), m);
+        }
+
+        boolean contain = true; String result = "";
+
+        for (MaterialHolder m: list) {
+//            String material_id = null; int apply_num = 0;
+//            for (Map.Entry<String, String> entry: m.entrySet()) {
+//                System.out.println("key:" + entry.getKey() + ",value:" + entry.getValue() + ";");
+//                if(material_id == null)
+//                    material_id = entry.getKey();
+//                else
+//                    apply_num = Integer.parseInt(entry.getValue());
+//            }
+
+            // 是否满足
+            if(materialMap.get(m.material_id).getMa_number() < Integer.parseInt(m.apply_num)){
+                contain = false;
+                result  = result + materialMap.get(m.material_id).getMa_name() +"库存不足，仅剩"
+                        + materialMap.get(m.material_id).getMa_number() + "个/n";
+            }
+        }
+
+        if(!contain){
+            logger.info("物料请求失败"+result);
+            return MyJsonResult.errorMsg("物料请求失败"+result);
+        }else{
+            // 物料操作
+            for (MaterialHolder m: list) {
+                Material material = materialMap.get(m.material_id);
+                material.setMa_number(material.getMa_number() - Integer.parseInt(m.apply_num));
+                materialService.update_material_info(material);
+
+                // 申请表
+
+                logger.info(m.material_id+"物料请求"+m.apply_num);
+            }
+        }
         return MyJsonResult.buildData("ok");
     }
+
+
     //申请仪器---没完成啊-不知道怎么写好
     @PostMapping("/check_equipment")
     @ResponseBody
-    public MyJsonResult apply_ep(HttpServletRequest request){
-        Material material;
+    public MyJsonResult apply_ep(@RequestBody List<String> applyList,HttpServletRequest request){
+        // applyList存储申请设备的id
+        for (String i: applyList) {
+            System.out.println(i);
+        }
+        System.out.println("123");
+
+        Map<String, Equipment> equipmentMap = new HashMap<>();
+
+        List<Equipment> equipmentList = equipService.get_equipment_info();
+        for (Equipment e: equipmentList) {
+            equipmentMap.put(e.getEq_id(), e);
+        }
+
+        boolean contain = true; String result = "";
+
+        for (String i: applyList) {
+            // 查看是否在使用
+            Equipment equipment = equipmentMap.get(i);
+            if(equipment.getEq_state().equals("1") ){
+                contain = false;
+                result = result + equipment.getEq_name()+"被使用";
+            }
+        }
+
+        if(!contain){
+            logger.info("设备请求失败"+result);
+            return MyJsonResult.errorMsg("设备请求失败"+result);
+        }else{
+            // 设备请求
+            for (String e: applyList) {
+                Equipment equipment = equipmentMap.get(e);
+                equipment.setEq_state("1");
+                equipService.update_equipment_info(equipment);
+
+                //申请表
+
+                logger.info("设备请求"+equipment.getEq_name());
+            }
+        }
 
         return MyJsonResult.buildData("ok");
     }

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface AdminMapper {
-    public Admin findAdminById(String admin_id);
-    public Admin doLoginAdmin(String admin_phone,String admin_pwd);
-    public Admin findAdminByPhone(String admin_phone);
-    public Boolean addAdmin(Admin admin);
+    Admin findAdminById(String admin_id);
+
+    Admin doLoginAdmin(String admin_phone,String admin_pwd);
+
+    Admin findAdminByPhone(String admin_phone);
+
+    Boolean addAdmin(Admin admin);
 }

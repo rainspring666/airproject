@@ -12,19 +12,26 @@ public class EquipService {
     @Autowired
     EquipMapper equipMapper;
     public Equipment get_one_info(String eq_id){
+
         return equipMapper.get_one_info(eq_id);
     }
-    public List<Equipment> get_material_info(){
-        return equipMapper.get_material_info();
+
+    public List<Equipment> get_equipment_info(){
+
+        return equipMapper.get_equipment_info();
     }
-    public boolean update_material_info(Equipment equipment){
-        return equipMapper.update_material_info(equipment);
+    public boolean update_equipment_info(Equipment equipment){
+
+        return equipMapper.update_equipment_info(equipment);
     }
 
-    public boolean add_material_info(Equipment equipment){
-        return equipMapper.add_material_info(equipment);
+    public boolean add_equipment_info(Equipment equipment){
+
+        return equipMapper.add_equipment_info(equipment);
     }
-    public boolean del_material_info(String eq_id){
-        return equipMapper.del_material_info(eq_id);
+
+    public boolean del_equipment_info(String eq_id){
+
+        return equipMapper.del_equipment_info(eq_id);
     }
 }
