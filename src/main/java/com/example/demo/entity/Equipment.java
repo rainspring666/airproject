@@ -4,10 +4,10 @@ public class Equipment {
     private String eq_id;
     private String eq_name;
     private String eq_type;
-    private String eq_inner_num;
+    private int eq_inner_num;
     private String eq_create_time;
     private String eq_add_time;
-    private String eq_state;
+    private int eq_state;
     private String eq_other;
 
     public String getEq_id() {
@@ -34,13 +34,7 @@ public class Equipment {
         this.eq_type = eq_type;
     }
 
-    public String getEq_inner_num() {
-        return eq_inner_num;
-    }
 
-    public void setEq_inner_num(String eq_inner_num) {
-        this.eq_inner_num = eq_inner_num;
-    }
 
     public String getEq_createtime() {
         return eq_create_time;
@@ -58,11 +52,35 @@ public class Equipment {
         this.eq_add_time = eq_addtime;
     }
 
-    public String getEq_state() {
+    public int getEq_inner_num() {
+        return eq_inner_num;
+    }
+
+    public void setEq_inner_num(int eq_inner_num) {
+        this.eq_inner_num = eq_inner_num;
+    }
+
+    public String getEq_create_time() {
+        return eq_create_time;
+    }
+
+    public void setEq_create_time(String eq_create_time) {
+        this.eq_create_time = eq_create_time;
+    }
+
+    public String getEq_add_time() {
+        return eq_add_time;
+    }
+
+    public void setEq_add_time(String eq_add_time) {
+        this.eq_add_time = eq_add_time;
+    }
+
+    public int getEq_state() {
         return eq_state;
     }
 
-    public void setEq_state(String eq_state) {
+    public void setEq_state(int eq_state) {
         this.eq_state = eq_state;
     }
 

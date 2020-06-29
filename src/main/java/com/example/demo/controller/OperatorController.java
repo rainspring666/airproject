@@ -118,8 +118,18 @@ public class OperatorController {
     @ResponseBody
     public JSONArray wx_show_material(HttpServletRequest request){
         List<Material> list = materialService.get_material_info();
-        logger.info(JSON.toJSONString(list));
-        return JSONArray.parseArray(JSON.toJSONString(list));
+        List<ApplyHolder> applyHolders = new ArrayList<>();
+        for (Material i: list) {
+            if(i.getMa_number() >0 ){
+                ApplyHolder applyHolder = new ApplyHolder();
+                applyHolder.name = i.getMa_name();
+                applyHolder.num = "0";
+                applyHolder.stock = Integer.toString(i.getMa_number());
+                applyHolders.add(applyHolder);
+            }
+        }
+        logger.info(JSON.toJSONString(applyHolders));
+        return JSONArray.parseArray(JSON.toJSONString(applyHolders));
     }
 
     //物料列表返回给前台
@@ -127,53 +137,68 @@ public class OperatorController {
     @ResponseBody
     public JSONArray wx_show_equipment(HttpServletRequest request){
         List<Equipment> list = equipService.get_equipment_info();
-        logger.info(JSON.toJSONString(list));
-        return JSONArray.parseArray(JSON.toJSONString(list));
+
+        Map<String, Integer> map = new HashMap<>();
+
+        List<ApplyHolder> applyHolders = new ArrayList<>();
+        for (Equipment i: list) {
+            if(i.getEq_inner_num() >0 && i.getEq_state() == 0){
+                // 现有数量大于0且未被禁用
+                if(map.containsKey(i.getEq_type())){
+                    int temp = map.get(i.getEq_type());
+                    temp += i.getEq_inner_num();
+                    map.put(i.getEq_type(), temp);
+                }else{
+                    map.put(i.getEq_type(), i.getEq_inner_num());
+                }
+            }
+        }
+
+        // 构造数组
+        for(Map.Entry<String, Integer> entry:map.entrySet()){
+            ApplyHolder applyHolder = new ApplyHolder();
+            applyHolder.name = entry.getKey();
+            applyHolder.num = "0";
+            applyHolder.stock = Integer.toString(entry.getValue());
+            applyHolders.add(applyHolder);
+        }
+
+        logger.info(JSON.toJSONString(applyHolders));
+        return JSONArray.parseArray(JSON.toJSONString(applyHolders));
     }
 
-    static class MaterialHolder{
+    static class ApplyHolder{
         // 静态内部类
-        public String material_id;
-        public String apply_num;
+        public String name;
+        public String num;
+        public String stock;
     }
 
     //申请物料--     !是否要加入回滚的机制？
     @PostMapping("/check_material")
     @ResponseBody
-    public MyJsonResult apply_ma(@RequestBody MaterialHolder[] list, HttpServletRequest request){
+    public MyJsonResult apply_ma(@RequestBody ApplyHolder[] applyList, HttpServletRequest request){
         /*
-        * 前台以json数组的形式传入后台{material_id:id;apply_num:num},{...}
+        * 前台以ApplyHolder数组的形式传入后台
         * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
         * 进行物料请求操作
         * */
-//        for (MaterialHolder h: list) {
-//            System.out.println(h.material_id +" !!"+ h.apply_num);
-//        }
-//        System.out.println("123");
 
         List<Material> materialList = materialService.get_material_info();
         Map<String, Material> materialMap = new HashMap<>();
         for (Material m: materialList) {
-            materialMap.put(m.getMaterial_id(), m);
+            materialMap.put(m.getMa_name(), m);
         }
 
         boolean contain = true; String result = "";
 
-        for (MaterialHolder m: list) {
-//            String material_id = null; int apply_num = 0;
-//            for (Map.Entry<String, String> entry: m.entrySet()) {
-//                System.out.println("key:" + entry.getKey() + ",value:" + entry.getValue() + ";");
-//                if(material_id == null)
-//                    material_id = entry.getKey();
-//                else
-//                    apply_num = Integer.parseInt(entry.getValue());
-//            }
+        for (ApplyHolder m: applyList) {
 
             // 是否满足
-            if(materialMap.get(m.material_id).getMa_number() < Integer.parseInt(m.apply_num)){
+            if(materialMap.get(m.name).getMa_number() < Integer.parseInt(m.num)){
                 contain = false;
-                result  = result + materialMap.get(m.material_id).getMa_name() +"库存不足，仅剩"
-                        + materialMap.get(m.material_id).getMa_number() + "个/n";
+                result  = result + m.name +"库存不足，仅剩"
+                        + materialMap.get(m.name).getMa_number() + "个/n";
             }
         }
 
@@ -182,14 +207,14 @@ public class OperatorController {
             return MyJsonResult.errorMsg("物料请求失败"+result);
         }else{
             // 物料操作
-            for (MaterialHolder m: list) {
-                Material material = materialMap.get(m.material_id);
-                material.setMa_number(material.getMa_number() - Integer.parseInt(m.apply_num));
+            for (ApplyHolder m: applyList) {
+                Material material = materialMap.get(m.name);
+                material.setMa_number(material.getMa_number() - Integer.parseInt(m.num));
                 materialService.update_material_info(material);
 
                 // 申请表
 
-                logger.info(m.material_id+"物料请求"+m.apply_num);
+                logger.info(m.name+"物料请求"+m.num);
             }
         }
         return MyJsonResult.buildData("ok");
@@ -199,28 +224,41 @@ public class OperatorController {
     //申请仪器---没完成啊-不知道怎么写好
     @PostMapping("/check_equipment")
     @ResponseBody
-    public MyJsonResult apply_ep(@RequestBody List<String> applyList,HttpServletRequest request){
-        // applyList存储申请设备的id
-        for (String i: applyList) {
-            System.out.println(i);
-        }
-        System.out.println("123");
+    public MyJsonResult apply_ep(@RequestBody ApplyHolder[] applyList,HttpServletRequest request){
 
-        Map<String, Equipment> equipmentMap = new HashMap<>();
+        Map<String, List<Equipment>> equipmentMap = new HashMap<>();
 
         List<Equipment> equipmentList = equipService.get_equipment_info();
         for (Equipment e: equipmentList) {
-            equipmentMap.put(e.getEq_id(), e);
+            if(e.getEq_state() == 0 && e.getEq_inner_num() >0){
+                // 现有数量大于0且未被禁用
+                if(equipmentMap.containsKey(e.getEq_type())){
+                    List<Equipment> equipmentList1 = equipmentMap.get(e.getEq_type());
+                    equipmentList1.add(e);
+                    equipmentMap.put(e.getEq_type(), equipmentList1);
+                }else{
+                    List<Equipment> equipmentList1 = new ArrayList<>();
+                    equipmentList1.add(e);
+                    equipmentMap.put(e.getEq_type(), equipmentList1);
+                }
+            }
+
         }
 
         boolean contain = true; String result = "";
 
-        for (String i: applyList) {
+        for (ApplyHolder i: applyList) {
             // 查看是否在使用
-            Equipment equipment = equipmentMap.get(i);
-            if(equipment.getEq_state().equals("1") ){
+            List<Equipment> equipmentList1 = equipmentMap.get(i.name);
+            int totalNum = 0;
+            for (Equipment e: equipmentList1) {
+                if(e.getEq_state() == 0 && e.getEq_inner_num() > 0)
+                    totalNum += e.getEq_inner_num();
+            }
+            if(totalNum < Integer.parseInt(i.num)){
+                // 超出请求
                 contain = false;
-                result = result + equipment.getEq_name()+"被使用";
+                result = result + i.name + "库存不足";
             }
         }
 
@@ -229,14 +267,30 @@ public class OperatorController {
             return MyJsonResult.errorMsg("设备请求失败"+result);
         }else{
             // 设备请求
-            for (String e: applyList) {
-                Equipment equipment = equipmentMap.get(e);
-                equipment.setEq_state("1");
-                equipService.update_equipment_info(equipment);
+            for (ApplyHolder i: applyList) {
+                List<Equipment> equipmentList1 = equipmentMap.get(i.name);
+                // 按顺序请求设备
+                int apply_num = Integer.parseInt(i.num);
+                for (Equipment e: equipmentList1) {
+                    if(apply_num == 0)
+                        break;
+                    if(e.getEq_state() != 0 || e.getEq_inner_num() <= 0 )
+                        continue;
+                    if(e.getEq_inner_num() >= apply_num){
+                        e.setEq_inner_num(e.getEq_inner_num() - apply_num);
+                        apply_num = 0;
+                    }else{
+                        e.setEq_inner_num(0);
+                        apply_num = apply_num - e.getEq_inner_num();
+                    }
+                    equipService.update_equipment_info(e);
 
-                //申请表
+                    //申请表
 
-                logger.info("设备请求"+equipment.getEq_name());
+
+                }
+                logger.info("设备请求"+i.name+i.num+"个");
+
             }
         }
 
