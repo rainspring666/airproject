@@ -30,6 +30,19 @@
 <!--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
 <!--                            </div>-->
 <!--                        </div>-->
+<!--                        <div class="layui-inline">-->
+<!--                                    <label class="layui-form-label">状态</label>-->
+<!--                                    <div class="layui-input-block">-->
+<!--                                        <select name="interest" lay-filter="aihao">-->
+<!--                                            <option value="0"></option>-->
+<!--                                            <option value="0">未处理</option>-->
+<!--                                            <option value="1">处理中</option>-->
+<!--                                            <option value="1">已完成</option>-->
+
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                        </div>-->
+
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
@@ -83,7 +96,7 @@
                     {field: 'order_state', title: '状态', width: 80, sort: true, align: "center"},
                     {field: 'op_id', title: '操作员', width: 120, align: "center"},
                     {field: 'order_time', title: '预约日期', width: 170, sort: true, align: "center"},
-                    {title: '操作', width: 180,align: "center", toolbar: '#currentTableBar'}
+                    {title: '操作', width: 180,align: "center", toolbar: '#currentTableBar', fixed: 'right'}
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],

@@ -152,6 +152,32 @@ public class AdminPageController {
         logger.info("/page/distribute.html");
         return "page/distribute.html";
     }
+    @RequestMapping("/page/home_page.html")
+    public String homePage(){
+        logger.info("/page/home_page.html");
+        return "page/home_page.html";
+    }
+    @RequestMapping("/page/info_statistical.html")
+    public String info_statistical(){
+        logger.info("/page/info_statistical.html");
+        return "page/info_statistical.html";
+    }
+    @RequestMapping("/page/order_info.html")
+    public String order_info(){
+        logger.info("/page/order_info.html");
+        return "page/order_info.html";
+    }
+    @RequestMapping("/page/process_info.html")
+    public String process_info(){
+        logger.info("/page/process_info.html");
+        return "page/process_info.html";
+    }
+    @RequestMapping("/page/user_info.html")
+    public String user_info(){
+        logger.info("/page/user_info.html");
+        return "page/user_info.html";
+    }
+
     @GetMapping("/page/table/dis_process")
     public String dis_process(@RequestParam("orderID") String order_id , Model model){
         logger.info("/page/table/dis_process.html");
