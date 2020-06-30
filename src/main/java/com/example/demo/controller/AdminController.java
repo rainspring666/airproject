@@ -119,4 +119,10 @@ public class AdminController {
 
     }
 
+    @GetMapping(value = "/getallmaterialinfo")
+    @ResponseBody
+    public Map<String,Object> selectAllMaterial(){
+        return null;
+
+    }
 }
