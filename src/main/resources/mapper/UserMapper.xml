@@ -12,7 +12,7 @@
         select * from user where user_phone = #{phone}
     </select>
     <select id="getuserbyopenid" resultType="com.example.demo.entity.User">
-        select * from user where wx_openid = #{openid}
+        select * from user where open_id = #{openid}
     </select>
     <insert id="save_user">
 		insert into user(user_id, user_pwd,user_phone,user_name,user_gender,open_id)

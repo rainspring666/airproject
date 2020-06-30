@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 01/07/2020 00:36:58
+ Date: 30/06/2020 23:35:44
 */
 
 SET NAMES utf8mb4;
@@ -33,6 +33,7 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
+INSERT INTO `admin` VALUES ('1234', 'user', '12345678911', '12345678911', 1);
 
 -- ----------------------------
 -- Table structure for detectiondata
@@ -62,7 +63,26 @@ CREATE TABLE `detectiondata`  (
 -- ----------------------------
 -- Records of detectiondata
 -- ----------------------------
-INSERT INTO `detectiondata` VALUES ('b2f0c416459a4f8cb7dd4164807e0c43', '2020-07-01 00:21:13', '148f31c151a4493699b9bc14b4193863', 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11);
+INSERT INTO `detectiondata` VALUES ('113cea15d1ca4eeb8cd9cde1612589c4', '2020-06-30 18:45:35', 'bab7fce965614992a05d7d6bcd8c543b', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `detectiondata` VALUES ('13b3f06e165a44ef9af65c0473e1caa3', '2020-06-30 17:45:19', '3ce17bc4af9341309099bcf42c1d5156', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('3388ceeb022346cd921ab5b3a57f15ec', '2020-06-30 21:44:00', '3ce17bc4af9341309099bcf42c1d5156', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('4c89ce36188b4dcebad2271373e17fe2', '2020-06-30 18:20:58', '3ce17bc4af9341309099bcf42c1d5156', 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO `detectiondata` VALUES ('4d56cba841874b73b03201afbdaacdd1', '2020-06-30 21:59:28', 'f9720c8087554bbf898a841aab89e65b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('4fe4b23e3b3947829d7b677b9f84b58b', '2020-06-30 18:45:15', 'bab7fce965614992a05d7d6bcd8c543b', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `detectiondata` VALUES ('69c1570c32674c77ab22671220b1714f', '2020-06-30 21:32:40', '3ce17bc4af9341309099bcf42c1d5156', 12, 12, 11, 111, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11);
+INSERT INTO `detectiondata` VALUES ('7e79793570d14540a0647b4a00cc2c00', '2020-06-30 21:50:26', 'bab7fce965614992a05d7d6bcd8c543b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('8ebf3ecb30734dd0a14a2cd942e891fe', '2020-06-30 22:06:06', 'c2e9365ec85c4195896abcf66ee669a6', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('a8e5f658c5ee4e309f74e2c21e8c535d', '2020-06-30 18:45:43', 'bab7fce965614992a05d7d6bcd8c543b', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+INSERT INTO `detectiondata` VALUES ('b164f1d5ae7449ecb4a014d599c759f0', '2020-06-30 21:37:42', '3ce17bc4af9341309099bcf42c1d5156', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('b69bfccba0084554abc0280780bcfc9c', '2020-06-30 21:49:49', 'bab7fce965614992a05d7d6bcd8c543b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('bb8f1a74a5e847d2a2c5f8a56ff7b32c', '2020-06-30 22:00:01', 'f9720c8087554bbf898a841aab89e65b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('c12e46afd0304f40bb58e59dfbb07ab5', '2020-06-30 17:51:24', '3ce17bc4af9341309099bcf42c1d5156', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('c6639ed63aef418eb3ed092a6a84c6f2', '2020-06-30 22:04:37', '3ce17bc4af9341309099bcf42c1d5156', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('d987ceb2ea0d41fda6a9129e56619e7e', '2020-06-30 17:40:47', '123124124', 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21);
+INSERT INTO `detectiondata` VALUES ('e3d74091454f4dd99500ce2eddf7595a', '2020-06-30 21:46:05', 'bab7fce965614992a05d7d6bcd8c543b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `detectiondata` VALUES ('e5a509dcc4d446c995ccdff9df846694', '2020-06-30 17:59:49', '3ce17bc4af9341309099bcf42c1d5156', 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 31, 13, 13);
+INSERT INTO `detectiondata` VALUES ('f4ddc5d60f524458a924e4ca6c15ec86', '2020-06-30 18:15:16', '3ce17bc4af9341309099bcf42c1d5156', 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11);
+INSERT INTO `detectiondata` VALUES ('fce346077f8c4260a7c04f2ebe6fe443', '2020-06-30 21:50:52', 'f9720c8087554bbf898a841aab89e65b', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for detedata
@@ -102,19 +122,19 @@ CREATE TABLE `equipment`  (
 -- ----------------------------
 -- Records of equipment
 -- ----------------------------
-INSERT INTO `equipment` VALUES ('1', '小米充电宝1', '充电宝', 98, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
-INSERT INTO `equipment` VALUES ('10', '热水壶1', '热水壶', 97, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
+INSERT INTO `equipment` VALUES ('1', '小米充电宝1', '充电宝', 99, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
+INSERT INTO `equipment` VALUES ('10', '热水壶1', '热水壶', 98, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('11', '热水壶2', '热水壶', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('12', '热水壶3', '热水壶', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
-INSERT INTO `equipment` VALUES ('13', '防护套装1', '防护套装', 97, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '手套 防护服 防毒面具');
+INSERT INTO `equipment` VALUES ('13', '防护套装1', '防护套装', 98, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '手套 防护服 防毒面具');
 INSERT INTO `equipment` VALUES ('14', '防护套装2', '防护套装', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '手套 防护服 防毒面具');
 INSERT INTO `equipment` VALUES ('15', '防护套装3', '防护套装', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '手套 防护服 防毒面具');
 INSERT INTO `equipment` VALUES ('2', '小米充电宝2', '充电宝', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('3', '小米充电宝3', '充电宝', 100, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
-INSERT INTO `equipment` VALUES ('4', '反应桶1', '反应桶', 197, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
+INSERT INTO `equipment` VALUES ('4', '反应桶1', '反应桶', 198, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('5', '反应桶2', '反应桶', 200, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('6', '反应桶3', '反应桶', 200, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
-INSERT INTO `equipment` VALUES ('7', '反应器1', '反应器', 297, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
+INSERT INTO `equipment` VALUES ('7', '反应器1', '反应器', 298, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('8', '反应器2', '反应器', 300, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 INSERT INTO `equipment` VALUES ('9', '反应器3', '反应器', 300, '2020-06-05 10:13:54', '2020-06-05 10:14:02', 0, '描述');
 
@@ -133,11 +153,11 @@ CREATE TABLE `material`  (
 -- ----------------------------
 -- Records of material
 -- ----------------------------
-INSERT INTO `material` VALUES ('101', '除醛A', 9997, NULL);
-INSERT INTO `material` VALUES ('201', '除醛B', 9992, NULL);
-INSERT INTO `material` VALUES ('301', '消毒A', 9991, NULL);
-INSERT INTO `material` VALUES ('401', '消毒B', 9994, NULL);
-INSERT INTO `material` VALUES ('501', '汽车治理包', 9992, NULL);
+INSERT INTO `material` VALUES ('101', '除醛A', 9998, NULL);
+INSERT INTO `material` VALUES ('201', '除醛B', 9993, NULL);
+INSERT INTO `material` VALUES ('301', '消毒A', 9992, NULL);
+INSERT INTO `material` VALUES ('401', '消毒B', 9995, NULL);
+INSERT INTO `material` VALUES ('501', '汽车治理包', 9994, NULL);
 
 -- ----------------------------
 -- Table structure for operator
@@ -188,7 +208,10 @@ CREATE TABLE `process`  (
 -- ----------------------------
 -- Records of process
 -- ----------------------------
-INSERT INTO `process` VALUES ('148f31c151a4493699b9bc14b4193863', '015935324723271', '865fb649afc94308aa2cc1fee7012a31', NULL, NULL, NULL, NULL, NULL, NULL, '2020-07-01 00:21:37', 1, NULL, NULL, 'b2f0c416459a4f8cb7dd4164807e0c43', '123456789', '顺丰快递', 7200);
+INSERT INTO `process` VALUES ('3ce17bc4af9341309099bcf42c1d5156', '015895279629461', '45afa032660b46539c5e1f1639d0c762', NULL, NULL, NULL, NULL, NULL, NULL, '2020-06-30 21:38:02', 1, NULL, NULL, 'c6639ed63aef418eb3ed092a6a84c6f2', '157423611', '顺丰快递', 10800);
+INSERT INTO `process` VALUES ('bab7fce965614992a05d7d6bcd8c543b', '015893358205961', '5a5be5c1d0df4960b07327cbb114157f', NULL, NULL, NULL, NULL, NULL, NULL, '2020-06-30 21:46:16', 1, NULL, NULL, '7e79793570d14540a0647b4a00cc2c00', '12356', '顺丰快递', 7200);
+INSERT INTO `process` VALUES ('c2e9365ec85c4195896abcf66ee669a6', '015893358205961', '1509a3a1d11344fc85eac0c37f959908', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '8ebf3ecb30734dd0a14a2cd942e891fe', NULL, NULL, 0);
+INSERT INTO `process` VALUES ('f9720c8087554bbf898a841aab89e65b', '015893358205961', '8a947089a884420eb75bc474c81bd6aa', NULL, NULL, NULL, NULL, NULL, NULL, '2020-06-30 21:59:52', 1, NULL, NULL, 'bb8f1a74a5e847d2a2c5f8a56ff7b32c', NULL, NULL, 7200);
 
 -- ----------------------------
 -- Table structure for standard
@@ -223,8 +246,10 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('015935324723271', '4ad2f3f983039797', '13211111112', '', 1, 'op_Qp4zaFfjAfCZQbeODTk6fqEUc');
-INSERT INTO `user` VALUES ('015935327031551', 'a4aeeae1229b9790', '18327155159', '', 1, 'op_Qp49dqJRed4Qlb5dRW7Qs_wMU');
+INSERT INTO `user` VALUES ('015891924989071', 'ac59075b964b0715', '17786028888', '张三', 1, '213124124');
+INSERT INTO `user` VALUES ('015893358205961', 'e6dd63397f1d335c', '13211111112', '李四', 1, '31235123141242');
+INSERT INTO `user` VALUES ('015895279629461', '0822da7ea481a653', '13911112222', '王五', 1, 'op_Qp49dqJRed4Qlb5dRW7Qs_wMU');
+INSERT INTO `user` VALUES ('015935267540471', '4ad2f3f983039797', '13211111112', '', 1, 'op_Qp4zaFfjAfCZQbeODTk6fqEUc');
 
 -- ----------------------------
 -- Table structure for userorder
@@ -254,6 +279,10 @@ CREATE TABLE `userorder`  (
 -- ----------------------------
 -- Records of userorder
 -- ----------------------------
-INSERT INTO `userorder` VALUES ('865fb649afc94308aa2cc1fee7012a31', '015935324723271', '2', 1, '2020-07-01 00:16:40', '2020-07-01 10:07:00', '1', 'C:/Users/mhh/Desktop/1593533799627tmp_8f2251564e6c5cfbb075fdeeac0bfcf7bf5b81418bf980d6.jpg', 121, '三室两厅', '武汉市洪山区珞狮路112号', '徐俊伟', '13211111112', '测试使用1', 100.9, '甲醛', NULL);
+INSERT INTO `userorder` VALUES ('1509a3a1d11344fc85eac0c37f959908', '015893358205961', '2', 1, '2020-05-13 12:38:33', '2020-05-13 12:38:07', '2', '/Users/pengyuquan/Desktop/1589344713621wx0656326b8fdbe56f.o6zAJs13QSgvIn8ZUcmQh1b2sk1Y.MnGUnONhECM17a3424fbf2e39aa6b7bbd22d5d2a15d9.jpg', 111, '家居装修', '武汉市', '徐俊伟', '13211111111', '其它111', 100.9, '甲醛', NULL);
+INSERT INTO `userorder` VALUES ('45afa032660b46539c5e1f1639d0c762', '015895279629461', '2', 1, '2020-05-15 15:33:52', '2020-05-15 15:32:56', '2', '/Users/pengyuquan/Desktop/1589528032066wx0656326b8fdbe56f.o6zAJs5QFg7Go9_V9BOU0yT_sVOA.JITjaJKjiHfhba470c02f02389f67babdfabd606d248.jpg', 120, '三室二厅', '安徽省安庆市', '笑话', '13911112222', '', 100.9, '甲醛', NULL);
+INSERT INTO `userorder` VALUES ('5a5be5c1d0df4960b07327cbb114157f', '015893358205961', '2', 1, '2020-05-14 15:01:28', '2020-05-14 15:00:05', '2', '/Users/pengyuquan/Desktop/1589439688302wx0656326b8fdbe56f.o6zAJs13QSgvIn8ZUcmQh1b2sk1Y.G9MLxs6bSDc47a3424fbf2e39aa6b7bbd22d5d2a15d9.jpg', 112, '家居装修', '北京市海淀区', '小明啊', '13211111111', '无其它说明', 100.9, '甲醛1', NULL);
+INSERT INTO `userorder` VALUES ('6ef5c5ae8c694975bd1fb9037a400138', '015935267540471', '1', 0, '2020-06-30 23:21:50', '2020-06-30 23:21:07', '2', 'C:/Users/mhh/Desktop/1593530510228wx0656326b8fdbe56f.o6zAJs13QSgvIn8ZUcmQh1b2sk1Y.neQa8Ovgkv7D7a3424fbf2e39aa6b7bbd22d5d2a15d9.jpg', 121, '三室', '武汉市洪山区', '哇哈哈', '13211111112', '测试11', 100.9, '甲醛', NULL);
+INSERT INTO `userorder` VALUES ('8a947089a884420eb75bc474c81bd6aa', '015893358205961', '2', 1, '2020-05-13 12:43:25', '2020-05-13 12:42:49', '2', '/Users/pengyuquan/Desktop/1589345005694wx0656326b8fdbe56f.o6zAJs13QSgvIn8ZUcmQh1b2sk1Y.7i6bwJXOFhXg7a3424fbf2e39aa6b7bbd22d5d2a15d9.jpg', 112, '家居装修', '武汉市洪山区', '徐俊伟12', '13211111111', '其它123', 100.9, '甲醛', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;

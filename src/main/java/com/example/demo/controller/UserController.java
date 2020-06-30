@@ -76,12 +76,14 @@ public class UserController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
+        logger.info(user.toString());
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
         //String open_id = jsonObject.get("openid").toString();
         if(myuser != null)
         {
             //注册sessionid
+            logger.info(myuser.toString());
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
             request.getSession().setAttribute("userid",myuser.getUser_id());//用户名存入该用户的session 中
             request.getSession().setAttribute("myuser",myuser);
@@ -140,7 +142,7 @@ public class UserController {
         param.put("js_code", user.getUser_id());//前台把code通过这个参数临时传过来，后面改成openid
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
         // 发送请求
-        //System.out.println(user.getUser_id());
+        logger.info(user.toString());
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的

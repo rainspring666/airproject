@@ -66,6 +66,7 @@ public class OrderController
             logger.info("add an order："+order.toString());
             return MyJsonResult.buildData("ok");
         }
+        logger.info("add order error");
         return MyJsonResult.errorMsg("add order error");
     }
 

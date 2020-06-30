@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.demo.entity.Process;
 import com.example.demo.entity.*;
 import com.example.demo.service.*;
@@ -118,8 +119,8 @@ public class OperatorController {
             if(i.getMa_number() >0 ){
                 ApplyHolder applyHolder = new ApplyHolder();
                 applyHolder.name = i.getMa_name();
-                applyHolder.num = "0";
-                applyHolder.stock = Integer.toString(i.getMa_number());
+                applyHolder.num = 0;
+                applyHolder.stock = i.getMa_number();
                 applyHolders.add(applyHolder);
             }
         }
@@ -153,8 +154,8 @@ public class OperatorController {
         for(Map.Entry<String, Integer> entry:map.entrySet()){
             ApplyHolder applyHolder = new ApplyHolder();
             applyHolder.name = entry.getKey();
-            applyHolder.num = "0";
-            applyHolder.stock = Integer.toString(entry.getValue());
+            applyHolder.num = 0;
+            applyHolder.stock = entry.getValue();
             applyHolders.add(applyHolder);
         }
 
@@ -165,19 +166,30 @@ public class OperatorController {
     static class ApplyHolder{
         // 静态内部类
         public String name;
-        public String num;
-        public String stock;
+        public int num;
+        public int stock;
+
+        @Override
+        public String toString() {
+            return "ApplyHolder{" +
+                    "name='" + name + '\'' +
+                    ", num='" + num + '\'' +
+                    ", stock='" + stock + '\'' +
+                    '}';
+        }
     }
 
     //申请物料--     !是否要加入回滚的机制？
     @PostMapping("/check_material")
     @ResponseBody
-    public MyJsonResult apply_ma(@RequestBody ApplyHolder[] applyList, HttpServletRequest request){
+    public MyJsonResult apply_ma(@RequestBody JSONObject jsonObject, HttpServletRequest request){
         /*
         * 前台以ApplyHolder数组的形式传入后台
         * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
         * 进行物料请求操作
         * */
+        JSONArray jsonArray = jsonObject.getJSONArray("applyList");
+        List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
 
         List<Material> materialList = materialService.get_material_info();
         Map<String, Material> materialMap = new HashMap<>();
@@ -190,7 +202,7 @@ public class OperatorController {
         for (ApplyHolder m: applyList) {
 
             // 是否满足
-            if(materialMap.get(m.name).getMa_number() < Integer.parseInt(m.num)){
+            if(materialMap.get(m.name).getMa_number() < m.num){
                 contain = false;
                 result  = result + m.name +"库存不足，仅剩"
                         + materialMap.get(m.name).getMa_number() + "个/n";
@@ -204,7 +216,7 @@ public class OperatorController {
             // 物料操作
             for (ApplyHolder m: applyList) {
                 Material material = materialMap.get(m.name);
-                material.setMa_number(material.getMa_number() - Integer.parseInt(m.num));
+                material.setMa_number(material.getMa_number() - m.num);
                 materialService.update_material_info(material);
 
                 // 申请表
@@ -219,8 +231,10 @@ public class OperatorController {
     //申请仪器---没完成啊-不知道怎么写好
     @PostMapping("/check_equipment")
     @ResponseBody
-    public MyJsonResult apply_ep(@RequestBody ApplyHolder[] applyList,HttpServletRequest request){
+    public MyJsonResult apply_ep(@RequestBody JSONObject jsonObject,HttpServletRequest request){
 
+        JSONArray jsonArray = jsonObject.getJSONArray("applyList");
+        List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
         Map<String, List<Equipment>> equipmentMap = new HashMap<>();
 
         List<Equipment> equipmentList = equipService.get_equipment_info();
@@ -250,7 +264,7 @@ public class OperatorController {
                 if(e.getEq_state() == 0 && e.getEq_inner_num() > 0)
                     totalNum += e.getEq_inner_num();
             }
-            if(totalNum < Integer.parseInt(i.num)){
+            if(totalNum < i.num){
                 // 超出请求
                 contain = false;
                 result = result + i.name + "库存不足";
@@ -265,7 +279,7 @@ public class OperatorController {
             for (ApplyHolder i: applyList) {
                 List<Equipment> equipmentList1 = equipmentMap.get(i.name);
                 // 按顺序请求设备
-                int apply_num = Integer.parseInt(i.num);
+                int apply_num =i.num;
                 for (Equipment e: equipmentList1) {
                     if(apply_num == 0)
                         break;
@@ -302,17 +316,16 @@ public class OperatorController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
         data.setDdata_time(dateString);
-        data.setProcess_id("123124124");
 
 
-//        Process process = processService.get_one_info(data.getProcess_id());
-//        if(process == null){
-//            return MyJsonResult.errorMsg("error--");
-//        }
-//        process.setDdata_id(data_id);//补充process的dataid
+        Process process = processService.get_one_info(data.getProcess_id());
+        if(process == null){
+            return MyJsonResult.errorMsg("error--");
+        }
+        process.setDdata_id(data_id);//补充process的dataid
         logger.info(data.toString());
         if(dataService.add_data(data)){
-//            processService.update_info(process);
+            processService.update_info(process);
             return MyJsonResult.buildData("ok");
         }
         else
@@ -359,17 +372,24 @@ public class OperatorController {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String pro_starttime = process.getPro_starttime();
                 Date startDate = formatter.parse(pro_starttime);
+                logger.info("倒计时开始时间"+startDate);
                 // 计算截止时间
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(startDate);
                 cal.add(Calendar.SECOND, process.getPro_counttime());
                 Date endDate = cal.getTime();
+                logger.info("倒计时截至时间"+endDate);
                 // 当前时间
                 Date currentData = new Date();
+                logger.info("倒计时当前时间"+currentData);
                 // 计算倒计时
-                long countSecond = ((endDate.getTime() - currentData.getTime()) / (60 * 1000)) % 60;
-
-                return MyJsonResult.buildData(countSecond);
+                long countSecond = (endDate.getTime() - currentData.getTime())/1000;
+                logger.info("返回倒计时："+countSecond);
+                if (countSecond <= 0){
+                    return MyJsonResult.errorMsg("error--");
+                } else {
+                    return MyJsonResult.buildData(countSecond);
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
                 return MyJsonResult.errorMsg("error--");
