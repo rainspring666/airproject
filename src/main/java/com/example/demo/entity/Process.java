@@ -19,22 +19,6 @@ public class Process {
     private String express_name;
     private int pro_counttime;
 
-    public String getExpress_id() {
-        return express_id;
-    }
-
-    public void setExpress_id(String express_id) {
-        this.express_id = express_id;
-    }
-
-    public String getExpress_name() {
-        return express_name;
-    }
-
-    public void setExpress_name(String express_name) {
-        this.express_name = express_name;
-    }
-
     public String getProcess_id() {
         return process_id;
     }
@@ -147,6 +131,22 @@ public class Process {
         this.ddata_id = ddata_id;
     }
 
+    public String getExpress_id() {
+        return express_id;
+    }
+
+    public void setExpress_id(String express_id) {
+        this.express_id = express_id;
+    }
+
+    public String getExpress_name() {
+        return express_name;
+    }
+
+    public void setExpress_name(String express_name) {
+        this.express_name = express_name;
+    }
+
     public int getPro_counttime() {
         return pro_counttime;
     }
@@ -177,5 +177,4 @@ public class Process {
                 ", pro_counttime=" + pro_counttime +
                 '}';
     }
-
 }

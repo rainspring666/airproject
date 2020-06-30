@@ -17,7 +17,7 @@
     </select>
     <update id="update_info" parameterType="com.example.demo.entity.Process">
         update process
-        set ddata_id = #{data_id},
+        set ddata_id = #{ddata_id},
         user_id = #{user_id},
         order_id = #{order_id},
         pro_generator = #{pro_generator},

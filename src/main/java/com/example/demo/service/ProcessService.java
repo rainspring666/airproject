@@ -12,11 +12,11 @@ import java.util.List;
 public class ProcessService {
     @Autowired
     ProcessMapper processMapper;
-    public Process get_one_info(String id){
-        return processMapper.get_one_info(id);
+    public Process get_one_info(String process_id){
+        return processMapper.get_one_info(process_id);
     }
-    public Process get_one_info2(String id){
-        return processMapper.get_one_info2(id);
+    public Process get_one_info2(String order_id){
+        return processMapper.get_one_info2(order_id);
     }
     public boolean update_info(Process process){
         return processMapper.update_info(process);

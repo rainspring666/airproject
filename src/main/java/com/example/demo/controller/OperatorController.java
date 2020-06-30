@@ -3,13 +3,9 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.*;
 import com.example.demo.entity.Process;
-import com.example.demo.service.DataService;
-import com.example.demo.service.EquipService;
-import com.example.demo.service.MaterialService;
-import com.example.demo.service.OperatorService;
-import com.example.demo.service.ProcessService;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
@@ -18,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sun.util.resources.ms.CalendarData_ms_MY;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -274,49 +269,53 @@ public class OperatorController {
     /**
      * 开始监测 记录开始时间 更新状态
      *
-     * @param process_id 流程ID
-     * @param pro_counttime 倒计时时长 单位为s
+     * @param tempProcess 流程ID
      * @return MyJsonResult
      */
     @PostMapping("/start_detection")
     @ResponseBody
-    public MyJsonResult start_1(HttpServletRequest request,@RequestParam("process_id")String process_id,@RequestParam("pro_counttime")int pro_counttime){
+    public MyJsonResult start_1(HttpServletRequest request,@RequestBody Process tempProcess){
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
 
-        Process process = processService.get_one_info(process_id);
-        if(process==null)
+        Process process = processService.get_one_info(tempProcess.getProcess_id());
+        if(process == null){
             return MyJsonResult.errorMsg("error--");
+        }
         process.setPro_starttime(dateString);
         process.setPro_state("1");
         // 存储倒计时长
-        process.setPro_counttime(pro_counttime);
+        process.setPro_counttime(tempProcess.getPro_counttime()*60*60);
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
             return MyJsonResult.errorMsg("error");
 
     }
-    @PostMapping("/get_counttime")
+    @PostMapping("/get_count_time")
     @ResponseBody
-    public MyJsonResult getCountTime(HttpServletRequest request,@RequestParam("process_id")String process_id){
-        Process process = processService.get_one_info(process_id);
+    public MyJsonResult getCountTime(HttpServletRequest request,@RequestBody Process tempProcess){
+        Process process = processService.get_one_info(tempProcess.getProcess_id());
         if(process == null){
             return MyJsonResult.errorMsg("error--");
         } else{
             try {
-                // 计算倒计时
+                // 获得开始时间
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String pro_starttime = process.getPro_starttime();
-                Date date = formatter.parse(pro_starttime);
+                Date startDate = formatter.parse(pro_starttime);
+                // 计算截止时间
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(date);
+                cal.setTime(startDate);
                 cal.add(Calendar.SECOND, process.getPro_counttime());
-                // 加上倒计时后的时间(开始时间+倒计时时间）
-                date = cal.getTime();
-                String countTime = formatter.format(date);
-                return MyJsonResult.buildData(countTime);
+                Date endDate = cal.getTime();
+                // 当前时间
+                Date currentData = new Date();
+                // 计算倒计时
+                long countSecond = ((endDate.getTime() - currentData.getTime()) / (60 * 1000)) % 60;
+
+                return MyJsonResult.buildData(countSecond);
             } catch (ParseException e) {
                 e.printStackTrace();
                 return MyJsonResult.errorMsg("error--");
@@ -347,7 +346,7 @@ public class OperatorController {
     //获取开始时间，方便前端的倒计时
     @PostMapping("/get_one_infoByProcessId")
     @ResponseBody
-    public MyJsonResult get_one_info1(HttpServletRequest request,@RequestParam("process_id") String process_id){
+    public MyJsonResult get_one_info1(HttpServletRequest request,String process_id){
         Process process = processService.get_one_info(process_id);
         if(process==null)
             return MyJsonResult.errorMsg("error--");
@@ -358,27 +357,27 @@ public class OperatorController {
     //初步的根据订单获取流程信息
     @PostMapping("/get_one_infoByOrderId")
     @ResponseBody
-    public MyJsonResult get_one_info2(HttpServletRequest request,@RequestParam("order_id") String order_id){
-        Process process = processService.get_one_info2(order_id);
-        if(process==null)
-            return MyJsonResult.errorMsg("error--");
-        else
+    public MyJsonResult get_one_info2(HttpServletRequest request,@RequestBody Order order){
+        Process process = null;
+        process = processService.get_one_info2(order.getOrder_id());
+        if(process != null){
+            logger.info(process.toString());
             return MyJsonResult.buildData(process);
-
+        } else{
+            return MyJsonResult.errorMsg("error--");
+        }
     }
 
     //物流快递信息更新
     @PostMapping("/update_express")
     @ResponseBody
-    public MyJsonResult update_express(HttpServletRequest request,@RequestParam("process_id") String process_id
-            ,@RequestParam("express_id") String express_id
-            ,@RequestParam("express_name") String express_name){
+    public MyJsonResult update_express(HttpServletRequest request,@RequestBody Process tempProcess){
 
-        Process process = processService.get_one_info(process_id);
+        Process process = processService.get_one_info(tempProcess.getProcess_id());
         if(process==null)
             return MyJsonResult.errorMsg("error--");
-        process.setExpress_id(express_id);
-        process.setExpress_name(express_name);
+        process.setExpress_id(tempProcess.getExpress_id());
+        process.setExpress_name(tempProcess.getExpress_name());
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
