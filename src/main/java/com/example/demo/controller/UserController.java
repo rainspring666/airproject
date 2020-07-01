@@ -151,7 +151,7 @@ public class UserController {
         // 对用户密码进行MD5加密,取16位
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         user.setUser_pwd(pwdMD5);
-        user.setUser_name("");//默认名字为空
+        user.setUser_name("用户"+open_id.substring(3,8));//默认名字为空
         user.setUser_gender(1);//默认性别为男
         // 保存open_id
         user.setOpen_id(open_id);
