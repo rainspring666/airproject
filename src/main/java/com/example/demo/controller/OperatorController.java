@@ -92,7 +92,9 @@ public class OperatorController {
     @ResponseBody
     public JSONArray wx_show_orders(HttpServletRequest request){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
-        List<Order> list = operatorService.wx_show_orders(operator.getOp_id());
+        // 有时会报空指针异常
+        String op_id = operator.getOp_id();
+        List<Order> list = operatorService.wx_show_orders(op_id);
         logger.info(JSON.toJSONString(list));
         return JSONArray.parseArray(JSON.toJSONString(list));
 

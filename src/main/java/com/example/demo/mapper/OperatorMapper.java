@@ -21,4 +21,5 @@ public interface OperatorMapper {
 
     Operator selectByOpID(String op_id);
 
+    boolean updateOp(Operator operator);
 }

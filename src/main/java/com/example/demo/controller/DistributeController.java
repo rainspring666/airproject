@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Operator;
 import com.example.demo.entity.Process;
 import com.example.demo.service.AdminService;
+import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.ProcessService;
 import com.example.demo.tools.MyJsonResult;
+import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,8 @@ public class DistributeController {
     private HttpServletRequest request;
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private OperatorService operatorService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
     //登录login
@@ -68,13 +73,15 @@ public class DistributeController {
         process.setOrder_id(order_id);
         String user_id = orderService.selectByPrimaryKey(order_id).getUser_id();
         process.setUser_id(user_id);
-
+        Operator operator = operatorService.selectByOpID(op_id);
+        operator.setOp_state(10);
         // 更新数据库
-        boolean isUpdateOp = orderService.updateOpByPrimaryKey(order_id, op_id);
+        boolean isUpdateOp = operatorService.updateOp(operator);
+        boolean isUpdateOrder = orderService.updateOpByPrimaryKey(order_id, op_id);
         boolean isAddProcess = processService.add_process(process);
 
         // return MyJsonResult.buildData("ok");
-        if(isUpdateOp && isAddProcess){
+        if(isUpdateOp && isAddProcess && isUpdateOrder){
             return MyJsonResult.buildData("ok");
         } else{
             return MyJsonResult.errorMsg("error");

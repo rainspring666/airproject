@@ -33,5 +33,13 @@
         where op_id = #{op_id}
 
     </select>
-
+    <update id="updateOp" parameterType="com.example.demo.entity.Operator">
+        update operator
+        set op_name = #{op_name},
+        op_pwd = #{op_pwd},
+        op_phone = #{op_phone},
+        op_state = #{op_state},
+        wx_openid = #{wx_openid}
+        where op_id=#{op_id}
+    </update>
 </mapper>

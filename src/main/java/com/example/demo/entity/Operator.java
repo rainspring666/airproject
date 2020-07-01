@@ -10,13 +10,6 @@ public class Operator {
     private int op_state;
     private String wx_openid;//新增字段 用来绑定微信的ID
 
-    public String getWx_openid(){
-        return wx_openid;
-    }
-    public void setWx_openid(String id){
-        this.wx_openid = id;
-    }
-
     public String getOp_id() {
         return op_id;
     }
@@ -71,6 +64,14 @@ public class Operator {
 
     public void setOp_state(int op_state) {
         this.op_state = op_state;
+    }
+
+    public String getWx_openid() {
+        return wx_openid;
+    }
+
+    public void setWx_openid(String wx_openid) {
+        this.wx_openid = wx_openid;
     }
 
     @Override

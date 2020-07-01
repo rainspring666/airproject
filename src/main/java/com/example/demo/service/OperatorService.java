@@ -36,4 +36,8 @@ public class OperatorService {
     public Operator selectByOpID(String op_id){
         return operatorMapper.selectByOpID(op_id);
     }
+
+    public boolean updateOp(Operator operator){
+        return operatorMapper.updateOp(operator);
+    }
 }
