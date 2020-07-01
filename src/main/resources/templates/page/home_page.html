@@ -113,13 +113,17 @@
 
 </div>
 <script>
+    var b = 1175/555;//我的图片比例
+    //获取浏览器宽度
+    var W = $(window).width();
+    var H = $(window).height();
     layui.use('carousel', function(){
         var carousel = layui.carousel;
         //建造实例
         carousel.render({
             elem: '#test1'
-            ,width: '1200px' //设置容器宽度
-            ,height:'500px'
+            ,width: '100%' //设置容器宽度
+            ,height: (W/b).toString()+"px" //按比例和浏览器可视页面宽度来获取高度
             ,arrow: 'hover' //始终显示箭头
             ,anim: 'fade' //切换动画方式
             ,autoplay:true
