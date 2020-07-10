@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<body>
+<form class="layui-form layui-form-pane">
+
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">物料名称</label>-->
+    <!--<div class="layui-input-inline">-->
+    <!--<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">物料编号</label>
+        <div class="layui-input-inline">
+
+            <input type="text" name= "add_material_id" autocomplete="off" lay-verify="required" placeholder="请输入新物料的编号" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物料名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name = "add_ma_name" lay-verify="required" placeholder="请输入新物料的名称" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">数量</label>
+        <div class="layui-input-inline">
+            <input type="text" name = "add_ma_number" lay-verify="required|number" autocomplete="off" class="layui-input" >
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">其他描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="物料描述" class="layui-textarea"  name ="add_ma_other"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn"  lay-submit lay-filter="material_add">提交申请</button>
+    </div>
+</form>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        var $ = layui.$;
+
+        //监听提交
+        form.on('submit(material_add)', function(data){
+            layer.msg("123");
+            console.log($("input[name='add_material_id']").val());
+            console.log($("input[name='add_ma_name']").val());
+            console.log(JSON.stringify(data.field));
+            console.log("hahah");
+            var jsonData = '{"material_id":"' + $("input[name='add_material_id']").val() +'","ma_name":"'
+                +$("input[name='add_ma_name']").val() + '","ma_number":"'
+                +$("input[name='add_ma_number']").val() + '","ma_other":"'
+                +$("textarea[name='add_ma_other']").val()+'"}';
+            console.log(jsonData);
+            $.ajax({
+                type: "post",
+                url:"/api/operator/bg_add_material",
+                data:jsonData,
+                contentType:"application/json;charset=UTF-8",
+                success:function (data) {
+                    if(data.data=="ok"){
+                        layer.msg("ok");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+
+                }
+            });
+            return false;
+        });
+    });
+</script>

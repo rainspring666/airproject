@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<body>
+<form class="layui-form layui-form-pane">
+
+    <!--<div class="layui-form-item">-->
+        <!--<label class="layui-form-label">物料名称</label>-->
+        <!--<div class="layui-input-inline">-->
+            <!--<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">物料编号</label>
+        <div class="layui-input-inline">
+
+            <input type="text" name= "material_id" autocomplete="off" lay-verify="required" placeholder="请输入编号" class="layui-input" th:value="${material.material_id}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">物料名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name = "ma_name" lay-verify="required" autocomplete="off" class="layui-input" th:value="${material.ma_name}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-inline">
+                <input type="text" name = "ma_number" lay-verify="required|number" autocomplete="off" class="layui-input" th:value="${material.ma_number}">
+            </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">其他描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="物料描述" class="layui-textarea"  name ="ma_other" th:value="${material.ma_other}"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <button class="layui-btn"  lay-submit lay-filter="material_edit">提交</button>
+    </div>
+</form>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        var $ = layui.$;
+
+        //监听提交
+        form.on('submit(material_edit)', function(data){
+            console.log(data.field);
+            console.log(JSON.stringify(data.field));
+            $.ajax({
+                type: "post",
+                url:"/api/operator/bg_update_material",
+                data:JSON.stringify(data.field),
+                contentType:"application/json;charset=UTF-8",
+                success:function (data) {
+                    if(data.data=="ok"){
+                        layer.msg("物料更新成功");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

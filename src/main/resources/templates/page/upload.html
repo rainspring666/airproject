@@ -1,55 +1,208 @@
-<!--<link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">-->
-<link rel="stylesheet" href="lib/jq-module/zyupload/zyupload-1.0.0.min.css" media="all">
 <div class="layuimini-container layuimini-page-anim">
     <div class="layuimini-main">
-        <blockquote class="layui-elem-quote">
-            上传组件使用开源项目：zyupload<br>
-            <a href="http://www.jq22.com/jquery-info14213" target="_blank" class="layui-btn layui-btn-danger">zyupload</a>
-        </blockquote>
-        <div id="zyupload" class="zyupload"></div>
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">物料编号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="material_id" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">物料名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="ma_name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="material-data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="materialToolbar">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加物料 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="materialTableDemo" lay-filter="materialTableFilter"></table>
+
+        <script type="text/html" id="materialTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-warm layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <!--<a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="forbid">禁用</a>-->
+        </script>
+
     </div>
 </div>
-<script src="lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
-<script src="lib/jq-module/zyupload/zyupload-1.0.0.min.js" charset="utf-8"></script>
-<script type="text/javascript">
-    $(function () {
-        // 初始化插件
-        $("#zyupload").zyUpload({
-            width: "650px",                 // 宽度
-            height: "400px",                 // 宽度
-            itemWidth: "140px",                 // 文件项的宽度
-            itemHeight: "115px",                 // 文件项的高度
-            url: "api/upload",  // 上传文件的路径
-            fileType: ["jpg", "png"],// 上传文件的类型
-            fileSize: 51200000,                // 上传文件的大小
-            multiple: true,                    // 是否可以多个文件上传
-            dragDrop: true,                    // 是否可以拖动上传文件
-            tailor: true,                    // 是否可以裁剪图片
-            del: true,                    // 是否可以删除文件
-            finishDel: false,  				  // 是否在上传文件完成后删除预览
-            /* 外部获得的回调接口 */
-            onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
-                console.info("当前选择了以下文件：");
-                console.info(selectFiles);
-            },
-            onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
-                console.info("当前删除了此文件：");
-                console.info(file.name);
-            },
-            onSuccess: function (file, response) {          // 文件上传成功的回调方法
-                console.info("此文件上传成功：");
-                console.info(file.name);
-                console.info("此文件上传到服务器地址：");
-                console.info(response);
-                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
-            },
-            onFailure: function (file, response) {          // 文件上传失败的回调方法
-                console.info("此文件上传失败：");
-                console.info(file.name);
-            },
-            onComplete: function (response) {           	  // 上传完成的回调方法
-                console.info("文件上传完成");
-                console.info(response);
+
+<script>
+    layui.use(['form', 'table','miniPage','element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            miniPage = layui.miniPage;
+
+        table.render({
+            elem: '#materialTableDemo',
+            url: '/api/bg/admin/getallmaterialinfo',
+            title: '物料表格',
+            id:'materialTable',
+            toolbar: '#materialToolbar',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cellMinWidth: 180 ,
+            cols: [
+                [
+                    {type: 'checkbox', fixed: 'left'},
+                    {field: 'material_id', title: '编号', align: "center"},
+                    {field: 'ma_name', title: '物料名称',  align: "center"},
+                    {field: 'ma_number', title: '库存数量',  align: "center"},
+                    {field: 'ma_other', title: '其他描述',  align: "center"},
+                    {title: '操作', align: "center", toolbar: '#materialTableBar', fixed: 'right'}
+                ]
+            ],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            even: 'true'
+        });
+
+        // 监听搜索操作
+        form.on('submit(material-data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            table.reload('materialTable', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                },
+                url: '/api/bg/admin/getallmaterialbyparams',
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar事件监听
+         */
+        table.on('toolbar(materialTableFilter)', function (obj) {
+            console.log(obj);
+            if (obj.event === 'add') {   // 监听添加操作
+                layer.msg("hello");
+                var content = miniPage.getHrefContent('page/table/material_add.html');
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '添加物料',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                    end:function(){
+                        // location.reload();//弹出层结束后，刷新主页面
+                        table.reload('materialTable', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallmaterialinfo',
+                        }, 'data');
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            }else{
+                layer.msg("222");
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(materialTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        //行内工具栏
+        table.on('tool(materialTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                var material = obj.data;
+                var jsonData = JSON.stringify(material);
+                jsonData = encodeURIComponent(jsonData);
+                console.log(jsonData);
+
+                var content = miniPage.getHrefContent('/admin/page/table/material_detail?material='+jsonData);
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '物料详细信息',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:false,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                    anim: 2,
+                    resize: false,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }
+            else if (obj.event === 'edit') {
+                var material = obj.data;
+                var jsonData = JSON.stringify(material);
+                jsonData = encodeURIComponent(jsonData);
+                console.log(jsonData);
+                var content = miniPage.getHrefContent('/admin/page/table/material_edit?material='+jsonData);
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '预约信息编辑',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:false,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                    anim: 2,
+                    resize: false,
+                    end:function(){
+                        // location.reload();//弹出层结束后，刷新主页面
+                        table.reload('materialTable', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallmaterialinfo',
+                        }, 'data');
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
             }
         });
 

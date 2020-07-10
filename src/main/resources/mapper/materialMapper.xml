@@ -7,6 +7,16 @@
         select * from material
     </select>
 
+    <select id="get_material_by_material_id" resultType="com.example.demo.entity.Material">
+        select * from material
+        where material_id like "%"#{material_id}"%"
+    </select>
+
+    <select id="get_material_by_ma_name" resultType="com.example.demo.entity.Material">
+        select * from  material
+        where ma_name like "%"#{ma_name}"%"
+    </select>
+
     <select id="get_one_info" resultType="com.example.demo.entity.Material">
         select * from material
         where material_id = #{material_id}
