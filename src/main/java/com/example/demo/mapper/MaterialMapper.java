@@ -18,4 +18,8 @@ public interface MaterialMapper {
 
     Material get_one_info(String material_id);
 
+    List<Material> get_material_by_material_id(String material_id);
+
+    List<Material> get_material_by_ma_name(String ma_name);
+
 }

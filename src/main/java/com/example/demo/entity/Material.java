@@ -37,4 +37,14 @@ public class Material {
     public void setMa_other(String ma_other) {
         this.ma_other = ma_other;
     }
+
+    @Override
+    public String toString() {
+        return "Material{" +
+                "material_id='" + material_id + '\'' +
+                ", ma_name='" + ma_name + '\'' +
+                ", ma_number=" + ma_number +
+                ", ma_other='" + ma_other + '\'' +
+                '}';
+    }
 }

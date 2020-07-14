@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.Material;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
@@ -202,7 +203,24 @@ public class AdminPageController {
         return "page/table/order_detail";
     }
 
+    @GetMapping ("/page/table/material_edit")
+    public String material_edit(@RequestParam("material") String strOrder, Model model){
+        logger.info("/page/table/material_edit.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Material material = jsonOrder.toJavaObject(Material.class);
+        logger.info(material.toString());
+        model.addAttribute("material",material);
+        return "page/table/material_edit";
+    }
 
+    @GetMapping ("/page/table/material_add.html")
+    public String material_add( Model model){
+        logger.info("/page/table/material_add.html");
+        //
+
+        return "page/table/material_add";
+    }
 
 
 
