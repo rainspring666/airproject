@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RoleMapper">
+
+    <select id="get_all_role" resultType="com.example.demo.entity.Role">
+        select * from role
+    </select>
+
+    <insert id="add_role">
+        insert into role(role_id, role_name, role_desc)
+        values (#{role_id}, #{role_name}, #{role_desc})
+    </insert>
+
+    <update id="update_role_info">
+        update role
+        set role_name = #{role_name}, role_desc = #{role_desc}
+        where role_id = #{role_id}
+    </update>
+
+
+</mapper>

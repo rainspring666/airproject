@@ -17,6 +17,7 @@ import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.itextpdf.text.DocumentException;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +128,7 @@ public class AdminController {
     public Map<String,Object> selectAllMaterial(@RequestParam(required = false,defaultValue = "1") int page,
                                                 @RequestParam(required = false,defaultValue = "10") int limit){
         PageHelper.startPage(page, limit);
+
 
         List<Material> materialList = materialService.get_material_info();
 
