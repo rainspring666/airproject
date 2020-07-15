@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 14/07/2020 23:48:34
+ Date: 15/07/2020 12:36:19
 */
 
 SET NAMES utf8mb4;
@@ -66,25 +66,6 @@ INSERT INTO `detectiondata` VALUES ('0e3efe6648b34117bece49a5a5de4e2d', '2020-07
 INSERT INTO `detectiondata` VALUES ('8c932dc416e74ef5b30213a37c92a1ba', '2020-07-01 15:47:12', '750894b452cc420bac4df89e933746d8', 11, 112, 134, 121, 11, 124, 14, 125, 123, 12, 12, 52, 22, 54);
 INSERT INTO `detectiondata` VALUES ('b2f0c416459a4f8cb7dd4164807e0c43', '2020-07-01 00:21:13', '148f31c151a4493699b9bc14b4193863', 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11);
 INSERT INTO `detectiondata` VALUES ('e6eeb72d4e1d437b8e1156c1ac4a435a', '2020-07-01 15:47:13', '750894b452cc420bac4df89e933746d8', 11, 112, 134, 121, 11, 124, 14, 125, 123, 12, 12, 52, 22, 54);
-
--- ----------------------------
--- Table structure for detedata
--- ----------------------------
-DROP TABLE IF EXISTS `detedata`;
-CREATE TABLE `detedata`  (
-  `ddata_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `ddata_time` datetime(0) NOT NULL,
-  `eq_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `data_a` float NOT NULL,
-  `data_b` float NOT NULL,
-  `data_c` float NOT NULL,
-  `data_d` float NOT NULL,
-  PRIMARY KEY (`ddata_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of detedata
--- ----------------------------
 
 -- ----------------------------
 -- Table structure for equipment
@@ -219,10 +200,11 @@ DROP TABLE IF EXISTS `report`;
 CREATE TABLE `report`  (
   `report_id` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '报告ID',
   `describes` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '概述',
-  `picurl` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '标的现场情况描述',
+  `picurl` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '图片路径',
   `opreate_plan` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '消杀方案',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '生成报告时间',
   `validation` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '效果验证',
+  `site_condition` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '现场情况描述',
   PRIMARY KEY (`report_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
