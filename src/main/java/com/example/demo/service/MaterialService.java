@@ -2,17 +2,44 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Material;
 import com.example.demo.mapper.MaterialMapper;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+
 
 @Service
 public class MaterialService {
 
+
     @Autowired
     MaterialMapper materialMapper;
+
+    public boolean pdf_operator() throws IOException, DocumentException {
+
+        Document document = new Document(PageSize.A4);
+        PdfWriter instance = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\申岩松\\Desktop\\new.pdf"));
+
+        document.open();
+        BaseFont bfComic = BaseFont.createFont("c://windows//fonts//SIMHEI.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+        Font font = new Font(bfComic, 14);
+        String text1 = "我是第一段";
+        document.add(new Paragraph(text1, font));
+        return true;
+    }
+
+
+
     public List<Material> get_material_by_params(String material_id, String ma_name){
         if(material_id.equals("") && ma_name.equals(""))
             return get_material_info();

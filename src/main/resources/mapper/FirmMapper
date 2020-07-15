@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.FirmMapper">
+
+    <select id="get_all_firm_info" resultType="com.example.demo.entity.Firm">
+        select * from firm
+    </select>
+
+    <insert id="add_firm">
+        insert into firm(firm_id, firm_name, firm_ceo)
+        values (#{firm_id}, #{firm_name}, #{firm_ceo})
+    </insert>
+
+    <update id="update_firm_info">
+        update firm
+        set firm_name = #{firm_name}, firm_ceo = #{firm_ceo}
+        where firm_id = #{firm_id}
+    </update>
+
+
+</mapper>

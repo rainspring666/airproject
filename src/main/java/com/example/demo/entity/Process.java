@@ -18,6 +18,7 @@ public class Process {
     private String express_id;
     private String express_name;
     private int pro_counttime;
+    private String report_id;
 
     public String getProcess_id() {
         return process_id;
@@ -155,6 +156,14 @@ public class Process {
         this.pro_counttime = pro_counttime;
     }
 
+    public String getReport_id() {
+        return report_id;
+    }
+
+    public void setReport_id(String report_id) {
+        this.report_id = report_id;
+    }
+
     @Override
     public String toString() {
         return "Process{" +
@@ -175,6 +184,7 @@ public class Process {
                 ", express_id='" + express_id + '\'' +
                 ", express_name='" + express_name + '\'' +
                 ", pro_counttime=" + pro_counttime +
+                ", report_id='" + report_id + '\'' +
                 '}';
     }
 }
