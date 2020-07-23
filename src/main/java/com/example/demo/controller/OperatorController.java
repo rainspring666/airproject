@@ -553,11 +553,18 @@ public class OperatorController {
     public Report get_report_by_process_id(Process process){
         String report_id = process.getReport_id();
         Report report = null;
+
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(date);
+
         if(report_id == null ){
             // 第一次进入时，report_id应该设置成什么格式?   暂时使用tool中的uuid
             report = new Report();
             report.setReport_id(tools.createOrderId());
+            report.setCreate_time(dateString);
             reportMapper.add_report(report);
+
 
             process.setReport_id(report.getReport_id());
             processService.update_info(process);
