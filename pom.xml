@@ -19,6 +19,7 @@
 	</properties>
 
 	<dependencies>
+
 		<!-- swagger2 配置 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
