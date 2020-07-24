@@ -21,4 +21,6 @@ public interface OrderMapper {
 
     List<Order> selectByOrderState(Integer order_state);
 
+    boolean updateOrder_modelf(String order_id, String order_modelf);
+
 }

@@ -28,6 +28,12 @@
     set  op_id = #{op_id}, order_state = 1
     where order_id = #{order_id}
   </update>
+
+  <update id="updateOrder_modelf">
+    update userorder
+    set order_modelf = #{param2}
+    where order_id = #{param1}
+  </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
     select order_id, user_id, op_id, order_state, order_createtime, order_time,
     order_class, order_modelf, order_scope, order_descripe, order_address, order_contact, 

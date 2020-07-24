@@ -42,5 +42,8 @@ public class OrderService {
         return orderMapper.selectByOrderState(order_state);
     }
 
+    public boolean updateOrder_modelf(Order order){
+        return orderMapper.updateOrder_modelf(order.getOrder_id(), order.getOrder_modelf());
+    }
 }
 
