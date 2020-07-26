@@ -3,6 +3,8 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.User;
+import com.example.demo.entity.User_info;
+import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
@@ -28,9 +30,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 用户使用微信的openid登陆平台，进入小程序即检查登陆
+     * @param code
+     * @param request
+     * @return sessionID和登陆的用户信息
+     */
     @PostMapping(value = "/login_by_code")
     @ResponseBody
     public MyJsonResult login(@RequestParam("code") String code,HttpServletRequest request)
@@ -61,37 +71,40 @@ public class UserController {
         return MyJsonResult.errorMsg("请使用账号密码登录");
     }
 
+    /**
+     * 微信登陆，账号 密码 code 组装成一个user对象传进来，code在userid借用 临时
+     * 注释掉掉部分是获取微信openid 在此处用不到
+     * @param
+     * @param request
+     * @return session 和 user(id openid)不包含用户的详细信息user_info
+     * */
     @PostMapping("/wx_login_user")
     @ResponseBody
-    public MyJsonResult wx_login(@RequestBody User user,
-                                 HttpServletRequest request
-                                 ){
+    public MyJsonResult wx_login(@RequestBody User temp_user,
+                                 HttpServletRequest request){
         // 获取openid
-        Map<String, String> param = new HashMap<>();
-        param.put("appid", tools.WX_LOGIN_APPID);
-        param.put("secret", tools.WX_LOGIN_SECRET);
-        param.put("js_code", user.getUser_id());//code
-        param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
-        // 发送请求
-        String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
-        JSONObject jsonObject = JSONObject.parseObject(wxResult);
-        // 获取参数返回的
-        logger.info(user.toString());
-        String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
-        User myuser = userService.login_user(user.getUser_phone(), pwdMD5);
+        // Map<String, String> param = new HashMap<>();
+        // param.put("appid", tools.WX_LOGIN_APPID);
+        // param.put("secret", tools.WX_LOGIN_SECRET);
+        // param.put("js_code", temp_user.getUser_id());//code
+        // param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
+        // // 发送请求
+        // String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
+        // JSONObject jsonObject = JSONObject.parseObject(wxResult);
+        String pwdMD5 = tools.pwdMD5(temp_user.getUser_pwd()).substring(8, 24);
+        User user = userService.login_user(temp_user.getUser_phone(), pwdMD5);
         //String open_id = jsonObject.get("openid").toString();
-        if(myuser != null)
+        if(user != null)
         {
             //注册sessionid
-            logger.info(myuser.toString());
             request.getSession().setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
-            request.getSession().setAttribute("userid",myuser.getUser_id());//用户名存入该用户的session 中
-            request.getSession().setAttribute("myuser",myuser);
+            request.getSession().setAttribute("userid",user.getUser_id());//用户名存入该用户的session 中
+            request.getSession().setAttribute("myuser",user);
             //request.getSession().setAttribute("openid",open_id);
             String sessionid = request.getSession().getId();
-            logger.info("user {} login:",myuser.getUser_phone());
-            myuser.setUser_pwd("");
-            return MyJsonResult.build(200,sessionid,myuser);
+            logger.info("user {} login:",user.getUser_phone());
+            user.setUser_pwd("");
+            return MyJsonResult.build(200,sessionid,user);
         }
         logger.info("user {} login failure：",user.getUser_phone());
         return MyJsonResult.errorMsg("密码错误");
@@ -131,6 +144,13 @@ public class UserController {
         return MyJsonResult.errorMsg("register error");
     }
 
+    /**
+     * 小程序 用户 注册 组装成user对象传进来
+     * 组装user表和user_info表
+     * @param user
+     * @param request
+     * @return 是否成功的标志
+     */
     @PostMapping(value ="/wx_register")
     @ResponseBody
     public MyJsonResult wx_register(@RequestBody User user,
@@ -141,27 +161,42 @@ public class UserController {
         param.put("secret", tools.WX_LOGIN_SECRET);
         param.put("js_code", user.getUser_id());//前台把code通过这个参数临时传过来，后面改成openid
         param.put("grant_type", tools.WX_LOGIN_GRANT_TYPE);
-        // 发送请求
-        logger.info(user.toString());
+        // 发送请求获取微信用户的openid
+        // logger.info(user.toString());
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
-        // 获取参数返回的
         String open_id = jsonObject.get("openid").toString();
-        user.setUser_id(tools.createUserId(0,1));
-        // 对用户密码进行MD5加密,取16位
+
+        //更新user表的信息
+        String user_id = tools.createUserId(0,1);
         String pwdMD5 = tools.pwdMD5(user.getUser_pwd()).substring(8, 24);
         user.setUser_pwd(pwdMD5);
-        user.setUser_name("用户"+open_id.substring(3,8));//默认名字为空
-        user.setUser_gender(1);//默认性别为男
-        // 保存open_id
+        user.setUser_id(user_id);
         user.setOpen_id(open_id);
+
+        //更新user_info的信息
+        User_info user_info = new User_info();
+        user_info.setUser_id(user_id);
+        user_info.setUser_address("默认地址");
+        user_info.setFirm_id("1");//默认公司
+        user_info.setUser_gender(1);//默认性别
+        user_info.setUser_name("用户"+open_id.substring(6,10));
+        user_info.setUser_nickname("Nick"+open_id.substring(6,10));
+
         // 存入数据库
-        if(userService.save_user(user)){
+        if(userService.save_user(user) && userInfoService.add_user_info(user_info)){
             logger.trace("new user {} register ",user.getUser_phone());
             return MyJsonResult.buildData("ok");
         }
         return MyJsonResult.errorMsg("register error");
     }
+
+    /**
+     * 小程序 用户修改信息 暂时没写
+     * @param user
+     * @param request
+     * @return
+     */
     @PostMapping(value ="/change_user_info")
     @ResponseBody
     public MyJsonResult change_user_info(@RequestBody User user,HttpServletRequest request){

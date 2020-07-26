@@ -6,6 +6,10 @@
         select * from user_info
     </select>
 
+    <select id="get_user_info_by_id" resultType="com.example.demo.entity.User_info">
+        select * from user_info where user_id = #{user_id}
+    </select>
+
     <insert id="add_user_info">
         insert into user_info(user_id, user_name, user_nickname, user_gender, user_address, firm_id)
         values (#{user_id}, #{user_name}, #{user_nickename}, #{user_gender}, #{user_address}, #{firm_id})

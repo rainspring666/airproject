@@ -5,6 +5,7 @@ import com.example.demo.entity.Material;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
@@ -31,6 +32,8 @@ public class AdminPageController {
     private UserService userService;
     @Autowired
     private OperatorService operatorService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     //主页index
     @RequestMapping("/index.html")
@@ -183,7 +186,9 @@ public class AdminPageController {
     public String dis_process(@RequestParam("orderID") String order_id , Model model){
         logger.info("/page/table/dis_process.html");
         Order order = orderService.selectByPrimaryKey(order_id);
-        order.setUser_id(userService.selectByUserID(order.getUser_id()).getUser_name());//更换姓名
+        // order.setUser_id(userService.selectByUserID(order.getUser_id()).getUser_name());//更换姓名
+        order.setUser_id(userInfoService.get_user_info_by_id(order.getUser_id()).getUser_name());//更换姓名
+
         order.setOp_id(operatorService.selectByOpID(order.getOp_id()).getOp_name());
         order.setOrder_class(OrderClassEnum.getName(order.getOrder_class()));
         order.setOrder_state(OrderStateEnum.getName(Integer.parseInt(order.getOrder_state())));
@@ -222,6 +227,13 @@ public class AdminPageController {
         return "page/table/material_add";
     }
 
+    @GetMapping ("/page/table/order_add.html")
+    public String order_add( Model model){
+        logger.info("/page/table/material_add.html");
+        //
+
+        return "page/table/order_add";
+    }
 
 
 

@@ -1,0 +1,195 @@
+<div class="layuimini-main">
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-form layuimini-form">
+            <div class="layui-col-md5">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入游客/企业用户名" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">性别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="1" title="男" checked="">
+                        <input type="radio" name="sex" value="0" title="女">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">手机</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="user_phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <input type="email" name="user_address" placeholder="请输入地址" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">户型图</label>
+                    <button type="button" class="layui-btn" id="upload">
+                        <i class="layui-icon">&#xe67c;</i>上传图片
+                    </button>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">预约时间</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" id="test1" name="order_time">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md5">
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">联系人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="order_connect" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入联系人" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">手机</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="order_phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">地址</label>
+                    <div class="layui-input-block">
+                        <input type="email" name="order_address" placeholder="请输入地址" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">类别</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="order_class" value="1" title="工装" checked="">
+                        <input type="radio" name="order_class" value="2" title="家居">
+                        <input type="radio" name="order_class" value="3" title="车辆">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">面积</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="order_scope" placeholder="请输入面积" value="" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">具体描述</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="order_descripe" placeholder="请输入施工地点描述" value="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">特殊污染</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="order_pollution" placeholder="请输入施工地点描述" value="" class="layui-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md10">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">特殊要求</label>
+                        <div class="layui-input-block">
+                            <textarea name="order_others" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">空气检测</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" checked="" name="order_moremoney" lay-skin="switch" lay-filter="switchTest" lay-text="是|否">
+                    </div>
+                </div>
+                <div class="layui-col-md3">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">预估价格</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="order_cost" placeholder="请输入预估价格" value="" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+<script>
+    layui.use(['form', 'table','laydate','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            laydate = layui.laydate,
+            upload = layui.upload,
+            $ = layui.$;
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        // 当前弹出层，防止ID被覆盖
+        var parentIndex = layer.index;
+
+        //监听指定开关
+        form.on('switch(switchTest)', function (data) {
+            layer.msg('空气检测：' + (this.checked ? '需要' : '不需要'), {
+                offset: '6px'
+            });
+            layer.tips('温馨提示：空气检测不同于空气治理，请谨慎选择', data.othis)
+        });
+
+        //执行实例
+        upload.render({
+            elem: '#upload'
+            ,url: '/api/upload/'
+            ,multiple: true
+            ,allDone: function(obj){ //当文件全部被提交后，才触发
+                console.log(obj.total); //得到总文件数
+                console.log(obj.successful); //请求成功的文件数
+                console.log(obj.aborted); //请求失败的文件数
+            }
+            ,done: function(res, index, upload){ //每个文件提交一次触发一次。详见“请求成功的回调”
+
+            }
+        });
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+                layer.close(parentIndex);
+
+            });
+
+
+            return false;
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#test1' //指定元素
+            ,type: 'datetime'
+        });
+
+
+
+    });
+</script>

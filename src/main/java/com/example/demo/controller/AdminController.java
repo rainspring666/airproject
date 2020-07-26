@@ -3,8 +3,14 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.*;
-import com.example.demo.service.*;
+import com.example.demo.entity.Material;
+import com.example.demo.entity.Operator;
+import com.example.demo.entity.Order;
+import com.example.demo.entity.User;
+import com.example.demo.service.MaterialService;
+import com.example.demo.service.OperatorService;
+import com.example.demo.service.OrderService;
+import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
@@ -41,8 +47,6 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private MaterialService materialService;
-    @Autowired
-    private EquipService equipService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -148,9 +152,11 @@ public class AdminController {
         JSONObject searchParams = JSONObject.parseObject(request.getParameter("searchParams"));
         PageHelper.startPage(1, 10);
 
+        System.out.println(searchParams.toString());
         String material_id = searchParams.getString("material_id");
         String ma_name = searchParams.getString("ma_name");
-
+        System.out.println("material_id:"+material_id);
+        System.out.println("ma_name:"+ma_name);
 
         List<Material> materialList = materialService.get_material_by_params(material_id, ma_name);
 
@@ -164,59 +170,6 @@ public class AdminController {
         map.put("count",pageInfo.getTotal());
         map.put("data",pageInfo.getList());
         if (!materialList.isEmpty()){
-            map.put("msg","操作成功");
-            return map;
-        }
-        map.put("msg","操作失败");
-        return map;
-
-    }
-
-    @GetMapping(value = "/getallequipmentbyparams")
-    @ResponseBody
-    public Map<String,Object> selectAllEquipment(HttpServletRequest request){
-        JSONObject searchParams = JSONObject.parseObject(request.getParameter("searchParams"));
-        PageHelper.startPage(1, 10);
-
-        String equipment_id = searchParams.getString("equipment_id");
-        String equipment_name = searchParams.getString("equipment_name");
-
-
-        List<Equipment> equipmentList = equipService.get_equipment_by_params(equipment_id, equipment_name);
-
-        for (Equipment i: equipmentList) {
-            System.out.println(i.getEq_id()+"----"+i.getEq_name());
-        }
-
-        PageInfo pageInfo = new PageInfo(equipmentList);
-        Map<String,Object> map = new HashMap<>();
-        map.put("code",0);
-        map.put("count",pageInfo.getTotal());
-        map.put("data",pageInfo.getList());
-        if (!equipmentList.isEmpty()){
-            map.put("msg","操作成功");
-            return map;
-        }
-        map.put("msg","操作失败");
-        return map;
-
-    }
-
-    @GetMapping(value = "/getallequipmentinfo")
-    @ResponseBody
-    public Map<String,Object> selectAllEquipment(@RequestParam(required = false,defaultValue = "1") int page,
-                                                @RequestParam(required = false,defaultValue = "10") int limit){
-        PageHelper.startPage(page, limit);
-
-
-        List<Equipment> equipmentList = equipService.get_equipment_info();
-
-        PageInfo pageInfo = new PageInfo(equipmentList);
-        Map<String,Object> map = new HashMap<>();
-        map.put("code",0);
-        map.put("count",pageInfo.getTotal());
-        map.put("data",pageInfo.getList());
-        if (!equipmentList.isEmpty()){
             map.put("msg","操作成功");
             return map;
         }

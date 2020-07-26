@@ -85,7 +85,7 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
-            cellMinWidth: 180 ,//全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            // cellMinWidth: 180 ,//全局定义常规单元格的最小宽度，layui 2.2.1 新增
             cols: [
                 [
                     {type: 'checkbox', fixed: 'left'},
@@ -97,7 +97,7 @@
                     {field: 'order_state', title: '状态', width: 80,  sort: true, align: "center"},
                     {field: 'op_id', title: '操作员', width: 120,  align: "center"},
                     {field: 'order_time', title: '预约日期', width: 170,  sort: true, align: "center"},
-                    {title: '操作', align: "center", toolbar: '#currentTableBar', fixed: 'right'}
+                    {title: '操作', align: "center", width: 180, toolbar: '#currentTableBar', fixed: 'right'}
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
