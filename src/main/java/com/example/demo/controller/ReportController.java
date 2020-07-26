@@ -111,11 +111,11 @@ public class ReportController {
                 if (type != null) {
                     if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
                         // 自定义的文件名称 使用UUID
-                        String trueFileName = tools.createOrderId() + type;
+                        String trueFileName = tools.createOrderId() + "." +type;
                         Calendar calendar = Calendar.getInstance();
                         // 设置存放图片文件的路径    report_img/年/月/日/图片
 
-                        String temp =  imgDir+ Integer.toString(calendar.get(calendar.YEAR)) + "/"
+                        String temp =  imgDir+ "/"+ Integer.toString(calendar.get(calendar.YEAR)) + "/"
                                 + Integer.toString(calendar.get(calendar.MONTH)+1) + "/"+ Integer.toString(calendar.get(calendar.DAY_OF_MONTH)) + "/";
 
                         path = temp  + trueFileName;
@@ -236,10 +236,11 @@ public class ReportController {
     }
 
     // 施工流程信息展示  返回值：一个String[][],其中每一行代表一轮流程，按顺序分别是本轮的描述、第一张图片、第二张图片。。。
-    @GetMapping("/show_report_info")
+    @PostMapping("/show_report_info")
     @ResponseBody
-    public MyJsonResult show_report(HttpServletRequest request, @RequestParam("process_id") String process_id){
-        Process process = processService.get_one_info(process_id);
+    public MyJsonResult show_report(HttpServletRequest request, @RequestParam("order_id") String order_id){
+        logger.info("order_id"+order_id);
+        Process process = processService.get_one_info2(order_id);
 
         Report report = get_report_by_process_id(process);
 

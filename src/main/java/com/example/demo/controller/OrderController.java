@@ -222,11 +222,11 @@ public class OrderController
                         path = tools.UPLOAD_PICTURE_PATH  + trueFileName;*/
 
                         // 自定义的文件名称使用UUID
-                        String trueFileName = tools.createOrderId() + type;
+                        String trueFileName = tools.createOrderId() + "." + type;
                         Calendar calendar = Calendar.getInstance();
                         // 设置存放图片文件的路径    hx_img/年/月/日/图片   考虑是否去掉年份？？？？
 
-                        String temp =  imgDir + Integer.toString(calendar.get(calendar.YEAR)) + "/"
+                        String temp =  imgDir + "/" + Integer.toString(calendar.get(calendar.YEAR)) + "/"
                                 + Integer.toString(calendar.get(calendar.MONTH)+1) + "/"+ Integer.toString(calendar.get(calendar.DAY_OF_MONTH)) + "/";
 
                         path = temp  + trueFileName;

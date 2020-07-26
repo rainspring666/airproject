@@ -22,4 +22,6 @@ public interface MaterialMapper {
 
     List<Material> get_material_by_ma_name(String ma_name);
 
+    List<Material> get_material_by_params(String material_id, String ma_name);
+
 }

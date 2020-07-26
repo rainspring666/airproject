@@ -40,9 +40,12 @@ public class MaterialService {
 
 
 
+
     public List<Material> get_material_by_params(String material_id, String ma_name){
         if(material_id.equals("") && ma_name.equals(""))
             return get_material_info();
+        if(!material_id.equals("")&& !ma_name.equals(""))
+            return materialMapper.get_material_by_params(material_id, ma_name);
         List<Material> materialList = new LinkedList<>();
         List<Material> materialList_id = new LinkedList<>(), materialList_name = new LinkedList<>();
         if(!material_id.equals("")){
@@ -64,6 +67,7 @@ public class MaterialService {
             if(!contain)
                 materialList.add(i);
         }
+        System.out.println("123");
         return materialList;
     }
 

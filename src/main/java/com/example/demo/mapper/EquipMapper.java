@@ -18,4 +18,10 @@ public interface EquipMapper {
 
     Equipment get_one_info(String ep_id);
 
+    List<Equipment> get_equipment_by_params(String equipment_id, String equipment_name);
+
+    List<Equipment> get_equipment_by_id(String eq_id);
+
+    List<Equipment> get_equipment_by_name(String equipment_name);
+
 }

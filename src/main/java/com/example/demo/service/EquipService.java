@@ -34,4 +34,14 @@ public class EquipService {
 
         return equipMapper.del_equipment_info(eq_id);
     }
+
+    public List<Equipment> get_equipment_by_params(String equipment_id, String equipment_name){
+        if("".equals(equipment_id) && "".equals(equipment_name))
+            return get_equipment_info();
+        if(!"".equals(equipment_id) && !"".equals(equipment_name))
+            return equipMapper.get_equipment_by_params(equipment_id, equipment_name);
+        if("".equals(equipment_name))
+            return equipMapper.get_equipment_by_id(equipment_id);
+        return equipMapper.get_equipment_by_name(equipment_name);
+    }
 }

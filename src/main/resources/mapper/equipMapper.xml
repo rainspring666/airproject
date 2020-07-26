@@ -10,7 +10,22 @@
 
     <select id="get_one_info" resultType="com.example.demo.entity.Equipment">
         select * from equipment
-        where op_id = #{op_id}
+        where eq_id = #{ep_id}
+    </select>
+
+    <select id="get_equipment_by_params" resultType="com.example.demo.entity.Equipment">
+        select * from equipment
+        where (eq_id like "%"#{param1}"%" and (eq_name like "%"#{param2}"%" or eq_type like "%"#{param2}"%")) order by eq_type
+    </select>
+
+    <select id="get_equipment_by_id" resultType="com.example.demo.entity.Equipment">
+        select * from equipment
+        where eq_id like "%"#{eq_id}"%" order by eq_type
+    </select>
+
+    <select id="get_equipment_by_name" resultType="com.example.demo.entity.Equipment">
+        select * from equipment
+        where (eq_name like "%"#{equipment_name}"%" or eq_type like "%"#{equipment_name}"%") order by eq_type
     </select>
 
     <update id="update_equipment_info" parameterType="com.example.demo.entity.Equipment">

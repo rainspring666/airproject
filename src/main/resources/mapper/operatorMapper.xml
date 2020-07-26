@@ -4,7 +4,7 @@
 
 
     <select id="wx_login_operator" resultType="com.example.demo.entity.Operator">
-        select * from operator where op_phone = #{phone} and op_pwd = #{pwd}
+        select * from operator where op_phone = #{param1} and op_pwd = #{param2}
     </select>
 
     <update id="wx_bind" parameterType="java.lang.String">

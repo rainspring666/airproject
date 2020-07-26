@@ -49,6 +49,8 @@ public class OperatorController {
     @PostMapping("/wx_login_operator")
     @ResponseBody
     public MyJsonResult wx_login(@RequestBody Operator operator,HttpServletRequest request){
+
+
         // 获取openid
         Map<String, String> param = new HashMap<>();
         param.put("appid", tools.WX_LOGIN_APPID);
@@ -59,6 +61,7 @@ public class OperatorController {
         String wxResult = HttpClientUtil.doGet(tools.WX_LOGIN_URL, param);
         JSONObject jsonObject = JSONObject.parseObject(wxResult);
         // 获取参数返回的
+
         String open_id = jsonObject.get("openid").toString();
 
 //        String pwdMD5 = tools.pwdMD5(pwd).substring(8, 24);
