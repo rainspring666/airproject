@@ -54,7 +54,7 @@
             console.log(JSON.stringify(data.field));
             $.ajax({
                 type: "post",
-                url:"/api/operator/bg_update_material",
+                url:"/api/bg/admin/bg_update_material",
                 data:JSON.stringify(data.field),
                 contentType:"application/json;charset=UTF-8",
                 success:function (data) {

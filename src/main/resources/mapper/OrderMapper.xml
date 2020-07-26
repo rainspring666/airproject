@@ -44,4 +44,29 @@
   <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
     select * from userorder where user_id = #{user_id}
   </select>
+
+  <update id="order_change_by_id" parameterType="com.example.demo.entity.Order">
+    update userorder
+    set
+    order_time =#{order_time},
+    order_class=#{order_class},
+    order_modelf=#{order_modelf},
+    order_scope+#{order_scope},
+    order_descripe=#{order_descripe},
+    order_address+#{order_address},
+    order_contact=#{order_contact},
+    order_phone=#{order_phone},
+    order_others+#{order_others},
+    order_cost=#{order_cost},
+    order_pollution=#{order_pollution},
+    order_moremoney=#{order_moremoney}
+    where order_id=#{order_id}
+  </update>
+
+  <select id="searchByMultiConditions" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
+    select * from userorder
+    where order_contact=#{connect_name}
+  </select>
+
+
 </mapper>

@@ -45,7 +45,12 @@ public class OperatorController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    //登录
+    /**
+     * 操作员在小程序端登陆-----明文密码？？？
+     * @param operator
+     * @param request
+     * @return
+     */
     @PostMapping("/wx_login_operator")
     @ResponseBody
     public MyJsonResult wx_login(@RequestBody Operator operator,HttpServletRequest request){
@@ -550,42 +555,5 @@ public class OperatorController {
     }*/
 
 
-    //后台添加操作员用户
-    @PostMapping("bg_add_operator")
-    @ResponseBody
-    public MyJsonResult br_add_operator(@RequestBody Operator operator,
-                                     HttpServletRequest request){
-        operator.setOp_id(tools.createUserId(0,1));
-        if(operatorService.bg_add(operator))
-            return MyJsonResult.buildData("用户创建成功");
-        return MyJsonResult.errorMsg("失败");
-    }
 
-
-    // 后台更新物料表
-    @PostMapping("bg_update_material")
-    @ResponseBody
-    public MyJsonResult bg_update_material(@RequestBody Material material, HttpServletRequest request){
-        if(materialService.update_material_info(material)){
-            logger.info("后台更新Material:" + material.toString());
-            return MyJsonResult.buildData("ok");
-        }else{
-            logger.info("后台未能更新Material:" + material.toString());
-            return MyJsonResult.errorMsg("更新失败");
-        }
-    }
-
-    // 后台添加物料表
-    @PostMapping("bg_add_material")
-    @ResponseBody
-    public MyJsonResult bg_add_material(@RequestBody Material material, HttpServletRequest request){
-
-        if(materialService.add_material_info(material)){
-            logger.info("后台成功添加Material:" + material.toString());
-            return MyJsonResult.buildData("ok");
-        }else{
-            logger.info("后台未成功添加Material:" + material.toString());
-            return MyJsonResult.errorMsg("物料添加失败");
-        }
-    }
 }

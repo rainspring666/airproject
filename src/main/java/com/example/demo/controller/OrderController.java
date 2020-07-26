@@ -45,6 +45,12 @@ public class OrderController
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 用户新增一条订单记录
+     * @param order
+     * @param request
+     * @return 是否成功
+     */
     @PostMapping(value ="/add")
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
@@ -70,6 +76,12 @@ public class OrderController
         return MyJsonResult.errorMsg("add order error");
     }
 
+    /**
+     * 小程序根据order_id检查一条记录的详细信息
+     * @param order_id
+     * @param request
+     * @return 成功则是订单记录的详细信息
+     */
     @GetMapping("/check_detail")
     @ResponseBody
     public MyJsonResult checkByOrder(@RequestParam("order_id") String order_id,
@@ -81,7 +93,12 @@ public class OrderController
         return MyJsonResult.errorMsg("not found");
     }
 
-
+    /**
+     * 小程序删除一条订单记录
+     * @param orderId
+     * @param request
+     * @return 是否成功
+     */
     @RequestMapping(value ="/delete")
     @ResponseBody
     public MyJsonResult deleteOrder(@RequestParam("order_id") String orderId,HttpServletRequest request) {
@@ -92,7 +109,11 @@ public class OrderController
         return MyJsonResult.errorMsg("delete order error");
     }
 
-
+    /**
+     * 小程序用户显示自己的全部订单记录
+     * @param request
+     * @return 列表
+     */
     @GetMapping(value ="/show_my_orders")
     @ResponseBody
     public JSONArray searchOrderByUserId(HttpServletRequest request) {
@@ -117,6 +138,10 @@ public class OrderController
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
 
+    /**
+     * web端显示数据库所有订单记录----是否使用？？？
+     * @return
+     */
     @RequestMapping(value = "/all")
     public MyJsonResult selectAllOrder()
     {
@@ -162,7 +187,7 @@ public class OrderController
 
 
     /**
-     *  按照订单的状态查询订单
+     *  按照订单的状态查询订单———————是否使用？？？
      * @param id 参数范围以及意义：订单状态：0----未处理; 1------处理中; 2----完成
      * @return jsonResult
      *
@@ -201,6 +226,12 @@ public class OrderController
         return MyJsonResult.errorMsg("no order");
     }
 
+    /**
+     * 小程序端 订单户型图上传
+     * @param request
+     * @param file
+     * @return
+     */
     @RequestMapping("/upload_pictures")
     @ResponseBody
     public MyJsonResult upload(HttpServletRequest request,

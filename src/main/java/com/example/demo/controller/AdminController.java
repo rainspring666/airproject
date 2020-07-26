@@ -7,9 +7,11 @@ import com.example.demo.entity.Material;
 import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.entity.User_info;
 import com.example.demo.service.MaterialService;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
+import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
@@ -47,6 +49,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private MaterialService materialService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -61,7 +65,7 @@ public class AdminController {
 
         /*组装响应数据 便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();
-        List<User> users = userService.selectAllUserInfo();
+        List<User_info> User_infos = userInfoService.get_all_user_info();
 
         // 获得Op_id----------->Op_name
         HashMap<String, String> op_map = new HashMap<String,String>();
@@ -69,8 +73,8 @@ public class AdminController {
             op_map.put(operator.getOp_id(), operator.getOp_name());
         }
         HashMap<String, String> user_map = new HashMap<String,String>();
-        for (User user : users) {
-            user_map.put(user.getUser_id(), user.getUser_name());
+        for (User_info user_info : User_infos) {
+            user_map.put(user_info.getUser_id(), user_info.getUser_name());
         }
         for(int i = 0; i < orders.size(); i++){
             Order order = orders.get(i);
@@ -177,4 +181,44 @@ public class AdminController {
         return map;
 
     }
+
+    //后台添加操作员用户
+    @PostMapping("bg_add_operator")
+    @ResponseBody
+    public MyJsonResult br_add_operator(@RequestBody Operator operator,
+                                        HttpServletRequest request){
+        operator.setOp_id(tools.createUserId(0,1));
+        if(operatorService.bg_add(operator))
+            return MyJsonResult.buildData("用户创建成功");
+        return MyJsonResult.errorMsg("失败");
+    }
+
+
+    // 后台更新物料表
+    @PostMapping("bg_update_material")
+    @ResponseBody
+    public MyJsonResult bg_update_material(@RequestBody Material material, HttpServletRequest request){
+        if(materialService.update_material_info(material)){
+            logger.info("后台更新Material:" + material.toString());
+            return MyJsonResult.buildData("ok");
+        }else{
+            logger.info("后台未能更新Material:" + material.toString());
+            return MyJsonResult.errorMsg("更新失败");
+        }
+    }
+
+    // 后台添加物料表
+    @PostMapping("bg_add_material")
+    @ResponseBody
+    public MyJsonResult bg_add_material(@RequestBody Material material, HttpServletRequest request){
+
+        if(materialService.add_material_info(material)){
+            logger.info("后台成功添加Material:" + material.toString());
+            return MyJsonResult.buildData("ok");
+        }else{
+            logger.info("后台未成功添加Material:" + material.toString());
+            return MyJsonResult.errorMsg("物料添加失败");
+        }
+    }
+
 }

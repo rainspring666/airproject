@@ -14,6 +14,12 @@ spring:
       exclude: WEB-INF/**
   freemarker:
     cache: false    #页面不加载缓存，修改即时生效
+#  jpa:
+#    database: MySQL
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
 
   jackson:
     default-property-inclusion: ALWAYS

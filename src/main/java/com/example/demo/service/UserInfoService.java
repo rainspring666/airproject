@@ -14,15 +14,19 @@ public class UserInfoService {
     @Autowired
     UserInfoMapper userInfoMapper;
 
-    List<User_info> get_all_user_info(){
+    public List<User_info> get_all_user_info(){
         return userInfoMapper.get_all_user_info();
     }
 
-    boolean update_user_info(User_info user_info){
+    public User_info get_user_info_by_id(String user_id){
+        return userInfoMapper.get_user_info_by_id(user_id);
+    }
+
+    public boolean update_user_info(User_info user_info){
         return userInfoMapper.update_user_info(user_info);
     }
 
-    boolean add_user_info(User_info user_info){
+    public boolean add_user_info(User_info user_info){
         return userInfoMapper.add_user_info(user_info);
     }
 }

@@ -1,6 +1,13 @@
 package com.example.demo.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+// @Entity
+// @Table(name= "userorder")
 public class Order {
+    @Id
     private String order_id;
 
     private String user_id;
