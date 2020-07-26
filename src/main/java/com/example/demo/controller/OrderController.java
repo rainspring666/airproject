@@ -235,7 +235,7 @@ public class OrderController
      */
     @RequestMapping("/upload_pictures")
     @ResponseBody
-    public MyJsonResult upload(HttpServletRequest request,@RequestParam("order_id") String order_id,
+    public MyJsonResult upload(HttpServletRequest request,
                                @RequestParam(value = "file", required = false) MultipartFile file) {
         String user_id = request.getSession().getAttribute("userid").toString();
         String path = null, imgDir = "hx_img";
@@ -267,11 +267,8 @@ public class OrderController
                             dir.mkdirs();
                         }
                         file.transferTo(new File(tools.UPLOAD_PICTURE_PATH +path));
-                        Order order = orderService.selectByPrimaryKey(order_id);
 
                         // 路径之间以@分割
-                        order.setOrder_modelf(order.getOrder_modelf() + path + "@");
-                        orderService.updateOrder_modelf(order);
                     } else {
                         return MyJsonResult.errorMsg("文件类型错误");
                     }
@@ -284,8 +281,8 @@ public class OrderController
         } catch (IOException e){
             System.out.println("图片上传这里有异常");
         }
-        logger.info("user {} upload picture:{}",user_id,path);
-        return MyJsonResult.buildData(path);//成功的话 返回图片在服务器的路径 暂时只能一张图片
+        logger.info("user {} upload picture:{}",user_id,path + "@");
+        return MyJsonResult.buildData(path + "@");//成功的话 返回图片在服务器的路径 暂时只能一张图片
     }
 
     // 小程序端订单信息显示图片
