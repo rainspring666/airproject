@@ -29,5 +29,6 @@ public interface OrderMapper {
 
     List<Order> searchByMultiConditions(String order_id,String connect_name,String phone);
 
+    boolean updateOrder_modelf(String order_id, String order_modelf);
 
 }

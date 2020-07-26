@@ -6,12 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.mapper.ProcessMapper;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
-import com.example.demo.tools.MyJsonResult;
-import com.example.demo.tools.OrderClassEnum;
-import com.example.demo.tools.OrderStateEnum;
-import com.example.demo.tools.Tool;
+import com.example.demo.tools.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +41,8 @@ public class OrderController
 
     @Autowired
     private OperatorService operatorService;
+
+    private ProcessMapper processMapper;
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -234,10 +235,10 @@ public class OrderController
      */
     @RequestMapping("/upload_pictures")
     @ResponseBody
-    public MyJsonResult upload(HttpServletRequest request,
+    public MyJsonResult upload(HttpServletRequest request,@RequestParam("order_id") String order_id,
                                @RequestParam(value = "file", required = false) MultipartFile file) {
         String user_id = request.getSession().getAttribute("userid").toString();
-        String path = null;
+        String path = null, imgDir = "hx_img";
         try {
             request.setCharacterEncoding("UTF-8");
             if (!file.isEmpty()) {
@@ -245,15 +246,32 @@ public class OrderController
                 String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
                 if (type != null) {
                     if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
-                        // 自定义的文件名称 以后还要加上orderid 区分多张图片
+
+                        /*// 自定义的文件名称 以后还要加上orderid 区分多张图片
                         String trueFileName = String.valueOf(System.currentTimeMillis()) + fileName;
                         // 设置存放图片文件的路径
-                        path = tools.UPLOAD_PICTURE_PATH  + trueFileName;
-                        File dir = new File(tools.UPLOAD_PICTURE_PATH);
+                        path = tools.UPLOAD_PICTURE_PATH  + trueFileName;*/
+
+                        // 自定义的文件名称使用UUID
+                        String trueFileName = tools.createOrderId() + type;
+                        Calendar calendar = Calendar.getInstance();
+                        // 设置存放图片文件的路径    hx_img/年/月/日/图片   考虑是否去掉年份？？？？
+
+                        String temp =  imgDir + Integer.toString(calendar.get(calendar.YEAR)) + "/"
+                                + Integer.toString(calendar.get(calendar.MONTH)+1) + "/"+ Integer.toString(calendar.get(calendar.DAY_OF_MONTH)) + "/";
+
+                        path = temp  + trueFileName;
+                        File dir = new File(tools.UPLOAD_PICTURE_PATH +temp);
+                        //Process process = processMapper.
                         if (!dir.exists()) {
-                            dir.mkdir();
+                            dir.mkdirs();
                         }
-                        file.transferTo(new File(path));
+                        file.transferTo(new File(tools.UPLOAD_PICTURE_PATH +path));
+                        Order order = orderService.selectByPrimaryKey(order_id);
+
+                        // 路径之间以@分割
+                        order.setOrder_modelf(order.getOrder_modelf() + path + "@");
+                        orderService.updateOrder_modelf(order);
                     } else {
                         return MyJsonResult.errorMsg("文件类型错误");
                     }
@@ -268,6 +286,22 @@ public class OrderController
         }
         logger.info("user {} upload picture:{}",user_id,path);
         return MyJsonResult.buildData(path);//成功的话 返回图片在服务器的路径 暂时只能一张图片
+    }
+
+    // 小程序端订单信息显示图片
+    @GetMapping("/show_pic")
+    @ResponseBody
+    public JSONArray show_order_pices(HttpServletRequest request,@RequestParam("order_id") String order_id){
+        Order order = orderService.selectByPrimaryKey(order_id);
+        String order_modelf = order.getOrder_modelf();
+
+        System.out.println(order_modelf);
+        // 以@分隔开
+        String[] result = order_modelf.split("@");
+        logger.info("小程序请求订单图片");
+        for (int i= 0; i < result.length; i++)
+            System.out.println(result[i]);
+        return JSONArray.parseArray(JSON.toJSONString(result));
     }
 
 }
