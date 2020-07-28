@@ -10,20 +10,22 @@ import com.example.demo.mapper.ProcessMapper;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.tools.*;
+import com.sun.rowset.internal.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author mhh
@@ -140,7 +142,7 @@ public class OrderController
     }
 
     /**
-     * web端显示数据库所有订单记录----是否使用？？？
+     * web端显示数据库所有订单记录----是否使用？？？ 未使用
      * @return
      */
     @RequestMapping(value = "/all")
@@ -188,7 +190,7 @@ public class OrderController
 
 
     /**
-     *  按照订单的状态查询订单———————是否使用？？？
+     *  按照订单的状态查询订单———————是否使用？？？ 未使用
      * @param id 参数范围以及意义：订单状态：0----未处理; 1------处理中; 2----完成
      * @return jsonResult
      *
@@ -300,5 +302,4 @@ public class OrderController
             System.out.println(result[i]);
         return JSONArray.parseArray(JSON.toJSONString(result));
     }
-
 }

@@ -1,33 +1,26 @@
 package com.example.demo.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.Material;
-import com.example.demo.entity.Operator;
-import com.example.demo.entity.Order;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import com.example.demo.service.MaterialService;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
-import com.example.demo.service.UserService;
-import com.example.demo.tools.MyJsonResult;
+import com.example.demo.service.UserInfoService;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.itextpdf.text.DocumentException;
-import jdk.nashorn.internal.ir.RuntimeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +37,7 @@ public class AdminController {
     @Autowired
     private OperatorService operatorService;
     @Autowired
-    private UserService userService;
+    private UserInfoService userInfoService;
     @Autowired
     private MaterialService materialService;
 
@@ -61,7 +54,7 @@ public class AdminController {
 
         /*组装响应数据 便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();
-        List<User> users = userService.selectAllUserInfo();
+        List<User_info> userInfos = userInfoService.get_all_user_info();
 
         // 获得Op_id----------->Op_name
         HashMap<String, String> op_map = new HashMap<String,String>();
@@ -69,8 +62,8 @@ public class AdminController {
             op_map.put(operator.getOp_id(), operator.getOp_name());
         }
         HashMap<String, String> user_map = new HashMap<String,String>();
-        for (User user : users) {
-            user_map.put(user.getUser_id(), user.getUser_name());
+        for (User_info userInfo : userInfos) {
+            user_map.put(userInfo.getUser_id(), userInfo.getUser_name());
         }
         for(int i = 0; i < orders.size(); i++){
             Order order = orders.get(i);

@@ -7,8 +7,10 @@ import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
+import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
+import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.UUID;
 
 /*
 后台管理页面跳转
@@ -34,6 +42,8 @@ public class AdminPageController {
     private OperatorService operatorService;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private Tool tools;
 
     //主页index
     @RequestMapping("/index.html")
@@ -235,7 +245,27 @@ public class AdminPageController {
         return "page/table/order_add";
     }
 
+    @RequestMapping("api/upload")
+    @ResponseBody
+    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam(value = "file") MultipartFile file){
+        try {
+            String path= tools.UPLOAD_PICTURE_PATH;
+            String fileName = file.getOriginalFilename();  //prefix  suffix
+            String  suffix = fileName.substring(fileName.lastIndexOf("."));
+            String newFileName =	UUID.randomUUID().toString() + suffix;
+            File targetFile = new File(path, newFileName);
+            if(!targetFile.exists()){
+                targetFile.mkdirs();
+            }
+            file.transferTo(targetFile);
+            logger.info("图片上传成功"+targetFile.getAbsolutePath());
+            return MyJsonResult.buildData("上传成功");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  MyJsonResult.errorMsg("上传失败");
+    }
 
 
 }
