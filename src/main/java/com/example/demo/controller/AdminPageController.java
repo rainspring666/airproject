@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.Equipment;
 import com.example.demo.entity.Material;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OperatorService;
@@ -218,6 +219,17 @@ public class AdminPageController {
         return "page/table/order_detail";
     }
 
+    @GetMapping ("/page/table/material_detail")
+    public String material_detail(@RequestParam("material") String strOrder, Model model){
+        logger.info("/page/table/material_detail.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Material material = jsonOrder.toJavaObject(Material.class);
+        logger.info(material.toString());
+        model.addAttribute("material",material);
+        return "page/table/material_detail";
+    }
+
     @GetMapping ("/page/table/material_edit")
     public String material_edit(@RequestParam("material") String strOrder, Model model){
         logger.info("/page/table/material_edit.html");
@@ -235,6 +247,38 @@ public class AdminPageController {
         //
 
         return "page/table/material_add";
+    }
+
+    @GetMapping ("/page/table/equipment_edit")
+    public String equipment_edit(@RequestParam("equipment") String strOrder, Model model){
+        logger.info("/page/table/equipment_edit.html");
+        //
+        System.out.println(strOrder);
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Equipment equipment = jsonOrder.toJavaObject(Equipment.class);
+        logger.info(equipment.toString());
+        model.addAttribute("equipment",equipment);
+        return "page/table/equipment_edit";
+    }
+
+    @GetMapping ("/page/table/equipment_detail")
+    public String equipment_detail(@RequestParam("equipment") String strOrder, Model model){
+        logger.info("/page/table/equipment_detail.html");
+        //
+        System.out.println(strOrder);
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Equipment equipment = jsonOrder.toJavaObject(Equipment.class);
+        logger.info(equipment.toString());
+        model.addAttribute("equipment",equipment);
+        return "page/table/equipment_detail";
+    }
+
+    @GetMapping ("/page/table/equipment_add.html")
+    public String equipment_add( Model model){
+        logger.info("/page/table/equipment_add.html");
+        //
+
+        return "page/table/equipment_add";
     }
 
     @GetMapping ("/page/table/order_add.html")

@@ -14,7 +14,7 @@ public interface EquipMapper {
 
     boolean add_equipment_info(Equipment equipment);
 
-    boolean del_equipment_info(String ep_id);
+    boolean del_equipment_info(String eq_id);
 
     Equipment get_one_info(String ep_id);
 

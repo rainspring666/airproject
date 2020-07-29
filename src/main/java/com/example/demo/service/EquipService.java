@@ -27,6 +27,9 @@ public class EquipService {
 
     public boolean add_equipment_info(Equipment equipment){
 
+        Equipment equipment1 = equipMapper.get_one_info(equipment.getEq_id());
+        if(equipment1 != null)
+            return false;
         return equipMapper.add_equipment_info(equipment);
     }
 

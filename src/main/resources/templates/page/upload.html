@@ -29,6 +29,7 @@
         <script type="text/html" id="materialToolbar">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加物料 </button>
+                <button class="layui-btn layui-btn-danger layui-btn-sm data-add-btn" lay-event="delete"> 禁用所选 </button>
             </div>
         </script>
 
@@ -37,7 +38,7 @@
         <script type="text/html" id="materialTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="detail">查看</a>
             <a class="layui-btn layui-btn-warm layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <!--<a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="forbid">禁用</a>-->
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="forbid">禁用</a>
         </script>
 
     </div>
@@ -103,9 +104,8 @@
          * toolbar事件监听
          */
         table.on('toolbar(materialTableFilter)', function (obj) {
-            console.log(obj);
+
             if (obj.event === 'add') {   // 监听添加操作
-                layer.msg("hello");
                 var content = miniPage.getHrefContent('page/table/material_add.html');
                 var openWH = miniPage.getOpenWidthHeight();
 
@@ -131,8 +131,36 @@
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
-            }else{
-                layer.msg("222");
+            }else if(obj.event === 'delete'){
+                var checkStatus = table.checkStatus('materialTable'); //idTest 即为基础参数 id 对应的值
+
+                console.log(checkStatus.data); //获取选中行的数据
+                var arr = [];
+                for(var i = 0; i < checkStatus.data.length; i++){
+                    arr.push(checkStatus.data[i].material_id);
+                }
+                layer.msg("开始");
+                $.ajax({
+                    type: "post",
+                    url:"/api/bg/admin/del_materials",
+                    data:JSON.stringify(arr),
+                    contentType: "application/json;charset=UTF-8",
+                    success:function (data) {
+                        layer.msg("完成");
+                        if(data.data =="ok"){
+                            layer.msg("delete ok");
+                            table.reload('materialTable', {
+                                page: {
+                                    curr:1
+                                },
+                                url: '/api/bg/admin/getallmaterialinfo',
+                            }, 'data');
+                        } else {
+                            layer.msg("失败");
+                        }
+
+                    }
+                });
             }
         });
 
@@ -201,6 +229,30 @@
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
+                });
+                return false;
+            } else if(obj.event === 'forbid'){
+                var material_id = data.material_id;
+                layer.confirm('真的删除此行么？', function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    $.ajax({
+                        type: "post",
+                        url:"/api/bg/admin/del_material",
+                        data:material_id,
+                        dataType:"application/json;charset=UTF-8",
+                        contentType: "application/json;charset=UTF-8",
+                        success:function (data) {
+                            if(data.data =="ok"){
+                                layer.msg("delete ok");
+                            } else {
+                                layer.msg("失败");
+                            }
+
+                        }
+                    });
+
                 });
                 return false;
             }
