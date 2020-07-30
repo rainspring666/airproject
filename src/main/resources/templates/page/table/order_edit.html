@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单编号</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 220px;" name="order_id" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input layui-disabled" th:value="${order.order_id}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">预约时间</label>
+        <div class="layui-input-inline">
+            <input type="text"  style="width: 220px;" name = "order_time" lay-verify="required" autocomplete="off" class="layui-input" th:value="${order.order_time}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单类别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="order_class"  value="1" title="家居">
+            <input type="radio" name="order_class"  value="2" title="车辆" checked>
+            <input type="radio" name="order_class"  value="3" title="工装">
+            <input type="radio" name="order_class"  value="4" title="其他">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单面积</label>
+        <div class="layui-input-block">
+            <input type="text"  style="width: 80px" name = "order_scope" required lay-verify="required|number" placeholder="请输入面积" autocomplete="off" class="layui-input" th:value="${order.order_scope}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">订单描述</label>
+        <div class="layui-input-block">
+            <textarea name="order_descripe" style="width: 300px" placeholder="请输入描述" class="layui-textarea" th:text="${order.order_descripe}"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">订单地址</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 300px;" name = "order_address" lay-verify="required" autocomplete="off"  placeholder="请输入地址" class="layui-input" th:value="${order.order_address}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">联系人</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 150px;" name = "order_contact" lay-verify="required" autocomplete="off"  placeholder="请输入联系人姓名" class="layui-input" th:value="${order.order_contact}">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">电话号码</label>
+        <div class="layui-input-block">
+            <input type="text" style="width: 150px;" name = "order_phone" lay-verify="required|phone" autocomplete="off"  placeholder="请输入手机号码" class="layui-input" th:value="${order.order_phone}">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">其他要求</label>
+        <div class="layui-input-block">
+            <textarea name="order_others" style="width: 300px" placeholder="请输入要求" class="layui-textarea" th:text="${order.order_others}"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">订单费用</label>
+        <div class="layui-input-block">
+            <input type="text"  style="width: 150px" name = "order_cost" required lay-verify="required|number" placeholder="请输入面积" autocomplete="off" class="layui-input" th:value="${order.order_cost}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">污染源</label>
+        <div class="layui-input-block">
+            <input type="text"  style="width: 150px" name = "order_pollution" required lay-verify="required" placeholder="请输入污染源" autocomplete="off" class="layui-input" th:value="${order.order_pollution}">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">检测报告</label>
+        <div class="layui-input-block">
+            <input type="checkbox"  name="switch" lay-skin="switch">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="order_edit">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+        var $ = layui.$;
+        form.render();
+        //监听提交
+        form.on('submit(order_edit)', function(data){
+            console.log(data.field);
+            console.log(JSON.stringify(data.field));
+            $.ajax({
+                type: "post",
+                url:"/api/order/updateOrderInfo",
+                data:JSON.stringify(data.field),
+                contentType:"application/json;charset=UTF-8",
+                success:function (data) {
+                    if(data.data=="ok"){
+                        layer.msg("订单更新成功");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

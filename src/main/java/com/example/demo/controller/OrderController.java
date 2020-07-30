@@ -302,4 +302,17 @@ public class OrderController
             System.out.println(result[i]);
         return JSONArray.parseArray(JSON.toJSONString(result));
     }
+
+    @PostMapping("/updateOrderInfo")
+    @ResponseBody
+    public MyJsonResult order_change_by_id(HttpServletRequest request, @RequestBody Order order){
+        logger.info("[method]:order_change_by_id");
+        logger.info("[interface]:api/order/updateOrderInfo");
+        logger.info(order.toString());
+        boolean flag = orderService.order_change_by_id(order);
+        if(flag){
+            return MyJsonResult.buildData("修改成功");
+        }
+        return MyJsonResult.errorMsg("修改失败");
+    }
 }

@@ -283,18 +283,29 @@ public class AdminPageController {
 
     @GetMapping ("/page/table/order_add.html")
     public String order_add( Model model){
-        logger.info("/page/table/material_add.html");
+        logger.info("/page/table/order_add.html");
         //
 
         return "page/table/order_add";
     }
+    @GetMapping ("/page/table/order_edit.html")
+    public String order_edit(@RequestParam("order") String strOrder, Model model){
+        logger.info("/page/table/order_edit.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Order order = jsonOrder.toJavaObject(Order.class);
+        logger.info(order.toString());
+        model.addAttribute("order",order);
+        return "page/table/order_edit";
+    }
 
     @RequestMapping("api/upload")
     @ResponseBody
-    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam(value = "file") MultipartFile file){
+    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam("orderID") String order_id ,@RequestParam(value = "file") MultipartFile file){
         try {
+            logger.info(order_id);
             String path= tools.UPLOAD_PICTURE_PATH;
-            String fileName = file.getOriginalFilename();  //prefix  suffix
+            String fileName = file.getOriginalFilename();
             String  suffix = fileName.substring(fileName.lastIndexOf("."));
             String newFileName =	UUID.randomUUID().toString() + suffix;
             File targetFile = new File(path, newFileName);
