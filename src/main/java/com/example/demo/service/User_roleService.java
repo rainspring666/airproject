@@ -13,15 +13,15 @@ public class User_roleService {
     @Autowired
     private User_roleMapper user_roleMapper;
 
-    List<User_role> get_all_user_role(){
+    public List<User_role> get_all_user_role(){
         return user_roleMapper.get_all_user_role_info();
     }
 
-    boolean add_user_role(User_role user_role){
+    public boolean add_user_role(User_role user_role){
         return user_roleMapper.add_user_role_info(user_role);
     }
 
-    boolean update_user_role(User_role user_role){
+    public boolean update_user_role(User_role user_role){
         return user_roleMapper.update_user_role_info(user_role);
     }
 }

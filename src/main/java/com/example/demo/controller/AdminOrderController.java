@@ -5,13 +5,16 @@ import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.entity.User_info;
+import com.example.demo.entity.User_role;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
+import com.example.demo.service.User_roleService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
+import com.example.demo.tools.Tool;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.aspectj.weaver.ast.Or;
@@ -26,9 +29,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +53,14 @@ public class AdminOrderController {
     private UserService userService;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private User_roleService user_roleService;
+
+    @Autowired
+    private Tool tools;
+
+    private String user_id_global="";
+    private String order_id_global="";
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -114,6 +129,8 @@ public class AdminOrderController {
     @ResponseBody
     public MyJsonResult add_order(@RequestBody Order order){
         //补充order必要的信息
+        String order_id = tools.createOrderId();
+        order.setOrder_id(order_id);
         order.setOrder_state("0");
         order.setOp_id("1");
         order.setUser_id("");//临时用户 游客id====
@@ -124,6 +141,7 @@ public class AdminOrderController {
 
         if(orderService.insert(order)){
             logger.info("web add an order："+order.getOrder_id());
+            this.order_id_global=order_id;
             return MyJsonResult.buildData("ok");
         }
 
@@ -131,8 +149,91 @@ public class AdminOrderController {
     }
 
     /**
-     * 图片上传
+     *web端 新增一条userinfo user 记录 游客性质的用户 企业用户
+     * @return
      */
+    @PostMapping("/order/add_one_order")
+    @ResponseBody
+    public MyJsonResult add_user_info(@RequestBody User_info user_info){
+        String user_id = tools.createUserId(0,1);
+        //更新用户
+        User user = new User();
+        user.setUser_id(user_id);
+        user.setUser_pwd("Temp00000000");
+        user.setUser_phone(user_info.getUser_id());//phone临时做id
+
+        //更新用户信息
+        user_info.setFirm_id("0");
+        user_info.setUser_id(user_id);
+
+        //更新用户角色
+        User_role user_role = new User_role();
+        user_role.setUser_id(user_id);
+        if(user_info.getUser_nickname().contains("a游客"))
+            user_role.setUser_role_id(2);//
+        else if (user_info.getUser_nickname().contains("b公司"))
+            user_role.setUser_role_id(3);//
+
+
+        if(userService.save_user(user) && userInfoService.add_user_info(user_info) &&
+                user_roleService.add_user_role(user_role)) {
+            logger.info("/order/add_one_order"+user_id);
+            this.user_id_global = user_id;
+            return MyJsonResult.buildData("ok");
+        }
+
+        return MyJsonResult.errorMsg("error");
+    }
+
+    /**
+     * web端 游客/企业用户 订单户型图上传
+     * @param request
+     * @param file
+     * @return
+     */
+    @RequestMapping("/other_users/upload_pictures")
+    @ResponseBody
+    public MyJsonResult upload(HttpServletRequest request,
+                               @RequestParam(value = "file", required = false) MultipartFile file) {
+        String user_id = this.user_id_global;
+        String path = null, imgDir = "hx_img_other_users";
+        try {
+            request.setCharacterEncoding("UTF-8");
+            if (!file.isEmpty()) {
+                String fileName = file.getOriginalFilename();
+                String type = fileName.indexOf(".") != -1 ? fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length()) : null;
+                if (type != null) {
+                    if ("PNG".equals(type.toUpperCase()) || "JPG".equals(type.toUpperCase())) {
+
+                        // 自定义的文件名称使用UUID
+                        String trueFileName = tools.createOrderId() + "." + type;
+                        Calendar calendar = Calendar.getInstance();
+                        // 设置存放图片文件的路径    hx_img/年/月/日/图片   考虑是否去掉年份？？？？
+                        String temp =  imgDir + "/" + Integer.toString(calendar.get(calendar.YEAR)) + "/"
+                                + Integer.toString(calendar.get(calendar.MONTH)+1) + "/"+ Integer.toString(calendar.get(calendar.DAY_OF_MONTH)) + "/";
+
+                        path = temp  + trueFileName;
+                        File dir = new File("/Users/pengyuquan/Desktop/" +temp);
+                        //Process process = processMapper.
+                        if (!dir.exists()) {
+                            dir.mkdirs();
+                        }
+                        file.transferTo(new File("/Users/pengyuquan/Desktop/" +path));
+                    } else {
+                        return MyJsonResult.errorMsg("文件类型错误");
+                    }
+                } else {
+                    return MyJsonResult.errorMsg("文件类型空");
+                }
+            } else {
+                return MyJsonResult.errorMsg("貌似你的图片上传失败了呢");
+            }
+        } catch (IOException e){
+            System.out.println("图片上传这里有异常");
+        }
+        logger.info("user {} upload picture:{}",user_id,path + "@");
+        return MyJsonResult.buildData(path + "@");//成功的话 返回图片在服务器的路径 暂时只能一张图片
+    }
 
 
     /**
