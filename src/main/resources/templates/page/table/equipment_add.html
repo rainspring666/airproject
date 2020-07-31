@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<body>
+<div class="layui-row layui-col-space10">
+<form class="layui-form layui-form-pane">
+
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">物料名称</label>-->
+    <!--<div class="layui-input-inline">-->
+    <!--<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-col-md5">
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备编号</label>
+            <div class="layui-input-inline">
+
+                <input type="text" name= "eq_id" autocomplete="off" lay-verify="required" placeholder="请输入新设备的编号" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备类型</label>
+            <div class="layui-input-inline">
+                <input type="text" name = "eq_type" lay-verify="required" placeholder="请输入新设备的类型" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md5">
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name = "eq_name" lay-verify="required" placeholder="请输入新设备的名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">设备数量</label>
+            <div class="layui-input-inline">
+                <input type="text" name = "eq_inner_num" lay-verify="required" placeholder="请输入新设备的数量" autocomplete="off" class="layui-input"
+                onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">其他描述</label>
+            <div class="layui-input-block">
+                <textarea placeholder="设备描述" class="layui-textarea"  name ="eq_other"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <button class="layui-btn"  lay-submit lay-filter="equipment_add">提交申请</button>
+    </div>
+</form>
+</div>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        var $ = layui.$;
+
+        //监听提交
+        form.on('submit(equipment_add)', function(data){
+            layer.msg("123");
+            // console.log($("input[name='add_material_id']").val());
+            // console.log($("input[name='add_ma_name']").val());
+            // console.log(JSON.stringify(data.field));
+            // console.log("hahah");
+            // var jsonData = '{"material_id":"' + $("input[name='add_material_id']").val() +'","ma_name":"'
+            //     +$("input[name='add_ma_name']").val() + '","ma_number":"'
+            //     +$("input[name='add_ma_number']").val() + '","ma_other":"'
+            //     +$("textarea[name='add_ma_other']").val()+'"}';
+            // console.log(jsonData);
+            console.log(JSON.stringify(data.field))
+            $.ajax({
+                type: "post",
+                url:"/api/bg/admin/bg_add_equipment",
+                data:JSON.stringify(data.field),
+                contentType:"application/json;charset=UTF-8",
+                success:function (data) {
+                    if(data.data=="ok"){
+                        layer.msg("ok");
+                    } else {
+                        layer.msg(data.msg);
+                    }
+
+                }
+            });
+            return false;
+        });
+    });
+</script>

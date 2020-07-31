@@ -34,24 +34,6 @@ public class Equipment {
         this.eq_type = eq_type;
     }
 
-
-
-    public String getEq_createtime() {
-        return eq_create_time;
-    }
-
-    public void setEq_createtime(String eq_createtime) {
-        this.eq_create_time = eq_createtime;
-    }
-
-    public String getEq_addtime() {
-        return eq_add_time;
-    }
-
-    public void setEq_addtime(String eq_addtime) {
-        this.eq_add_time = eq_addtime;
-    }
-
     public int getEq_inner_num() {
         return eq_inner_num;
     }
@@ -90,5 +72,19 @@ public class Equipment {
 
     public void setEq_other(String eq_other) {
         this.eq_other = eq_other;
+    }
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "eq_id='" + eq_id + '\'' +
+                ", eq_name='" + eq_name + '\'' +
+                ", eq_type='" + eq_type + '\'' +
+                ", eq_inner_num=" + eq_inner_num +
+                ", eq_create_time='" + eq_create_time + '\'' +
+                ", eq_add_time='" + eq_add_time + '\'' +
+                ", eq_state=" + eq_state +
+                ", eq_other='" + eq_other + '\'' +
+                '}';
     }
 }

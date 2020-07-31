@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
-    <select id="Sel" resultType="com.example.demo.entity.User">
-        select * from user where user_id = #{id}
-    </select>
     <select id="login_user" resultType="com.example.demo.entity.User">
         select  * from user where user_phone = #{phone} and user_pwd =#{pwd}
     </select>
@@ -15,14 +12,10 @@
         select * from user where open_id = #{openid}
     </select>
     <insert id="save_user">
-		insert into user(user_id, user_pwd,user_phone,user_name,user_gender,open_id)
-		values(#{user_id},#{user_pwd},#{user_phone},#{user_name},#{user_gender},#{open_id})
+		insert into user(user_id, user_pwd,user_phone,open_id)
+		values(#{user_id},#{user_pwd},#{user_phone},#{open_id})
     </insert>
-    <update id="update_info">
-        update user
-        set user_name=#{name},user_gender=#{gender}
-        where user_id=#{id}
-    </update>
+
     <select id="selectAllUserInfo" resultType="com.example.demo.entity.User">
         select * from user
     </select>

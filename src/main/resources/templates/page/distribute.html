@@ -191,7 +191,6 @@
                 var order = obj.data;
                 var jsonData = JSON.stringify(order);
                 jsonData = encodeURIComponent(jsonData);
-                console.log(jsonData);
                 var content = miniPage.getHrefContent('/admin/page/table/order_detail?order='+jsonData);
                 var openWH = miniPage.getOpenWidthHeight();
 
@@ -213,7 +212,10 @@
                 return false;
             }
             else if (obj.event === 'edit') {
-                var content = miniPage.getHrefContent('/admin/page/table/order_edit.html');
+                var order = obj.data;
+                var jsonData = JSON.stringify(order);
+                jsonData = encodeURIComponent(jsonData);
+                var content = miniPage.getHrefContent('/admin/page/table/order_edit.html?order='+jsonData);
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({

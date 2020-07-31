@@ -14,12 +14,6 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public User Sel(String id){
-        return userMapper.Sel(id);
-    }
-    /*
-
-     */
     public User login_user(String user_phone, String user_pwd){
         return userMapper.login_user(user_phone,user_pwd);
     }
@@ -45,10 +39,6 @@ public class UserService {
 
     public boolean update_info(String id,String name,int gender){
         return userMapper.update_info(id,name,gender);
-    }
-
-    public List<User> selectAllUserInfo(){
-        return userMapper.selectAllUserInfo();
     }
 
     public User selectByUserID(String userId){

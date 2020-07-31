@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+
+<body>
+
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 15px;">
+                    <div carousel-item>
+                        <form class="layui-form" style="margin: 0 auto;max-width: 1200px;padding-top: 15px;">
+                            <div class="layui-row layui-col-space10">
+                                <div class="layui-col-md4 layui-col-md-offset2">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">设备ID:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_id}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">设备类型:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_type}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">创建时间:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_create_time}"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-col-md4 layui-col-md-offset2">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">设备名称:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_name}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">现有数量:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_inner_num}"></div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">增添时间:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_add_time}"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="layui-col-md8 layui-col-md-offset2">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label">其他描述:</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-form-mid layui-word-aux" th:text="${equipment.eq_other}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

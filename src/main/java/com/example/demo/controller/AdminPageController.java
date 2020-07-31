@@ -1,14 +1,17 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.Equipment;
 import com.example.demo.entity.Material;
 import com.example.demo.entity.Order;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
+import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
+import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.UUID;
 
 /*
 后台管理页面跳转
@@ -34,6 +43,8 @@ public class AdminPageController {
     private OperatorService operatorService;
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private Tool tools;
 
     //主页index
     @RequestMapping("/index.html")
@@ -208,6 +219,17 @@ public class AdminPageController {
         return "page/table/order_detail";
     }
 
+    @GetMapping ("/page/table/material_detail")
+    public String material_detail(@RequestParam("material") String strOrder, Model model){
+        logger.info("/page/table/material_detail.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Material material = jsonOrder.toJavaObject(Material.class);
+        logger.info(material.toString());
+        model.addAttribute("material",material);
+        return "page/table/material_detail";
+    }
+
     @GetMapping ("/page/table/material_edit")
     public String material_edit(@RequestParam("material") String strOrder, Model model){
         logger.info("/page/table/material_edit.html");
@@ -227,15 +249,78 @@ public class AdminPageController {
         return "page/table/material_add";
     }
 
+    @GetMapping ("/page/table/equipment_edit")
+    public String equipment_edit(@RequestParam("equipment") String strOrder, Model model){
+        logger.info("/page/table/equipment_edit.html");
+        //
+        System.out.println(strOrder);
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Equipment equipment = jsonOrder.toJavaObject(Equipment.class);
+        logger.info(equipment.toString());
+        model.addAttribute("equipment",equipment);
+        return "page/table/equipment_edit";
+    }
+
+    @GetMapping ("/page/table/equipment_detail")
+    public String equipment_detail(@RequestParam("equipment") String strOrder, Model model){
+        logger.info("/page/table/equipment_detail.html");
+        //
+        System.out.println(strOrder);
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Equipment equipment = jsonOrder.toJavaObject(Equipment.class);
+        logger.info(equipment.toString());
+        model.addAttribute("equipment",equipment);
+        return "page/table/equipment_detail";
+    }
+
+    @GetMapping ("/page/table/equipment_add.html")
+    public String equipment_add( Model model){
+        logger.info("/page/table/equipment_add.html");
+        //
+
+        return "page/table/equipment_add";
+    }
+
     @GetMapping ("/page/table/order_add.html")
     public String order_add( Model model){
-        logger.info("/page/table/material_add.html");
+        logger.info("/page/table/order_add.html");
         //
 
         return "page/table/order_add";
     }
+    @GetMapping ("/page/table/order_edit.html")
+    public String order_edit(@RequestParam("order") String strOrder, Model model){
+        logger.info("/page/table/order_edit.html");
+        //
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        Order order = jsonOrder.toJavaObject(Order.class);
+        logger.info(order.toString());
+        model.addAttribute("order",order);
+        return "page/table/order_edit";
+    }
 
+    @RequestMapping("api/upload")
+    @ResponseBody
+    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam("orderID") String order_id ,@RequestParam(value = "file") MultipartFile file){
+        try {
+            logger.info(order_id);
+            String path= tools.UPLOAD_PICTURE_PATH;
+            String fileName = file.getOriginalFilename();
+            String  suffix = fileName.substring(fileName.lastIndexOf("."));
+            String newFileName =	UUID.randomUUID().toString() + suffix;
+            File targetFile = new File(path, newFileName);
+            if(!targetFile.exists()){
+                targetFile.mkdirs();
+            }
+            file.transferTo(targetFile);
+            logger.info("图片上传成功"+targetFile.getAbsolutePath());
+            return MyJsonResult.buildData("上传成功");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  MyJsonResult.errorMsg("上传失败");
+    }
 
 
 }
