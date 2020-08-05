@@ -96,14 +96,27 @@ public class OperatorController {
     }
 
     //显示所有自己的订单 byopid
-    @GetMapping("/wx_show_orders")
+    /*@GetMapping("/wx_show_orders")
     @ResponseBody
-    public JSONArray wx_show_orders(HttpServletRequest request){
+    public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam(required = false,defaultValue = "1") int page,
+    @RequestParam(required = false,defaultValue = "10") int limit){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
         // 有时会报空指针异常
         String op_id = operator.getOp_id();
         List<Order> list = operatorService.wx_show_orders(op_id);
         logger.info(JSON.toJSONString(list));
+        return JSONArray.parseArray(JSON.toJSONString(list));
+
+    }*/
+    @GetMapping("/wx_show_orders")
+    @ResponseBody
+    public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam(required = false,defaultValue = "1") int startPosition,
+                                    @RequestParam(required = false,defaultValue = "10") int size){
+        Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
+        // 有时会报空指针异常
+        String op_id = operator.getOp_id();
+        List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id);
+        logger.info("show_orders:" + JSON.toJSONString(list));
         return JSONArray.parseArray(JSON.toJSONString(list));
 
     }

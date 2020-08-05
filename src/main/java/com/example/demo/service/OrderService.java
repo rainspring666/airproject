@@ -57,9 +57,13 @@ public class OrderService {
         return orderMapper.order_change_by_id(order);
     }
 
-    public List<Order> searchByMultiConditions(String order_id,String connect_name,String phone) {
+    public List<Order> searchByMultiConditions(String order_id,String connect_name,String phone, String order_state) {
 
-        return orderMapper.searchByMultiConditions(order_id, connect_name, phone);
+        if(order_state.equals("")){
+            return orderMapper.searchByMultiConditions(order_id, connect_name, phone);
+        }
+
+        return orderMapper.searchByMultiConditionsWithState(order_id, connect_name, phone, Integer.parseInt(order_state));
 
         // //JPA 多条件查询，尚未排序，仅供测试
         // List<Order> result = orderMapper.findAll(new Specification<Order>() {
