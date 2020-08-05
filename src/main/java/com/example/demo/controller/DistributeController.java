@@ -73,6 +73,7 @@ public class DistributeController {
         process.setOrder_id(order_id);
         String user_id = orderService.selectByPrimaryKey(order_id).getUser_id();
         process.setUser_id(user_id);
+        process.setPro_state("20");
         Operator operator = operatorService.selectByOpID(op_id);
         operator.setOp_state(10);
         // 更新数据库
@@ -87,13 +88,4 @@ public class DistributeController {
             return MyJsonResult.errorMsg("error");
         }
     }
-
-    //x修改订单
-
-
-    //创建流程---录入
-
-
-
-
 }

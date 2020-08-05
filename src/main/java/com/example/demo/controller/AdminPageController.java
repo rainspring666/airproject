@@ -301,7 +301,7 @@ public class AdminPageController {
 
     @RequestMapping("api/upload")
     @ResponseBody
-    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam("orderID") String order_id ,@RequestParam(value = "file") MultipartFile file){
+    public   MyJsonResult webFileUpload(HttpServletRequest request,@RequestParam("order_id") String order_id,@RequestParam(value = "file") MultipartFile file){
         try {
             logger.info(order_id);
             String path= tools.UPLOAD_PICTURE_PATH;

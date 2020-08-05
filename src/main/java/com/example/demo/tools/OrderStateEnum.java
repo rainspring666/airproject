@@ -5,9 +5,13 @@ package com.example.demo.tools;
  * @date 2020/6/7
  */
 public enum OrderStateEnum {
+    // 订单状态
     PENDING("未处理", 0), PROCESSING("处理中", 1), FINISH("已完成", 2),
-    WORKING("工作中",10),KONGXIAN("空闲",11),XIUJIA("休假",12);
-    //操作员状态
+    // 操作员状态
+    WORKING("工作中",10),KONGXIAN("空闲",11),XIUJIA("休假",12),
+    // 流程状态
+    PROCESS_ZERO("初始化",20),PROCESS_ONE("设备申请",21),PROCESS_TWO("现场施工",22),
+    PROCESS_THREE("空气检测",23),PROCESS_FOUR("空气取样",24);
 
     private String name;
     private int index;

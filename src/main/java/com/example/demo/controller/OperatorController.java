@@ -192,7 +192,7 @@ public class OperatorController {
     //申请物料--     !是否要加入回滚的机制？
     @PostMapping("/check_material")
     @ResponseBody
-    public MyJsonResult apply_ma(@RequestBody JSONObject jsonObject, HttpServletRequest request){
+    public MyJsonResult apply_ma(@RequestBody Process process,@RequestBody JSONObject jsonObject, HttpServletRequest request){
         /*
         * 前台以ApplyHolder数组的形式传入后台
         * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
@@ -234,6 +234,8 @@ public class OperatorController {
                 logger.info(m.name+"物料请求"+m.num);
             }
         }
+        process.setPro_state("21");
+        processService.update_info(process);
         return MyJsonResult.buildData("ok");
     }
 
@@ -241,7 +243,7 @@ public class OperatorController {
     //申请仪器---没完成啊-不知道怎么写好
     @PostMapping("/check_equipment")
     @ResponseBody
-    public MyJsonResult apply_ep(@RequestBody JSONObject jsonObject,HttpServletRequest request){
+    public MyJsonResult apply_ep(@RequestBody Process process, @RequestBody JSONObject jsonObject,HttpServletRequest request){
 
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
@@ -303,16 +305,13 @@ public class OperatorController {
                         apply_num = apply_num - e.getEq_inner_num();
                     }
                     equipService.update_equipment_info(e);
-
-                    //申请表
-
-
                 }
                 logger.info("设备请求"+i.name+i.num+"个");
 
             }
         }
-
+        process.setPro_state("21");
+        processService.update_info(process);
         return MyJsonResult.buildData("ok");
     }
 
@@ -361,7 +360,7 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         }
         process.setPro_starttime(dateString);
-        process.setPro_state("1");
+        process.setPro_state("23");
         // 存储倒计时长
         process.setPro_counttime(tempProcess.getPro_counttime()*60*60);
         if(processService.update_info(process))
@@ -416,10 +415,11 @@ public class OperatorController {
         String dateString = formatter.format(date);
 
         Process process = processService.get_one_info(process_id);
-        if(process==null)
+        if(process == null){
             return MyJsonResult.errorMsg("error--");
+        }
         process.setPro_endtime(dateString);
-        process.setPro_state("2");
+        process.setPro_state("23");
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
@@ -462,6 +462,7 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         process.setExpress_id(tempProcess.getExpress_id());
         process.setExpress_name(tempProcess.getExpress_name());
+        process.setPro_state("24");
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else

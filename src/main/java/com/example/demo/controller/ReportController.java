@@ -10,6 +10,7 @@ import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.SystemClock;
 import com.example.demo.tools.Tool;
 import com.example.demo.tools.pdfUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -262,7 +263,7 @@ public class ReportController {
         logger.info("施工流程信息"+JSON.toJSONString(resultList));
         return MyJsonResult.buildData(JSONArray.parseArray(JSON.toJSONString(resultList)));
     }
-    @GetMapping("/get_report")
+    @PostMapping ("/get_report")
     @ResponseBody
     public MyJsonResult getReport(){
         Map<String, String> map = new HashMap();

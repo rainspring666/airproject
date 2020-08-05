@@ -37,8 +37,8 @@
         where process_id = #{process_id}
     </update>
     <insert id="add_process" parameterType="com.example.demo.entity.Process">
-        insert into process (process_id, user_id, order_id)
-        values (#{process_id}, #{user_id}, #{order_id})
+        insert into process (process_id, user_id, order_id, pro_state)
+        values (#{process_id}, #{user_id}, #{order_id}, #{pro_state})
     </insert>
 
 </mapper>
