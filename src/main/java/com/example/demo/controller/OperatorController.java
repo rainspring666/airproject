@@ -110,12 +110,12 @@ public class OperatorController {
     }*/
     @GetMapping("/wx_show_orders")
     @ResponseBody
-    public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam(required = false,defaultValue = "1") int startPosition,
-                                    @RequestParam(required = false,defaultValue = "10") int size){
+    public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam("startPosition") int startPosition,
+                                    @RequestParam("size") int size, @RequestParam("order_state") int order_state){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
         // 有时会报空指针异常
         String op_id = operator.getOp_id();
-        List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id);
+        List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id, order_state);
         logger.info("show_orders:" + JSON.toJSONString(list));
         return JSONArray.parseArray(JSON.toJSONString(list));
 
