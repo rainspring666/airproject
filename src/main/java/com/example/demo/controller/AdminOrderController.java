@@ -152,7 +152,7 @@ public class AdminOrderController {
      *web端 新增一条userinfo user 记录 游客性质的用户 企业用户
      * @return
      */
-    @PostMapping("/order/add_one_order")
+    @PostMapping("/order/add_user_info")
     @ResponseBody
     public MyJsonResult add_user_info(@RequestBody User_info user_info){
         String user_id = tools.createUserId(0,1);
@@ -277,7 +277,7 @@ public class AdminOrderController {
         String phone = searchParams.getString("phone");
         String connect_name = searchParams.getString("connect_name");
         //多条件搜索
-        List<Order> orderList = orderService.searchByMultiConditions(order_id,connect_name,phone);
+        List<Order> orderList = orderService.searchByMultiConditions(order_id,connect_name,phone,"");
 
         /*组装响应数据 便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();
