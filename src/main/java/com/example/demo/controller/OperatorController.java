@@ -192,12 +192,13 @@ public class OperatorController {
     //申请物料--     !是否要加入回滚的机制？
     @PostMapping("/check_material")
     @ResponseBody
-    public MyJsonResult apply_ma(@RequestBody Process process,@RequestBody JSONObject jsonObject, HttpServletRequest request){
+    public MyJsonResult apply_ma(@RequestBody JSONObject jsonObject, HttpServletRequest request){
         /*
         * 前台以ApplyHolder数组的形式传入后台
         * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
         * 进行物料请求操作
         * */
+        String process_id = jsonObject.getString("process_id");
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
 
@@ -234,17 +235,20 @@ public class OperatorController {
                 logger.info(m.name+"物料请求"+m.num);
             }
         }
+        Process process = processService.get_one_info(process_id);
         process.setPro_state("21");
         processService.update_info(process);
-        return MyJsonResult.buildData("ok");
+        logger.info(process_id);
+        return MyJsonResult.buildData(process);
     }
 
 
     //申请仪器---没完成啊-不知道怎么写好
     @PostMapping("/check_equipment")
     @ResponseBody
-    public MyJsonResult apply_ep(@RequestBody Process process, @RequestBody JSONObject jsonObject,HttpServletRequest request){
+    public MyJsonResult apply_ep(@RequestBody JSONObject jsonObject,HttpServletRequest request){
 
+        String process_id = jsonObject.getString("process_id");
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
         Map<String, List<Equipment>> equipmentMap = new HashMap<>();
@@ -310,6 +314,7 @@ public class OperatorController {
 
             }
         }
+        Process process = processService.get_one_info(process_id);
         process.setPro_state("21");
         processService.update_info(process);
         return MyJsonResult.buildData("ok");
@@ -332,6 +337,7 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         }
         process.setDdata_id(data_id);//补充process的dataid
+        process.setPro_state("23");
         logger.info(data.toString());
         if(dataService.add_data(data)){
             processService.update_info(process);
@@ -430,7 +436,10 @@ public class OperatorController {
     //获取开始时间，方便前端的倒计时
     @PostMapping("/get_one_infoByProcessId")
     @ResponseBody
-    public MyJsonResult get_one_info1(HttpServletRequest request,String process_id){
+    public MyJsonResult get_one_info1(HttpServletRequest request, @RequestParam("process_id")String process_id){
+        logger.info("前端请求：");
+        logger.info("OperatorController.class");
+        logger.info("/get_one_infoByProcessId");
         Process process = processService.get_one_info(process_id);
         if(process==null)
             return MyJsonResult.errorMsg("error--");

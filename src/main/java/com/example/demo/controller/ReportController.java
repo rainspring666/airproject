@@ -159,7 +159,16 @@ public class ReportController {
         logger.info("一轮图片上传结束");
         return MyJsonResult.buildData("一轮图片上传结束");
     }
-
+    // 操作最终结束
+    @PostMapping("/end_operate")
+    @ResponseBody
+    public MyJsonResult end_operate(HttpServletRequest request,@RequestParam("process_id") String process_id){
+        Process process = processService.get_one_info(process_id);
+        process.setPro_state("22");
+        processService.update_info(process);
+        logger.info("操作完成");
+        return MyJsonResult.buildData("操作完成");
+    }
     // 上传消杀方案
     @PostMapping("/add_report_plan")
     @ResponseBody
@@ -183,6 +192,7 @@ public class ReportController {
         Report report = get_report_by_process_id(process);
         report.setSite_condition(condition);
 
+
         reportMapper.update_report_info(report);
         logger.info("上传现场描述：" + condition);
         return MyJsonResult.buildData("现场描述上传成功");
@@ -196,6 +206,7 @@ public class ReportController {
 
         Report report = get_report_by_process_id(process);
         report.setValidation(validation);
+
 
         reportMapper.update_report_info(report);
         logger.info("效果验证：" + validation);
