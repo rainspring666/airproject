@@ -294,10 +294,10 @@ public class ReportController {
         map.put("checker", "韦小宝");
 
         Map<String, String> map2 = new HashMap();
-        map2.put("image1", "C:/Users/mhh/Desktop/A/1.png");
-        map2.put("image2", "C:/Users/mhh/Desktop/A/1.png");
-        map2.put("image3", "C:/Users/mhh/Desktop/A/1.png");
-        map2.put("image4", "C:/Users/mhh/Desktop/A/1.png");
+        map2.put("image1", "D:/OldFiles/photoes/download.jpg");
+        map2.put("image2", "D:/OldFiles/photoes/download.jpg");
+        map2.put("image3", "D:/OldFiles/photoes/download.jpg");
+        map2.put("image4", "D:/OldFiles/photoes/download.jpg");
 
         Map<String, Object> o = new HashMap();
         o.put("datemap", map);

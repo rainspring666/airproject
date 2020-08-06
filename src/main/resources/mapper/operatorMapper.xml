@@ -42,4 +42,12 @@
         wx_openid = #{wx_openid}
         where op_id=#{op_id}
     </update>
+
+    <select id="show_orders_with_size" resultType="com.example.demo.entity.Order">
+        select *
+        from userorder
+        where op_id = #{param3}
+        ORDER BY order_state,order_createtime DESC
+        limit #{param1},#{param2}
+    </select>
 </mapper>

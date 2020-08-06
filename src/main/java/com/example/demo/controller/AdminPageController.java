@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Equipment;
 import com.example.demo.entity.Material;
 import com.example.demo.entity.Order;
-import com.example.demo.entity.Process;
-import com.example.demo.service.*;
+import com.example.demo.service.OperatorService;
+import com.example.demo.service.OrderService;
+import com.example.demo.service.UserInfoService;
+import com.example.demo.service.UserService;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.OrderClassEnum;
 import com.example.demo.tools.OrderStateEnum;
@@ -43,8 +45,6 @@ public class AdminPageController {
     private UserInfoService userInfoService;
     @Autowired
     private Tool tools;
-    @Autowired
-    private ProcessService processService;
 
     //主页index
     @RequestMapping("/index.html")
@@ -301,23 +301,18 @@ public class AdminPageController {
 
     @RequestMapping("api/upload")
     @ResponseBody
-    public   MyJsonResult webFileUpload(HttpServletRequest request,@RequestParam("order_id") String order_id,@RequestParam(value = "file") MultipartFile file){
+    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam("orderID") String order_id ,@RequestParam(value = "file") MultipartFile file){
         try {
-            logger.info("AdminPageController.class");
-            logger.info("api/upload");
-            String path= tools.UPLOAD_PICTURE_PATH + "/order/"+ order_id+"/";
+            logger.info(order_id);
+            String path= tools.UPLOAD_PICTURE_PATH;
             String fileName = file.getOriginalFilename();
-            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            String  suffix = fileName.substring(fileName.lastIndexOf("."));
             String newFileName =	UUID.randomUUID().toString() + suffix;
             File targetFile = new File(path, newFileName);
             if(!targetFile.exists()){
                 targetFile.mkdirs();
             }
             file.transferTo(targetFile);
-            // 保存布点图路径
-            Process process = processService.get_one_info2(order_id);
-            process.setPro_generator("/order/"+ order_id+"/" + fileName);
-            processService.update_info(process);
             logger.info("图片上传成功"+targetFile.getAbsolutePath());
             return MyJsonResult.buildData("上传成功");
 

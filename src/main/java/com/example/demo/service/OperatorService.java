@@ -40,4 +40,8 @@ public class OperatorService {
     public boolean updateOp(Operator operator){
         return operatorMapper.updateOp(operator);
     }
+
+    public List<Order> show_orders_with_size(int startPosition, int size, String op_id) {
+        return operatorMapper.show_orders_with_size(startPosition, size, op_id);
+    }
 }

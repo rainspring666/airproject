@@ -7,12 +7,12 @@
     </select>
 
     <insert id="add_user_role_info">
-        insert into user_info(user_role_id, user_id, role_id)
+        insert into user_role(user_role_id, user_id, role_id)
         values (#{user_role_id}, #{user_id}, #{role_id})
     </insert>
 
     <update id="update_user_role_info">
-        update user_info
+        update user_role
         set user_id = #{user_id}, role_id = #{role_id}
         where user_role_id = #{user_role_id}
     </update>

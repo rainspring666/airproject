@@ -28,6 +28,8 @@ public interface OrderMapper {
 
     boolean order_change_by_id(Order order);
 
+    List<Order> searchByMultiConditionsWithState(String order_id,String connect_name,String phone, int order_state);
+
     List<Order> searchByMultiConditions(String order_id,String connect_name,String phone);
 
     boolean updateOrder_modelf(String order_id, String order_modelf);

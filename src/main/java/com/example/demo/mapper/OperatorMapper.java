@@ -22,4 +22,6 @@ public interface OperatorMapper {
     Operator selectByOpID(String op_id);
 
     boolean updateOp(Operator operator);
+
+    List<Order> show_orders_with_size(int startPosition, int size, String op_id);
 }

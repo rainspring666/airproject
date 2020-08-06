@@ -152,7 +152,7 @@ public class AdminOrderController {
      *web端 新增一条userinfo user 记录 游客性质的用户 企业用户
      * @return
      */
-    @PostMapping("/order/add_user_info")
+    @PostMapping("/order/add_one_order")
     @ResponseBody
     public MyJsonResult add_user_info(@RequestBody User_info user_info){
         String user_id = tools.createUserId(0,1);
