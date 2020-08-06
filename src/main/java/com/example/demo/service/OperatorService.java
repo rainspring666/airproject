@@ -41,7 +41,7 @@ public class OperatorService {
         return operatorMapper.updateOp(operator);
     }
 
-    public List<Order> show_orders_with_size(int startPosition, int size, String op_id) {
-        return operatorMapper.show_orders_with_size(startPosition, size, op_id);
+    public List<Order> show_orders_with_size(int startPosition, int size, String op_id,int order_state) {
+        return operatorMapper.show_orders_with_size(startPosition, size, op_id, order_state);
     }
 }

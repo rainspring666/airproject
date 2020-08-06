@@ -108,16 +108,14 @@ public class OperatorController {
         return JSONArray.parseArray(JSON.toJSONString(list));
 
     }*/
-    @PostMapping("/wx_show_orders")
+    @GetMapping("/wx_show_orders")
     @ResponseBody
     public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam("startPosition") int startPosition,
-                                    @RequestParam("size") int size){
+                                    @RequestParam("size") int size, @RequestParam("order_state") int order_state){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
         // 有时会报空指针异常
         String op_id = operator.getOp_id();
-        List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id);
-        logger.info("startPosition:"+startPosition);
-        logger.info("size:"+size);
+        List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id, order_state);
         logger.info("show_orders:" + JSON.toJSONString(list));
         return JSONArray.parseArray(JSON.toJSONString(list));
 
@@ -213,7 +211,6 @@ public class OperatorController {
         * 先解析为数组，进行遍历，查询是否满足请求条件，不满足提示前台
         * 进行物料请求操作
         * */
-        String process_id = jsonObject.getString("process_id");
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
 
@@ -250,11 +247,7 @@ public class OperatorController {
                 logger.info(m.name+"物料请求"+m.num);
             }
         }
-        Process process = processService.get_one_info(process_id);
-        process.setPro_state("21");
-        processService.update_info(process);
-        logger.info(process_id);
-        return MyJsonResult.buildData(process);
+        return MyJsonResult.buildData("ok");
     }
 
 
@@ -263,7 +256,6 @@ public class OperatorController {
     @ResponseBody
     public MyJsonResult apply_ep(@RequestBody JSONObject jsonObject,HttpServletRequest request){
 
-        String process_id = jsonObject.getString("process_id");
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
         Map<String, List<Equipment>> equipmentMap = new HashMap<>();
@@ -324,14 +316,16 @@ public class OperatorController {
                         apply_num = apply_num - e.getEq_inner_num();
                     }
                     equipService.update_equipment_info(e);
+
+                    //申请表
+
+
                 }
                 logger.info("设备请求"+i.name+i.num+"个");
 
             }
         }
-        Process process = processService.get_one_info(process_id);
-        process.setPro_state("21");
-        processService.update_info(process);
+
         return MyJsonResult.buildData("ok");
     }
 
@@ -352,7 +346,6 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         }
         process.setDdata_id(data_id);//补充process的dataid
-        process.setPro_state("23");
         logger.info(data.toString());
         if(dataService.add_data(data)){
             processService.update_info(process);
@@ -381,7 +374,7 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         }
         process.setPro_starttime(dateString);
-        process.setPro_state("23");
+        process.setPro_state("1");
         // 存储倒计时长
         process.setPro_counttime(tempProcess.getPro_counttime()*60*60);
         if(processService.update_info(process))
@@ -436,11 +429,10 @@ public class OperatorController {
         String dateString = formatter.format(date);
 
         Process process = processService.get_one_info(process_id);
-        if(process == null){
+        if(process==null)
             return MyJsonResult.errorMsg("error--");
-        }
         process.setPro_endtime(dateString);
-        process.setPro_state("23");
+        process.setPro_state("2");
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
@@ -451,10 +443,7 @@ public class OperatorController {
     //获取开始时间，方便前端的倒计时
     @PostMapping("/get_one_infoByProcessId")
     @ResponseBody
-    public MyJsonResult get_one_info1(HttpServletRequest request, @RequestParam("process_id")String process_id){
-        logger.info("前端请求：");
-        logger.info("OperatorController.class");
-        logger.info("/get_one_infoByProcessId");
+    public MyJsonResult get_one_info1(HttpServletRequest request,String process_id){
         Process process = processService.get_one_info(process_id);
         if(process==null)
             return MyJsonResult.errorMsg("error--");
@@ -486,7 +475,6 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         process.setExpress_id(tempProcess.getExpress_id());
         process.setExpress_name(tempProcess.getExpress_name());
-        process.setPro_state("24");
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
