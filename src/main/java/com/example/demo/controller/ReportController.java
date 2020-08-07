@@ -169,10 +169,6 @@ public class ReportController {
         Process process = processService.get_one_info(process_id);
         process.setPro_state("22");
         processService.update_info(process);
-
-        Order order = orderService.selectByPrimaryKey(process.getOrder_id());
-        order.setOrder_state("2");
-        orderService.order_change_by_id(order);
         logger.info("操作完成");
         return MyJsonResult.buildData("操作完成");
     }

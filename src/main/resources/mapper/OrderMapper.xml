@@ -49,6 +49,7 @@
   </select>
   <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
     select * from userorder where user_id = #{user_id}
+    order by order_createtime DESC
   </select>
 
   <update id="order_change_by_id" parameterType="com.example.demo.entity.Order">
@@ -56,6 +57,7 @@
     set
     order_time = #{order_time},
     order_class = #{order_class},
+    order_state = #{order_state},
     order_scope = #{order_scope},
     order_descripe = #{order_descripe},
     order_address = #{order_address},
