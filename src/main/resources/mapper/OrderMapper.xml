@@ -57,7 +57,6 @@
     set
     order_time = #{order_time},
     order_class = #{order_class},
-    order_state = #{order_state},
     order_scope = #{order_scope},
     order_descripe = #{order_descripe},
     order_address = #{order_address},
@@ -69,7 +68,12 @@
     order_moremoney = #{order_moremoney}
     where order_id = #{order_id}
   </update>
-
+  <update id="update_order_state">
+    update userorder
+    set
+    order_state = #{order_state}
+    where order_id = #{order_id}
+  </update>
   <select id="searchByMultiConditionsWithState" resultType="com.example.demo.entity.Order">
     select * from userorder
     where order_state = #{param4}

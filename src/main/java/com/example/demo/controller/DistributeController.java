@@ -65,10 +65,18 @@ public class DistributeController {
     @ResponseBody
     public MyJsonResult distributeOrder(@RequestParam("chooseOrderID") String order_id,
                                         @RequestParam("chooseOpID") String op_id){
-        // 创建process_id
-        Process process = new Process();
-        String process_id = tools.createOrderId();
-        process.setProcess_id(process_id);
+        logger.info("/distribute_order");
+        // 用来标记是更新process 还是 添加process 记录， false则添加，true则更新
+        boolean isExitProcess = false;
+        Process process = processService.get_one_info2(order_id);
+        if(process == null){
+            // 创建process_id
+            process = new Process();
+            String process_id = tools.createOrderId();
+            process.setProcess_id(process_id);
+        }else{
+            isExitProcess = true;
+        }
         // process表设置user_id和order_id
         process.setOrder_id(order_id);
         String user_id = orderService.selectByPrimaryKey(order_id).getUser_id();
@@ -77,15 +85,14 @@ public class DistributeController {
         Operator operator = operatorService.selectByOpID(op_id);
         operator.setOp_state(10);
         // 更新数据库
-        boolean isUpdateOp = operatorService.updateOp(operator);
-        boolean isUpdateOrder = orderService.updateOpByPrimaryKey(order_id, op_id);
-        boolean isAddProcess = processService.add_process(process);
-
-        // return MyJsonResult.buildData("ok");
-        if(isUpdateOp && isAddProcess && isUpdateOrder){
-            return MyJsonResult.buildData("ok");
+        operatorService.updateOp(operator);
+        orderService.updateOpByPrimaryKey(order_id, op_id);
+        // 判断是添加还是更新
+        if(isExitProcess){
+            processService.update_info(process);
         } else{
-            return MyJsonResult.errorMsg("error");
+            processService.add_process(process);
         }
+        return MyJsonResult.buildData("ok");
     }
 }

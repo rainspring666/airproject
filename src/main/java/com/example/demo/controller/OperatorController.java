@@ -494,7 +494,7 @@ public class OperatorController {
 
         Order order = orderService.selectByPrimaryKey(process.getOrder_id());
         order.setOrder_state("2");
-        orderService.order_change_by_id(order);
+        orderService.update_order_state(order);
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else
