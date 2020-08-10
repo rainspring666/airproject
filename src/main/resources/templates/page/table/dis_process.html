@@ -201,6 +201,7 @@
 <script th:src="@{/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
 <script type="text/javascript">
+    var chooseOrderID = document.getElementById("orderid").textContent;
     $(function () {
         // 初始化插件
         $("#zyupload").zyUpload({
@@ -208,7 +209,7 @@
             height: "250px",                    // 宽度
             itemWidth: "100px",                 // 文件项的宽度
             itemHeight: "70px",                 // 文件项的高度
-            url: "api/upload",                  // 上传文件的路径
+            url: "api/upload?order_id="+chooseOrderID,                  // 上传文件的路径
             fileType: ["jpg", "png"],           // 上传文件的类型
             fileSize: 51200000,                // 上传文件的大小
             multiple: true,                    // 是否可以多个文件上传

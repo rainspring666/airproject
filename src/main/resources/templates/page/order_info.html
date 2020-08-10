@@ -159,11 +159,16 @@
                     shadeClose: true,
                     area: [openWH[0] + 'px', openWH[1] + 'px'],
                     offset: [openWH[2] + 'px', openWH[3] + 'px'],
-                    content: content
-                    // ,
-                    // end:function(){
-                    //     location.reload();//弹出层结束后，刷新主页面
-                    // }
+                    content: content,
+                    end:function(){
+                        //弹出层结束后，刷新主页面
+                        table.reload('currentTableId', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallorderinfo',
+                        }, 'data');
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -221,6 +226,15 @@
                     content: content,
                     anim: 2,
                     resize: false,
+                    end:function(){
+                        //弹出层结束后，刷新主页面
+                        table.reload('currentTableId', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallorderinfo',
+                        }, 'data');
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

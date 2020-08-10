@@ -158,7 +158,15 @@ public class ReportController {
         logger.info("一轮图片上传结束");
         return MyJsonResult.buildData("一轮图片上传结束");
     }
-
+    @PostMapping("/end_operate")
+    @ResponseBody
+    public MyJsonResult end_operate(HttpServletRequest request,@RequestParam("process_id")String process_id){
+            Process process = processService.get_one_info(process_id);
+            process.setPro_state("22");
+            processService.update_info(process);
+            logger.info("操作完成");
+            return MyJsonResult.buildData("操作完成");
+    }
     // 上传消杀方案
     @PostMapping("/add_report_plan")
     @ResponseBody

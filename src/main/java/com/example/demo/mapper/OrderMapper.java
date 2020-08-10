@@ -34,4 +34,5 @@ public interface OrderMapper {
 
     boolean updateOrder_modelf(String order_id, String order_modelf);
 
+    boolean update_order_state(String order_id, int order_state);
 }

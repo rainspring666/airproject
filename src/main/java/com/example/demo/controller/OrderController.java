@@ -57,7 +57,6 @@ public class OrderController
     @PostMapping(value ="/add")
     @ResponseBody
     public MyJsonResult addOrder(@RequestBody Order order,HttpServletRequest request) {
-
         String user_id = request.getSession().getAttribute("userid").toString();
         //创建订单id
         order.setOrder_id(tools.createOrderId());
@@ -141,93 +140,93 @@ public class OrderController
         return JSONArray.parseArray(JSON.toJSONString(orders));
     }
 
-    /**
-     * web端显示数据库所有订单记录----是否使用？？？ 未使用
-     * @return
-     */
-    @RequestMapping(value = "/all")
-    public MyJsonResult selectAllOrder()
-    {
-        List<Order> orders = orderService.selectAll();
-
-        /*组装响应数据  start  便于前端显示*/
-        List<Operator> op_list = operatorService.all_op_info();
-
-        // 获得Op_id----------->Op_name
-        HashMap<String, String> op_map = new HashMap<String,String>();
-        for (Operator operator : op_list) {
-            op_map.put(operator.getOp_id(), operator.getOp_name());
-        }
-
-        // 组装Json数据
-        int total = orders.size();
-        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
-        // 调整返回数据
-        JSONObject tempJsonObject = null;
-        for(int i=0;i<item.size();i++) {
-            tempJsonObject = item.getJSONObject(i);
-            // 组装操作员信息
-            String opId = tempJsonObject.getString("op_id");
-            tempJsonObject.fluentPut("op_id",op_map.get(opId));
-            // 组装订单类别信息
-            String orderClass = tempJsonObject.getString("order_class");
-            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
-            // 组装订单状态信息
-            Integer orderState = tempJsonObject.getInteger("order_state");
-            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
-        }
-
-
-        JSONObject data = new JSONObject();
-        data.put("total",total);
-        data.put("item",item);
-
-        if (!orders.isEmpty()){
-            return MyJsonResult.build(0,"msg",data);
-        }
-        return MyJsonResult.errorMsg("no order");
-    }
-
-
-    /**
-     *  按照订单的状态查询订单———————是否使用？？？ 未使用
-     * @param id 参数范围以及意义：订单状态：0----未处理; 1------处理中; 2----完成
-     * @return jsonResult
-     *
-     */
-    @RequestMapping(value = "/orderState")
-    public MyJsonResult selectByOrderState(Integer id)
-    {
-        List<Order> orders = orderService.selectByOrderState(id);
-
-        /*组装响应数据  start  便于前端显示*/
-        List<Operator> op_list = operatorService.all_op_info();
-        // 组装操作员数据
-        HashMap<String, String> op_map = new HashMap<String,String>();
-        for (Operator operator : op_list) {
-            op_map.put(operator.getOp_id(), operator.getOp_name());
-        }
-
-        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
-        // 调整返回数据
-        JSONObject tempJsonObject = null;
-        for(int i=0;i<item.size();i++) {
-            tempJsonObject = item.getJSONObject(i);
-            // 组装操作员信息
-            String opId = tempJsonObject.getString("op_id");
-            tempJsonObject.fluentPut("op_id",op_map.get(opId));
-            // 组装订单类别信息
-            String orderClass = tempJsonObject.getString("order_class");
-            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
-            // 组装订单状态信息
-            Integer orderState = tempJsonObject.getInteger("order_state");
-            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
-        }
-        if (!orders.isEmpty()){
-            return MyJsonResult.buildData(item);
-        }
-        return MyJsonResult.errorMsg("no order");
-    }
+//    /**
+//     * web端显示数据库所有订单记录----是否使用？？？ 未使用
+//     * @return
+//     */
+//    @RequestMapping(value = "/all")
+//    public MyJsonResult selectAllOrder()
+//    {
+//        List<Order> orders = orderService.selectAll();
+//
+//        /*组装响应数据  start  便于前端显示*/
+//        List<Operator> op_list = operatorService.all_op_info();
+//
+//        // 获得Op_id----------->Op_name
+//        HashMap<String, String> op_map = new HashMap<String,String>();
+//        for (Operator operator : op_list) {
+//            op_map.put(operator.getOp_id(), operator.getOp_name());
+//        }
+//
+//        // 组装Json数据
+//        int total = orders.size();
+//        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
+//        // 调整返回数据
+//        JSONObject tempJsonObject = null;
+//        for(int i=0;i<item.size();i++) {
+//            tempJsonObject = item.getJSONObject(i);
+//            // 组装操作员信息
+//            String opId = tempJsonObject.getString("op_id");
+//            tempJsonObject.fluentPut("op_id",op_map.get(opId));
+//            // 组装订单类别信息
+//            String orderClass = tempJsonObject.getString("order_class");
+//            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
+//            // 组装订单状态信息
+//            Integer orderState = tempJsonObject.getInteger("order_state");
+//            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
+//        }
+//
+//
+//        JSONObject data = new JSONObject();
+//        data.put("total",total);
+//        data.put("item",item);
+//
+//        if (!orders.isEmpty()){
+//            return MyJsonResult.build(0,"msg",data);
+//        }
+//        return MyJsonResult.errorMsg("no order");
+//    }
+//
+//
+//    /**
+//     *  按照订单的状态查询订单———————是否使用？？？ 未使用
+//     * @param id 参数范围以及意义：订单状态：0----未处理; 1------处理中; 2----完成
+//     * @return jsonResult
+//     *
+//     */
+//    @RequestMapping(value = "/orderState")
+//    public MyJsonResult selectByOrderState(Integer id)
+//    {
+//        List<Order> orders = orderService.selectByOrderState(id);
+//
+//        /*组装响应数据  start  便于前端显示*/
+//        List<Operator> op_list = operatorService.all_op_info();
+//        // 组装操作员数据
+//        HashMap<String, String> op_map = new HashMap<String,String>();
+//        for (Operator operator : op_list) {
+//            op_map.put(operator.getOp_id(), operator.getOp_name());
+//        }
+//
+//        JSONArray item = JSONArray.parseArray(JSON.toJSONString(orders));
+//        // 调整返回数据
+//        JSONObject tempJsonObject = null;
+//        for(int i=0;i<item.size();i++) {
+//            tempJsonObject = item.getJSONObject(i);
+//            // 组装操作员信息
+//            String opId = tempJsonObject.getString("op_id");
+//            tempJsonObject.fluentPut("op_id",op_map.get(opId));
+//            // 组装订单类别信息
+//            String orderClass = tempJsonObject.getString("order_class");
+//            tempJsonObject.fluentPut("order_class",OrderClassEnum.getName(orderClass));
+//            // 组装订单状态信息
+//            Integer orderState = tempJsonObject.getInteger("order_state");
+//            tempJsonObject.fluentPut("order_state", OrderStateEnum.getName(orderState));
+//        }
+//        if (!orders.isEmpty()){
+//            return MyJsonResult.buildData(item);
+//        }
+//        return MyJsonResult.errorMsg("no order");
+//    }
 
     /**
      * 小程序端 订单户型图上传

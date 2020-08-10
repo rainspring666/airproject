@@ -25,7 +25,7 @@
 <!--  派单员更新订单表-->
   <update id="updateOpByPrimaryKey">
     update userorder
-    set  op_id = #{op_id}, order_state = 1
+    set  op_id = #{op_id}
     where order_id = #{order_id}
   </update>
 
@@ -49,6 +49,7 @@
   </select>
   <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
     select * from userorder where user_id = #{user_id}
+      order by order_createtime DESC
   </select>
 
   <update id="order_change_by_id" parameterType="com.example.demo.entity.Order">
@@ -67,7 +68,12 @@
     order_moremoney = #{order_moremoney}
     where order_id = #{order_id}
   </update>
-
+  <update id="update_order_state">
+    update userorder
+    set
+    order_state = #{order_state}
+    where order_id = #{order_id}
+  </update>
   <select id="searchByMultiConditionsWithState" resultType="com.example.demo.entity.Order">
     select * from userorder
     where order_state = #{param4}

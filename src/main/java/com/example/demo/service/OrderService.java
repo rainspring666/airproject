@@ -90,5 +90,8 @@ public class OrderService {
     public boolean updateOrder_modelf(Order order){
         return orderMapper.updateOrder_modelf(order.getOrder_id(), order.getOrder_modelf());
     }
+    public boolean update_order_state(Order order){
+        return orderMapper.update_order_state(order.getOrder_id(),Integer.parseInt(order.getOrder_state()));
+    }
 }
 

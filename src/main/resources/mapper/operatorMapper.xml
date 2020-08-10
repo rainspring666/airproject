@@ -46,8 +46,8 @@
     <select id="show_orders_with_size" resultType="com.example.demo.entity.Order">
         select *
         from userorder
-        where op_id = #{param3}
-        ORDER BY order_state,order_createtime DESC
+        where op_id = #{param3} and order_state = #{param4}
+        ORDER BY order_createtime DESC
         limit #{param1},#{param2}
     </select>
 </mapper>
