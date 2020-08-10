@@ -2,13 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Operator;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Process;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.ProcessService;
 import com.example.demo.tools.MyJsonResult;
-import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,6 +77,7 @@ public class DistributeController {
         }else{
             isExitProcess = true;
         }
+        process.setPro_state("20");
         // process表设置user_id和order_id
         process.setOrder_id(order_id);
         String user_id = orderService.selectByPrimaryKey(order_id).getUser_id();
@@ -87,6 +88,11 @@ public class DistributeController {
         // 更新数据库
         operatorService.updateOp(operator);
         orderService.updateOpByPrimaryKey(order_id, op_id);
+
+        Order order = new Order();
+        order.setOrder_id(order_id);
+        order.setOrder_state("1");
+        orderService.update_order_state(order);
         // 判断是添加还是更新
         if(isExitProcess){
             processService.update_info(process);

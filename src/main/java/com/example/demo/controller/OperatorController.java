@@ -115,7 +115,7 @@ public class OperatorController {
     public JSONArray wx_show_orders(HttpServletRequest request,@RequestParam("startPosition") int startPosition,
                                     @RequestParam("size") int size, @RequestParam("order_state") int order_state){
         Operator operator = (Operator) request.getSession().getAttribute("operator");//获取存储的操作员id
-        // 有时会报空指针异常
+        // 有时会报空指针异常 后台重启，没有session
         String op_id = operator.getOp_id();
         List<Order> list = operatorService.show_orders_with_size(startPosition, size, op_id, order_state);
         logger.info("show_orders:" + JSON.toJSONString(list));
@@ -254,7 +254,7 @@ public class OperatorController {
         process.setPro_state("21");
         processService.update_info(process);
         logger.info(process_id);
-        return MyJsonResult.buildData(process);
+        return MyJsonResult.buildData("ok");
     }
 
 
@@ -262,6 +262,7 @@ public class OperatorController {
     @PostMapping("/check_equipment")
     @ResponseBody
     public MyJsonResult apply_ep(@RequestBody JSONObject jsonObject,HttpServletRequest request){
+
         String process_id = jsonObject.getString("process_id");
         JSONArray jsonArray = jsonObject.getJSONArray("applyList");
         List<ApplyHolder> applyList = JSONArray.parseArray(jsonArray.toString(), ApplyHolder.class);
@@ -356,6 +357,7 @@ public class OperatorController {
         if(process == null){
             return MyJsonResult.errorMsg("error--");
         }
+        process.setPro_state("23");
         process.setDdata_id(data_id);//补充process的dataid
         process.setPro_state("23");
         logger.info(data.toString());

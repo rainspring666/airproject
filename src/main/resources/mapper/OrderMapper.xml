@@ -25,7 +25,7 @@
 <!--  派单员更新订单表-->
   <update id="updateOpByPrimaryKey">
     update userorder
-    set  op_id = #{op_id}, order_state = 1
+    set  op_id = #{op_id}
     where order_id = #{order_id}
   </update>
 

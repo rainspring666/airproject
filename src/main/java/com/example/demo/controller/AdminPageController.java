@@ -45,6 +45,8 @@ public class AdminPageController {
     private Tool tools;
     @Autowired
     private ProcessService processService;
+
+
     //主页index
     @RequestMapping("/index.html")
     public String demo(){
@@ -300,9 +302,10 @@ public class AdminPageController {
 
     @RequestMapping("api/upload")
     @ResponseBody
-    public   MyJsonResult webFileUpload(HttpServletRequest request, @RequestParam("order_id") String order_id ,@RequestParam(value = "file") MultipartFile file){
+
+    public   MyJsonResult webFileUpload(HttpServletRequest request,@RequestParam("order_id") String order_id, @RequestParam(value = "file") MultipartFile file){
         try {
-            logger.info(order_id);
+
             logger.info("AdminPageController.class");
             logger.info("api/upload");
             String path= tools.UPLOAD_PICTURE_PATH + "/order/"+ order_id+"/";
