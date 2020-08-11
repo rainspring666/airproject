@@ -458,8 +458,6 @@ public class OperatorController {
     @PostMapping("/get_one_infoByProcessId")
     @ResponseBody
     public MyJsonResult get_one_info1(HttpServletRequest request,String process_id){
-        logger.info("前端请求：");
-        logger.info("OperatorController.class");
         logger.info("/get_one_infoByProcessId");
         Process process = processService.get_one_info(process_id);
         if(process==null)
@@ -481,7 +479,19 @@ public class OperatorController {
             return MyJsonResult.errorMsg("error--");
         }
     }
-
+    // 订单完成标志
+    @PostMapping("/end_order")
+    @ResponseBody
+    public MyJsonResult end_order(@RequestParam("process_id") String process_id){
+        Process process = processService.get_one_info(process_id);
+        if(process == null) {
+            return MyJsonResult.errorMsg("error--");
+        }
+        Order order = orderService.selectByPrimaryKey(process.getOrder_id());
+        order.setOrder_state("2");
+        orderService.update_order_state(order);
+        return MyJsonResult.buildData("订单处理完成");
+    }
     //物流快递信息更新
     @PostMapping("/update_express")
     @ResponseBody
@@ -493,10 +503,6 @@ public class OperatorController {
         process.setExpress_id(tempProcess.getExpress_id());
         process.setExpress_name(tempProcess.getExpress_name());
         process.setPro_state("24");
-
-        Order order = orderService.selectByPrimaryKey(process.getOrder_id());
-        order.setOrder_state("2");
-        orderService.update_order_state(order);
         if(processService.update_info(process))
             return MyJsonResult.buildData("ok");
         else

@@ -18,9 +18,9 @@
                                     <div class="layui-row layui-col-space10">
                                         <div class="layui-col-md4">
                                             <div class="layui-form-item">
-                                                <label class="layui-form-label">订单ID:</label>
+                                                <label class="layui-form-label">订单编号:</label>
                                                 <div class="layui-input-block">
-                                                    <div class="layui-form-mid layui-word-aux" id="orderid" th:text="${order.order_id}"></div>
+                                                    <div class="layui-form-mid layui-word-aux" id="order_id" th:text="${order.order_id}"></div>
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
@@ -89,10 +89,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">户型/车型图:</label>
                                                     <div id="layer-photos-demo" class="layer-photos-demo" style="padding: 10px;">
-                                                        <img src="../images/2018053114114060944.jpg"
+                                                        <img th:src="${order.order_modelf}"
                                                              width="200px" height="100px" style="margin: 3px; border: black 2px;"/>
-<!--                                                        <img th:src="@{${order.order_modelf}}"}-->
-<!--                                                             width="100px" height="50px" style="margin: 3px; border: black 2px;"/>-->
                                                     </div>
                                             </div>
                                         </div>
@@ -150,18 +148,40 @@
                                             <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input" id="demo2" lay-verify="required" lay-reqtext="请分配操作员">
                                         </div>
                                     </div>
-                                    <div class="layui-form-item">
-                                        <label class="layui-form-label">点位图上传:</label>
-                                        <div class="layui-input-inline">
-                                        <div id="zyupload" class="zyupload"></div>
-                                        </div>
-                                    </div>
 
                                     <div class="layui-form-item">
                                         <div class="layui-input-block">
                                             <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
                                             <button class="layui-btn" lay-submit lay-filter="formStep2">
                                                 &emsp;确认&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 9000px;padding-top: 40px;">
+                                    <div class="layui-form-item">
+                                        <div class="layui-upload">
+                                            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
+                                            <div class="layui-upload-list" style="height: 200px; display: block; overflow: auto">
+                                                <table class="layui-table">
+                                                    <thead>
+                                                    <tr><th>文件名</th>
+                                                        <th>大小</th>
+                                                        <th>状态</th>
+                                                        <th>操作</th>
+                                                    </tr></thead>
+                                                    <tbody id="demoList"></tbody>
+                                                </table>
+                                            </div>
+                                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="text-align: center">
+                                        <div class="layui-input-block" style="display: inline-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep3">
+                                                &emsp;完成&emsp;
                                             </button>
                                         </div>
                                     </div>
@@ -200,62 +220,83 @@
 </div>
 <script th:src="@{/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
-<script type="text/javascript">
-    var chooseOrderID = document.getElementById("orderid").textContent;
-    $(function () {
-        // 初始化插件
-        $("#zyupload").zyUpload({
-            width: "450px",                     // 宽度
-            height: "250px",                    // 宽度
-            itemWidth: "100px",                 // 文件项的宽度
-            itemHeight: "70px",                 // 文件项的高度
-            url: "api/upload?order_id="+chooseOrderID,                  // 上传文件的路径
-            fileType: ["jpg", "png"],           // 上传文件的类型
-            fileSize: 51200000,                // 上传文件的大小
-            multiple: true,                    // 是否可以多个文件上传
-            dragDrop: true,                    // 是否可以拖动上传文件
-            tailor: true,                      // 是否可以裁剪图片
-            del: true,                         // 是否可以删除文件
-            finishDel: false,  				    // 是否在上传文件完成后删除预览
-            /* 外部获得的回调接口 */
-            onSelect: function (selectFiles, allFiles) {    // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
-                console.info("当前选择了以下文件：");
-                console.info(selectFiles);
-            },
-            onDelete: function (file, files) {              // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
-                console.info("当前删除了此文件：");
-                console.info(file.name);
-            },
-            onSuccess: function (file, response) {          // 文件上传成功的回调方法
-                console.info("此文件上传成功：");
-                console.info(file.name);
-                console.info("此文件上传到服务器地址：");
-                console.info(response);
-                $("#uploadInf").append("<p>上传成功，文件地址是：" + response + "</p>");
-            },
-            onFailure: function (file, response) {          // 文件上传失败的回调方法
-                console.info("此文件上传失败：");
-                console.info(file.name);
-            },
-            onComplete: function (response) {           	  // 上传完成的回调方法
-                console.info("文件上传完成");
-                console.info(response);
-            }
-        });
-
-    });
-</script>
 <script>
-    layui.use(['form', 'step','tableSelect','layer'], function () {
-        var $ = layui.$,
+    layui.use(['form', 'step','tableSelect','layer','upload'], function () {
+        var $ = layui.jquery,
             form = layui.form,
             step = layui.step,
             tableSelect = layui.tableSelect,
             layer = layui.layer,
+            upload = layui.upload,
             chooseOpID = 0,
-            chooseOrderID = document.getElementById("orderid").textContent,
-            dwpicture = "点位图";//还有点位图上传的接口没写
+            chooseOrderID = document.getElementById("order_id").textContent;
 
+        //多文件列表示例
+        var demoListView = $('#demoList')
+            ,uploadListIns = upload.render({
+            elem: '#testList'
+            ,url: "api/upload?order_id="+chooseOrderID //改成您自己的上传接口
+            ,accept: 'images'
+            ,acceptMime: 'image/*'
+            ,multiple: true
+            ,auto: false
+            ,size:0
+            ,bindAction: '#testListAction'
+            ,choose: function(obj){
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                //读取本地文件
+                obj.preview(function(index, file, result){
+                    var tr = $(['<tr id="upload-'+ index +'">'
+                        ,'<td>'+ file.name +'</td>'
+                        ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
+                        ,'<td>等待上传</td>'
+                        ,'<td>'
+                        ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                        ,'<button class="layui-btn layui-btn-xs demo-clean layui-hide">清除</button>'
+                        ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                        ,'</td>'
+                        ,'</tr>'].join(''));
+
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function(){
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function(){
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    // 清除
+                    tr.find('.demo-clean').on('click', function(){
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = '';
+                    });
+
+                    demoListView.append(tr);
+                });
+
+            }
+            ,done: function(res, index, upload){
+                if(res.data == "ok"){ //上传成功
+                    var tr = demoListView.find('tr#upload-'+ index)
+                        ,tds = tr.children();
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    tds.eq(3).find('.demo-clean').removeClass('layui-hide'); //显示清除
+                    tds.eq(3).find('.demo-delete').addClass('layui-hide'); //显示重传
+                    return delete this.files[index]; //删除文件队列已经上传成功的文件
+                }
+                this.error(index, upload);
+            }
+            ,error: function(index, upload){
+                var tr = demoListView.find('tr#upload-'+ index)
+                    ,tds = tr.children();
+                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            }
+        });
 
         layer.photos({
             photos: '#layer-photos-demo'
@@ -301,9 +342,11 @@
             stepItems: [{
                 title: '核验预约信息'
             }, {
-                title: '预约处理'
+                title: '操作员分配'
             }, {
-                title: '完成'
+                title: '布点图上传'
+            }, {
+                title: '派单完成'
             }]
         });
 
@@ -322,7 +365,6 @@
                 data:{
                     "chooseOpID": chooseOpID,
                     "chooseOrderID": chooseOrderID,
-                    //图片另外写
                 },
                 dataType:"json",
                 success:function (data) {
@@ -332,6 +374,9 @@
                         layer.msg("失败");
                     }
 
+                },
+                error:function (data) {
+                    layer.msg("检查是否有填写错误");
                 }
             });
 
@@ -339,6 +384,12 @@
             return false;
         });
 
+        form.on('submit(formStep3)', function (data) {
+            //后台更新数据
+            //异步传输
+            step.next('#stepForm');
+            return false;
+        });
         $('.pre').click(function () {
             step.pre('#stepForm');
         });

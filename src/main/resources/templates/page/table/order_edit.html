@@ -97,9 +97,10 @@
         <div class="layui-inline">
             <label class="layui-form-label">空气检测</label>
             <div class="layui-input-inline">
-                <input type="hidden" name="order_moremoney" value="0">
-                <input type="checkbox" checked="" name="order_moremoney"
-                       lay-skin="switch" lay-filter="switchTest" lay-text="是|否" value="1">
+                <input type="hidden" id="orderMoreMoney" th:value="${order.order_moremoney}">
+                <input type="hidden" id="checked1" name="order_moremoney" value="0">
+                <input type="checkbox" id="checked2" name="order_moremoney"
+                       lay-skin="switch" lay-filter="switchTest" lay-text="是|否" value="1" lay-verify="required">
             </div>
         </div>
 
@@ -123,15 +124,26 @@
     // 获取Model中的值
     const order_class = document.getElementById("orderClass").value;
     const order_time = document.getElementById("orderDate").value;
+    const order_moremoney = document.getElementById("orderMoreMoney").value;
     layui.use(['form','laydate'],function(){
-        var $ = layui.$,
+        var $ = layui.jquery,
             form = layui.form,
             laydate = layui.laydate;
+
         // 绑定radio
         $("input[name=order_class][value='1']").attr("checked", order_class === "工装");
         $("input[name=order_class][value='2']").attr("checked", order_class === "家居");
         $("input[name=order_class][value='3']").attr("checked", order_class === "车辆");
         // end 绑定radio
+
+        // 绑定switch
+        if (order_moremoney === "1"){
+            $("#checked2").attr('checked',true);
+            //  非常重要，刷新按钮状态
+            form.render('checkbox');
+        }
+        // end 绑定switch
+
         //监听指定开关
         form.on('switch(switchTest)', function (data) {
             layer.msg('空气检测：' + (this.checked ? '需要' : '不需要'), {
@@ -139,6 +151,7 @@
             });
             layer.tips('温馨提示：空气检测不同于空气治理，请谨慎选择', data.othis);
         });
+
         //使用laydate实例
         laydate.render({
             elem: '#test1',   // 指定元素
@@ -156,7 +169,7 @@
                 data:JSON.stringify(data.field),
                 contentType:"application/json;charset=UTF-8",
                 success:function (data) {
-                    if(data.data=="ok"){
+                    if(data.data === "ok"){
                         layer.msg("订单更新成功");
                     } else {
                         layer.msg(data.msg);

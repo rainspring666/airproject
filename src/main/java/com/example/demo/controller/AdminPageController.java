@@ -198,13 +198,19 @@ public class AdminPageController {
     public String dis_process(@RequestParam("orderID") String order_id , Model model){
         logger.info("/page/table/dis_process.html");
         Order order = orderService.selectByPrimaryKey(order_id);
-        // order.setUser_id(userService.selectByUserID(order.getUser_id()).getUser_name());//更换姓名
         order.setUser_id(userInfoService.get_user_info_by_id(order.getUser_id()).getUser_name());//更换姓名
 
         order.setOp_id(operatorService.selectByOpID(order.getOp_id()).getOp_name());
         order.setOrder_class(OrderClassEnum.getName(order.getOrder_class()));
         order.setOrder_state(OrderStateEnum.getName(Integer.parseInt(order.getOrder_state())));
         logger.info(order.toString());
+        String modelf = order.getOrder_modelf();
+        if(!modelf.equals("")){
+            String[] url = modelf.split("@");
+            order.setOrder_modelf("../"+url[0]);
+        }else{
+            order.setOrder_modelf("../images/2018053114114060944.jpg");
+        }
         model.addAttribute("order",order);
         return "page/table/dis_process";
     }
@@ -313,7 +319,6 @@ public class AdminPageController {
     public   MyJsonResult webFileUpload(HttpServletRequest request,@RequestParam("order_id") String order_id, @RequestParam(value = "file") MultipartFile file){
         try {
 
-            logger.info("AdminPageController.class");
             logger.info("api/upload");
             String path= tools.UPLOAD_PICTURE_PATH + "/order/"+ order_id+"/";
             String fileName = file.getOriginalFilename();
@@ -329,12 +334,12 @@ public class AdminPageController {
             process.setPro_generator("/order/"+ order_id+"/" + fileName);
             processService.update_info(process);
             logger.info("图片上传成功"+targetFile.getAbsolutePath());
-            return MyJsonResult.buildData("上传成功");
+            return MyJsonResult.buildData("ok");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  MyJsonResult.errorMsg("上传失败");
+        return  MyJsonResult.errorMsg("error");
     }
 
 

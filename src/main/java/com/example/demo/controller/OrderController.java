@@ -311,9 +311,9 @@ public class OrderController
         boolean flag = orderService.order_change_by_id(order);
         if(flag){
             logger.info("订单修改成功");
-            return MyJsonResult.buildData("修改成功");
+            return MyJsonResult.buildData("ok");
         }
         logger.info("订单修改失败");
-        return MyJsonResult.errorMsg("修改失败");
+        return MyJsonResult.errorMsg("error");
     }
 }
