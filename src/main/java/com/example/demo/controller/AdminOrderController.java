@@ -127,21 +127,25 @@ public class AdminOrderController {
      */
     @PostMapping("/order/add_one_order")
     @ResponseBody
-    public MyJsonResult add_order(@RequestBody Order order){
+    public MyJsonResult add_order(@RequestBody Order order, HttpServletRequest request){
         //补充order必要的信息
         String order_id = tools.createOrderId();
         order.setOrder_id(order_id);
         order.setOrder_state("0");
         order.setOp_id("1");
-        order.setUser_id("");//临时用户 游客id====
+        order.setOrder_modelf("");
+        order.setUser_id((String) request.getSession().getAttribute("temp_user_id"));//临时用户 游客id====
+
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
         order.setOrder_createtime(dateString);
 
+        System.out.println("order:"+order.toString());
         if(orderService.insert(order)){
             logger.info("web add an order："+order.getOrder_id());
-            this.order_id_global=order_id;
+            //this.order_id_global=order_id;
+            request.getSession().setAttribute("temp_order_id", order_id);
             return MyJsonResult.buildData("ok");
         }
 
@@ -152,9 +156,10 @@ public class AdminOrderController {
      *web端 新增一条userinfo user 记录 游客性质的用户 企业用户
      * @return
      */
-    @PostMapping("/order/add_user_info")
+    @PostMapping("/order/add_one_order_user_info")
     @ResponseBody
-    public MyJsonResult add_user_info(@RequestBody User_info user_info){
+    public MyJsonResult add_user_info(@RequestBody User_info user_info, HttpServletRequest request){
+        logger.info("add_one_order_user_info----  user_info:"+user_info.toString());
         String user_id = tools.createUserId(0,1);
         //更新用户
         User user = new User();
@@ -162,6 +167,7 @@ public class AdminOrderController {
         user.setUser_pwd("Temp00000000");
         user.setUser_phone(user_info.getUser_id());//phone临时做id
 
+        user.setUser_name(user_info.getUser_name());
         //更新用户信息
         user_info.setFirm_id("0");
         user_info.setUser_id(user_id);
@@ -169,16 +175,18 @@ public class AdminOrderController {
         //更新用户角色
         User_role user_role = new User_role();
         user_role.setUser_id(user_id);
-        if(user_info.getUser_nickname().contains("a游客"))
-            user_role.setUser_role_id(2);//
-        else if (user_info.getUser_nickname().contains("b公司"))
-            user_role.setUser_role_id(3);//
+        if(user_info.getUser_nickname().contains("游客"))
+            user_role.setRole_id(2);//
+        else if (user_info.getUser_nickname().contains("公司"))
+            user_role.setRole_id(3);//
 
+        logger.info("add_one_order_user_info ---- user:"+user.toString());
 
         if(userService.save_user(user) && userInfoService.add_user_info(user_info) &&
                 user_roleService.add_user_role(user_role)) {
             logger.info("/order/add_one_order"+user_id);
-            this.user_id_global = user_id;
+            // 当并发时，user_id会被多次改变，可能出现问题，因此采用session存储！
+            request.getSession().setAttribute("temp_user_id", user_id);
             return MyJsonResult.buildData("ok");
         }
 
@@ -195,7 +203,7 @@ public class AdminOrderController {
     @ResponseBody
     public MyJsonResult upload(HttpServletRequest request,
                                @RequestParam(value = "file", required = false) MultipartFile file) {
-        String user_id = this.user_id_global;
+        String user_id = (String) request.getSession().getAttribute("temp_user_id");
         String path = null, imgDir = "hx_img_other_users";
         try {
             request.setCharacterEncoding("UTF-8");
@@ -213,12 +221,21 @@ public class AdminOrderController {
                                 + Integer.toString(calendar.get(calendar.MONTH)+1) + "/"+ Integer.toString(calendar.get(calendar.DAY_OF_MONTH)) + "/";
 
                         path = temp  + trueFileName;
-                        File dir = new File("/Users/pengyuquan/Desktop/" +temp);
+                        File dir = new File(tools.UPLOAD_PICTURE_PATH +temp);
                         //Process process = processMapper.
                         if (!dir.exists()) {
                             dir.mkdirs();
                         }
-                        file.transferTo(new File("/Users/pengyuquan/Desktop/" +path));
+                        file.transferTo(new File(tools.UPLOAD_PICTURE_PATH +path));
+
+                        Order order = orderService.selectByPrimaryKey((String) request.getSession().getAttribute("temp_order_id"));
+                        order.setOrder_modelf(order.getOrder_modelf() + path + "@");
+
+                        if(orderService.updateOrder_modelf(order)){
+                            logger.info("user {} upload picture:{}",user_id,path + "@");
+                            return MyJsonResult.buildData("ok");//成功的话 返回图片在服务器的路径 暂时只能一张图片
+                        }
+                        logger.info("Web 图片上传出错");
                     } else {
                         return MyJsonResult.errorMsg("文件类型错误");
                     }
@@ -231,8 +248,7 @@ public class AdminOrderController {
         } catch (IOException e){
             System.out.println("图片上传这里有异常");
         }
-        logger.info("user {} upload picture:{}",user_id,path + "@");
-        return MyJsonResult.buildData(path + "@");//成功的话 返回图片在服务器的路径 暂时只能一张图片
+        return MyJsonResult.errorMsg("error");
     }
 
 
@@ -253,6 +269,28 @@ public class AdminOrderController {
         return MyJsonResult.errorMsg("删除order失败");
     }
 
+    @PostMapping("/del_orders")
+    @ResponseBody
+    public MyJsonResult del_Orders(@RequestBody String[] arr){
+
+        logger.info("del_equipments----arr:");
+        for (String i: arr) {
+            System.out.println(i);
+        }
+        boolean result = true;
+        for (String order_id: arr) {
+            if(!orderService.deleteByPrimaryKey(order_id)){
+                result = false;
+                break;
+                // 事务回滚
+            }
+        }
+        if(result)
+            return MyJsonResult.buildData("ok");
+
+        return MyJsonResult.errorMsg("error");
+    }
+
     /**
      * web端修改编辑更新order记录信息
      * @return
@@ -268,16 +306,18 @@ public class AdminOrderController {
     }
 
     @GetMapping("/order/search")
+    @ResponseBody
     public Map<String,Object> search_order(HttpServletRequest request){
 
         JSONObject searchParams = JSONObject.parseObject(request.getParameter("searchParams"));
         PageHelper.startPage(1, 20);
 
-        String order_id = searchParams.getString("order_id");
+        String order_id = searchParams.getString("orderID");
         String phone = searchParams.getString("phone");
-        String connect_name = searchParams.getString("connect_name");
+        String connect_name = searchParams.getString("connectName");
+        String order_state = searchParams.getString("order_state");
         //多条件搜索
-        List<Order> orderList = orderService.searchByMultiConditions(order_id,connect_name,phone,"");
+        List<Order> orderList = orderService.searchByMultiConditions(order_id,connect_name,phone, order_state);
 
         /*组装响应数据 便于前端显示*/
         List<Operator> op_list = operatorService.all_op_info();

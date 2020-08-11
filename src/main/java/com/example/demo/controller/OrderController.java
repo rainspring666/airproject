@@ -310,8 +310,10 @@ public class OrderController
         logger.info(order.toString());
         boolean flag = orderService.order_change_by_id(order);
         if(flag){
+            logger.info("订单修改成功");
             return MyJsonResult.buildData("修改成功");
         }
+        logger.info("订单修改失败");
         return MyJsonResult.errorMsg("修改失败");
     }
 }
