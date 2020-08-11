@@ -2,6 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
 <link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<style type="text/css">
+    .layui-form-label.layui-required:before{
+        content:"*";
+        color:red;
+    }
+</style>
 <body>
 <form class="layui-form layui-form-pane">
 
@@ -13,20 +19,20 @@
     <!--</div>-->
 
     <div class="layui-form-item">
-        <label class="layui-form-label">物料编号</label>
+        <label class="layui-form-label layui-required">物料编号</label>
         <div class="layui-input-inline">
 
-            <input type="text" name= "add_material_id" autocomplete="off" lay-verify="required" placeholder="请输入新物料的编号" class="layui-input">
+            <input type="text" name= "add_material_id" autocomplete="off" lay-verify="required|number" placeholder="请输入新物料的编号" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">物料名称</label>
+        <label class="layui-form-label layui-required">物料名称</label>
         <div class="layui-input-inline">
             <input type="text" name = "add_ma_name" lay-verify="required" placeholder="请输入新物料的名称" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">数量</label>
+        <label class="layui-form-label layui-required">数量</label>
         <div class="layui-input-inline">
             <input type="text" name = "add_ma_number" lay-verify="required" autocomplete="off" class="layui-input"
                    onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')">
@@ -39,8 +45,8 @@
             <textarea placeholder="物料描述" class="layui-textarea"  name ="add_ma_other"></textarea>
         </div>
     </div>
-    <div class="layui-form-item">
-        <button class="layui-btn"  lay-submit lay-filter="material_add">提交申请</button>
+    <div class="layui-form-item" style="text-align: center">
+        <button class="layui-btn" style="text-align: center"  lay-submit lay-filter="material_add">提交申请</button>
     </div>
 </form>
 <script>

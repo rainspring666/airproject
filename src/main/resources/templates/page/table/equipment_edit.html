@@ -2,20 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
 <link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<style type="text/css">
+    .layui-form-label.layui-required:before{
+        content:"*";
+        color:red;
+    }
+</style>
 <body>
 <div class="layui-row layui-col-space10">
     <form class="layui-form layui-form-pane">
 
         <div class="layui-col-md5">
             <div class="layui-form-item">
-                <label class="layui-form-label">设备编号</label>
+                <label class="layui-form-label layui-required">设备编号</label>
                 <div class="layui-input-inline">
 
-                    <input type="text" name= "eq_id" readonly autocomplete="off" lay-verify="required" placeholder="请输入新设备的编号" class="layui-input" th:value="${equipment.eq_id}">
+                    <input type="text" name= "eq_id" readonly autocomplete="off" lay-verify="required|number" placeholder="请输入新设备的编号" class="layui-input" th:value="${equipment.eq_id}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">设备类型</label>
+                <label class="layui-form-label layui-required">设备类型</label>
                 <div class="layui-input-inline">
                     <input type="text" name = "eq_type" lay-verify="required" placeholder="请输入新设备的类型" autocomplete="off" class="layui-input" th:value="${equipment.eq_type}">
                 </div>
@@ -23,13 +29,13 @@
         </div>
         <div class="layui-col-md5">
             <div class="layui-form-item">
-                <label class="layui-form-label">设备名称</label>
+                <label class="layui-form-label layui-required">设备名称</label>
                 <div class="layui-input-inline">
                     <input type="text" name = "eq_name" lay-verify="required" placeholder="请输入新设备的名称" autocomplete="off" class="layui-input" th:value="${equipment.eq_name}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">设备数量</label>
+                <label class="layui-form-label layui-required">设备数量</label>
                 <div class="layui-input-inline">
                     <input type="text" name = "eq_inner_num" lay-verify="required" placeholder="请输入新设备的数量" autocomplete="off" class="layui-input"
                            onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" th:value="${equipment.eq_inner_num}">

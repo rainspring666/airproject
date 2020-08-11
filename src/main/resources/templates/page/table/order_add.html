@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
 <link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
-
+<style type="text/css">
+    .layui-form-label.layui-required:before{
+        content:"*";
+        color:red;
+    }
+</style>
 <body>
 
 <div class="layuimini-container layuimini-page-anim">
@@ -17,7 +22,7 @@
                                 <form class="layui-form"
                                       style="margin: 0 auto;max-width: 1200px;padding-top: 15px;" id="add_temp_user_form">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label required">用户名</label>
+                                        <label class="layui-form-label layui-required required">用户名</label>
                                         <div class="layui-input-block">
                                             <input type="text" name="user_name" lay-verify="required"
                                                    lay-reqtext="用户名不能为空" placeholder="请输入游客/企业用户名" value=""
@@ -39,15 +44,15 @@
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label required">手机</label>
+                                        <label class="layui-form-label layui-required required">手机</label>
                                         <div class="layui-input-block">
-                                            <input type="number" name="user_id" lay-verify="required"
+                                            <input type="number" name="user_id" lay-verify="required|phone"
                                                    lay-reqtext="手机不能为空" placeholder="请输入手机号码" value=""
                                                    class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">地址</label>
+                                        <label class="layui-form-label layui-required">地址</label>
                                         <div class="layui-input-block">
                                             <input type="email" name="user_address" placeholder="请输入地址" value=""
                                                    class="layui-input">
@@ -67,7 +72,7 @@
                                 <form class="layui-form" style="max-width: 1200px;padding-top: 40px;">
                                     <div class="layui-form-item">
                                         <div class="layui-inline">
-                                            <label class="layui-form-label required">联系人</label>
+                                            <label class="layui-form-label layui-required required">联系人</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" name="order_contact" lay-verify="required"
                                                        lay-reqtext="用户名不能为空" placeholder="请输入联系人" value=""
@@ -75,9 +80,9 @@
                                             </div>
                                         </div>
                                         <div class="layui-inline">
-                                            <label class="layui-form-label required">手机</label>
+                                            <label class="layui-form-label layui-required required">手机</label>
                                             <div class="layui-input-inline">
-                                                <input type="number" name="order_phone" lay-verify="required"
+                                                <input type="number" name="order_phone" lay-verify="required|phone"
                                                        lay-reqtext="手机不能为空" placeholder="请输入手机" value=""
                                                        class="layui-input">
                                             </div>
@@ -93,7 +98,7 @@
                                     </div>
                                     <div class="layui-form-item">
                                         <div class="layui-inline">
-                                            <label class="layui-form-label">地址</label>
+                                            <label class="layui-form-label layui-required">地址</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" lay-verify="required" name="order_address" placeholder="请输入地址" value=""
                                                     class="layui-input">
@@ -101,14 +106,14 @@
                                         </div>
 
                                         <div class="layui-inline">
-                                            <label class="layui-form-label">面积</label>
+                                            <label class="layui-form-label layui-required">面积</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" lay-verify="required | number" name="order_scope" placeholder="请输入面积" value=""
                                                        class="layui-input">
                                             </div>
                                         </div>
                                         <div class="layui-inline">
-                                            <label class="layui-form-label">预约时间</label>
+                                            <label class="layui-form-label layui-required">预约时间</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" class="layui-input" id="test1" name="order_time">
                                             </div>
@@ -116,7 +121,7 @@
                                     </div>
 
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label">具体描述</label>
+                                        <label class="layui-form-label layui-required">具体描述</label>
                                         <div class="layui-input-block">
                                             <input type="text" lay-verify="required" name="order_descripe" placeholder="请输入施工地点描述"
                                                    value="" class="layui-input">
@@ -125,14 +130,14 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label">特殊污染</label>
                                         <div class="layui-input-block">
-                                            <input type="text" lay-verify="required" name="order_pollution" placeholder="请输入施工地点描述"
+                                            <input type="text"  name="order_pollution" placeholder="请输入施工地点描述"
                                                    value="" class="layui-input">
                                         </div>
                                     </div>
                                     <div class="layui-form-item layui-form-text">
                                         <label class="layui-form-label">特殊要求</label>
                                         <div class="layui-input-block">
-                                                <textarea name="order_others" lay-verify="required" class="layui-textarea"
+                                                <textarea name="order_others"  class="layui-textarea"
                                                           placeholder="请输入备注信息"></textarea>
                                         </div>
                                     </div>
@@ -147,7 +152,7 @@
                                         </div>
 
                                         <div class="layui-inline">
-                                            <label class="layui-form-label">预估价格</label>
+                                            <label class="layui-form-label layui-required">预估价格</label>
                                             <div class="layui-input-inline">
                                                 <input type="text" lay-verify="required" name="order_cost" placeholder="请输入预估价格" value=""
                                                        class="layui-input" >

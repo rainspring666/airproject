@@ -216,6 +216,13 @@ public class AdminPageController {
         JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
         Order order = jsonOrder.toJavaObject(Order.class);
         logger.info(order.toString());
+        String modelf = order.getOrder_modelf();
+        if(!modelf.equals("")){
+            String[] url = modelf.split("@");
+            order.setOrder_modelf("../"+url[0]);
+        }else{
+            order.setOrder_modelf("../images/2018053114114060944.jpg");
+        }
         model.addAttribute("order",order);
         return "page/table/order_detail";
     }
