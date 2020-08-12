@@ -63,11 +63,12 @@ public class AdminPageController {
         logger.info("page/welcome-2.html");
         return "page/welcome-2.html";
     }
-    @RequestMapping("/page/welcome-3.html")
+    /*@RequestMapping("/page/welcome-3.html")
     public String welcome3(){
+    // 预留界面
         logger.info("page/welcome-3.html");
         return "page/welcome-3.html";
-    }
+    }*/
     @RequestMapping("/page/menu.html")
     public String menu(){
         logger.info("/page/menu.html");
@@ -183,11 +184,12 @@ public class AdminPageController {
         logger.info("/page/order_info.html");
         return "page/order_info.html";
     }
-    @RequestMapping("/page/process_info.html")
+    /*@RequestMapping("/page/process_info.html")
     public String process_info(){
+    // 流程管理界面
         logger.info("/page/process_info.html");
         return "page/process_info.html";
-    }
+    }*/
     @RequestMapping("/page/user_info.html")
     public String user_info(){
         logger.info("/page/user_info.html");
