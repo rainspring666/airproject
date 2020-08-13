@@ -2,16 +2,14 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.example.demo.entity.Order;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Process;
 import com.example.demo.entity.Report;
 import com.example.demo.mapper.ReportMapper;
 import com.example.demo.service.*;
 import com.example.demo.tools.MyJsonResult;
-import com.example.demo.tools.SystemClock;
 import com.example.demo.tools.Tool;
 import com.example.demo.tools.pdfUtil;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -298,10 +296,10 @@ public class ReportController {
         map.put("checker", "韦小宝");
 
         Map<String, String> map2 = new HashMap();
-        map2.put("image1", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image2", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image3", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image4", "D:/OldFiles/photoes/download.jpg");
+        map2.put("image1", "C:\\Users\\mhh\\Desktop\\A\\1.png");
+        map2.put("image2", "C:\\Users\\mhh\\Desktop\\A\\1.png");
+        map2.put("image3", "C:\\Users\\mhh\\Desktop\\A\\1.png");
+        map2.put("image4", "C:\\Users\\mhh\\Desktop\\A\\1.png");
 
         Map<String, Object> o = new HashMap();
         o.put("datemap", map);
@@ -312,5 +310,51 @@ public class ReportController {
             return MyJsonResult.buildData(reportPath);
         }
          return MyJsonResult.errorMsg("报告生成失败");
+    }
+
+    @RequestMapping("create/report")
+    @ResponseBody
+    public MyJsonResult create_report (@RequestBody JSONObject jsonObject){
+        logger.info(jsonObject.toString());
+        String order_id = jsonObject.getString("order_id");
+        JSONObject baseInfo = jsonObject.getJSONObject("formStep");
+        JSONObject describe = jsonObject.getJSONObject("formStep2");
+        JSONObject process = jsonObject.getJSONObject("formStep3");
+        JSONObject valid = jsonObject.getJSONObject("formStep4");
+        logger.info(order_id);
+        logger.info(baseInfo.toString());
+        return MyJsonResult.buildData("ok");
+    }
+
+    @RequestMapping("temp/picture")
+    @ResponseBody
+    public  Map<String,Object> richTxtPicture(@RequestParam(value = "file") MultipartFile file){
+        Map<String,Object> map2 = new HashMap<>();
+        try {
+            logger.info("temp/picture");
+            String path= Tool.UPLOAD_PICTURE_PATH + "/temp/picture/";
+            String fileName = file.getOriginalFilename();
+            File targetFile = new File(path, fileName);
+            if(!targetFile.exists()){
+                targetFile.mkdirs();
+            }
+            file.transferTo(targetFile);
+            String fileAbsolutePath = targetFile.getAbsolutePath();
+            String canonicalPath = targetFile.getCanonicalPath();
+            logger.info("图片上传成功"+ fileAbsolutePath);
+
+            Map<String,String> map1 = new HashMap<>();
+
+            map1.put("src", Tool.SERVICE_URL +"/temp/picture/"+fileName);
+            map1.put("title",fileName);
+            // 构造返回值
+            map2.put("code",0);
+            map2.put("msg","上传失败");
+            map2.put("data",map1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map2;
     }
 }

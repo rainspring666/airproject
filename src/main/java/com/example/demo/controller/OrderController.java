@@ -2,30 +2,29 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Operator;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.ProcessMapper;
 import com.example.demo.service.OperatorService;
 import com.example.demo.service.OrderService;
-import com.example.demo.tools.*;
-import com.sun.rowset.internal.Row;
+import com.example.demo.tools.MyJsonResult;
+import com.example.demo.tools.OrderClassEnum;
+import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author mhh
@@ -305,8 +304,7 @@ public class OrderController
     @PostMapping("/updateOrderInfo")
     @ResponseBody
     public MyJsonResult order_change_by_id(HttpServletRequest request, @RequestBody Order order){
-        logger.info("[method]:order_change_by_id");
-        logger.info("[interface]:api/order/updateOrderInfo");
+        logger.info("api/order/updateOrderInfo");
         logger.info(order.toString());
         boolean flag = orderService.order_change_by_id(order);
         if(flag){

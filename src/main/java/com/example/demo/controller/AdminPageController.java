@@ -216,7 +216,31 @@ public class AdminPageController {
         model.addAttribute("order",order);
         return "page/table/dis_process";
     }
+    @GetMapping("/page/table/report_add")
+    public String report_add(@RequestParam("orderID") String order_id , Model model){
+        logger.info("/page/table/report_add.html");
+        Order order = orderService.selectByPrimaryKey(order_id);
+        order.setUser_id(userInfoService.get_user_info_by_id(order.getUser_id()).getUser_name());//更换姓名
+        order.setOp_id(operatorService.selectByOpID(order.getOp_id()).getOp_name());
+        order.setOrder_class(OrderClassEnum.getName(order.getOrder_class()));
+        order.setOrder_state(OrderStateEnum.getName(Integer.parseInt(order.getOrder_state())));
+        logger.info(order.toString());
+        String modelf = order.getOrder_modelf();
+        if(!modelf.equals("")){
+            String[] url = modelf.split("@");
+            order.setOrder_modelf("../"+url[0]);
+        }else{
+            order.setOrder_modelf("../images/2018053114114060944.jpg");
+        }
 
+        Process process = processService.get_one_info2(order_id);
+        String pro_time = process.getPro_starttime();
+        process.setPro_starttime(pro_time.substring(0,10));
+
+        model.addAttribute("order",order);
+        model.addAttribute("process",process);
+        return "page/table/report_add";
+    }
     @GetMapping ("/page/table/order_detail")
     public String order_detail(@RequestParam("order") String strOrder, Model model){
         logger.info("/page/table/order_detail.html");

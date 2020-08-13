@@ -7,13 +7,14 @@
     </select>
 
     <insert id="add_report">
-        insert into report(report_id, describes, picurl, operate_plan, create_time, validation, site_condition)
-        values (#{report_id}, #{describes}, #{picurl}, #{operate_plan}, #{create_time}, #{validation}, #{site_condition})
+        insert into report(report_id, describes, picurl, operate_plan, create_time, validation, site_condition,report_url)
+        values (#{report_id}, #{describes}, #{picurl}, #{operate_plan}, #{create_time}, #{validation}, #{site_condition}, #{report_url})
     </insert>
 
     <update id="update_report_info">
         update report
-        set describes = #{describes}, picurl = #{picurl}, operate_plan = #{operate_plan}, create_time = #{create_time}, validation = #{validation}, site_condition = #{site_condition}
+        set describes = #{describes}, picurl = #{picurl}, operate_plan = #{operate_plan}, create_time = #{create_time},
+         validation = #{validation}, site_condition = #{site_condition}, report_url = #{report_url}
         where report_id = #{report_id}
     </update>
 
