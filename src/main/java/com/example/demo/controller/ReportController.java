@@ -276,6 +276,19 @@ public class ReportController {
         logger.info("施工流程信息"+JSON.toJSONString(resultList));
         return MyJsonResult.buildData(JSONArray.parseArray(JSON.toJSONString(resultList)));
     }
+    @PostMapping ("/get_report")
+    @ResponseBody
+    public MyJsonResult getReport(@RequestParam("order_id")String order_id){
+        Process process = processService.get_one_info2(order_id);
+        String report_id = process.getReport_id();
+        Report report = reportMapper.get_report_by_report_id(report_id);
+        String reportPath = report.getReport_url();
+        // 从数据库查询报告相对路径
+        if (reportPath != null){
+            return MyJsonResult.buildData(reportPath);
+        }
+        return MyJsonResult.errorMsg("报告还未生成");
+    }
 
     @RequestMapping("create/report")
     @ResponseBody
