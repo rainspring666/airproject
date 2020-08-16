@@ -55,6 +55,15 @@
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-warm layui-btn-xs data-count-edit" lay-event="check">查看</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            {{# if(d.order_state === "已完成"){ }}
+            <a class="layui-btn layui-btn-xs  data-count-delete" lay-event="report">报告</a>
+            {{# } }}
+            {{# if(d.order_state === "已生成"){ }}
+            <a class="layui-btn layui-btn-xs  data-count-delete layui-btn-danger " lay-event="quickLook">已成</a>
+            {{# } }}
+            {{# if(d.order_state !== "已完成" && d.order_state !== "已生成" ){ }}
+            <a class="layui-btn layui-btn-xs  data-count-delete layui-btn-disabled" >报告</a>
+            {{# } }}
         </script>
 
         <!--<div class="layui-tab layui-tab-card">-->
@@ -106,14 +115,14 @@
                 [
                     {type: 'checkbox', fixed: 'left'},
                     {field: 'order_id', title: '订单号', width: 280,align: "center"},
-                    {field: 'user_id', title: '用户', width: 120, align: "center"},
-                    {field: 'order_contact', title: '联系人', width: 120, align: "center"},
+                    {field: 'user_id', title: '用户', width: 100, align: "center"},
+                    {field: 'order_contact', title: '联系人', width: 100, align: "center"},
                     {field: 'order_phone', title: '联系电话', width: 120, align: "center"},
                     {field: 'order_class', title: '类别', width: 80,sort: true, align: "center"},
                     {field: 'order_state', title: '状态', width: 80,  sort: true, align: "center"},
-                    {field: 'op_id', title: '操作员', width: 120,  align: "center"},
+                    {field: 'op_id', title: '操作员', width: 100,  align: "center"},
                     {field: 'order_time', title: '预约日期', width: 170,  sort: true, align: "center"},
-                    {title: '操作', align: "center", width: 180, toolbar: '#currentTableBar', fixed: 'right'}
+                    {title: '操作', align: "center", width: 240, toolbar: '#currentTableBar', fixed: 'right'}
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
@@ -288,6 +297,59 @@
                         }
                     });
 
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }else if (obj.event === 'report') {
+                var orderID = data.order_id;
+
+                var content = miniPage.getHrefContent('/admin/page/table/report_add?orderID='+orderID);
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '施工报告生成',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:false,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                    anim: 2,
+                    resize: false,
+                    end:function(){
+                        // location.reload();//弹出层结束后，刷新主页面
+                        table.reload('currentTableId', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallorderinfo',
+                        }, 'data');
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }else if (obj.event === 'quickLook') {
+                var order_id = data.order_id;
+                $.ajax({
+                    type: "post",
+                    url:"/api/report/get_report",
+                    data:{
+                        order_id: order_id
+                    },
+                    async: false,
+                    contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+                    success:function (data) {
+                        var domain = window.location.protocol+"//"+window.location.host;
+                        window.open(domain +"/"+data.data, '_blank').location;
+                    },
+                    error:function (data) {
+                        layer.msg("检查是否有填写错误");
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

@@ -21,9 +21,6 @@ public class Tool {
     //服务器上传图片的总目录
     public static final String UPLOAD_PICTURE_PATH= "C:/whut/";
 
-    // 服务器域名
-    public static final String SERVICE_URL= "http://xm6raj.natappfree.cc";
-
     public  String pwdMD5(String pwd)  {
         try {
             // 生成一个MD5加密计算摘要

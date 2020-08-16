@@ -191,7 +191,18 @@
         layedit.set({	//设置图片接口
             uploadImage: {
                 url: '/api/report/temp/picture', //接口url
-                type: 'post'
+                type: 'post',
+                parseData: function(res){ //res 即为原始返回的数据
+                    const domain = window.location.protocol + "//" + window.location.host;
+                    return {
+                        "code": res.status, //解析接口状态
+                        "msg": res.message, //解析提示文本
+                        "data": {
+                            "src": domain + res.data.src,
+                            "title": res.data.title
+                        }
+                    };
+                }
             }
         });
         //创建一个编辑器

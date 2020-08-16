@@ -59,7 +59,10 @@
             {{# if(d.order_state === "已完成"){ }}
             <a class="layui-btn layui-btn-xs  data-count-delete" lay-event="report">报告</a>
             {{# } }}
-            {{# if(d.order_state !== "已完成"){ }}
+            {{# if(d.order_state === "已生成"){ }}
+            <a class="layui-btn layui-btn-xs  data-count-delete layui-btn-danger " lay-event="quickLook">已成</a>
+            {{# } }}
+            {{# if(d.order_state !== "已完成" && d.order_state !== "已生成" ){ }}
             <a class="layui-btn layui-btn-xs  data-count-delete layui-btn-disabled" >报告</a>
             {{# } }}
         </script>
@@ -73,6 +76,8 @@
             form = layui.form,
             table = layui.table,
             miniPage = layui.miniPage;
+
+        form.render();
 
         table.render({
             elem: '#currentTableId',
@@ -245,6 +250,28 @@
                             },
                             url: '/api/bg/admin/getallorderinfo',
                         }, 'data');
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }else if (obj.event === 'quickLook') {
+                var order_id = data.order_id;
+                $.ajax({
+                    type: "post",
+                    url:"/api/report/get_report",
+                    data:{
+                        order_id: order_id
+                    },
+                    async: false,
+                    contentType:"application/x-www-form-urlencoded;charset=UTF-8",
+                    success:function (data) {
+                        var domain = window.location.protocol+"//"+window.location.host;
+                        window.open(domain +"/"+data.data, '_blank').location;
+                    },
+                    error:function (data) {
+                        layer.msg("检查是否有填写错误");
                     }
                 });
                 $(window).on("resize", function () {

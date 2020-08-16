@@ -3,12 +3,14 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.demo.entity.Order;
 import com.example.demo.entity.Process;
 import com.example.demo.entity.Report;
 import com.example.demo.mapper.ReportMapper;
 import com.example.demo.service.*;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.MyPdfPage;
+import com.example.demo.tools.OrderStateEnum;
 import com.example.demo.tools.Tool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -279,14 +281,17 @@ public class ReportController {
     @PostMapping ("/get_report")
     @ResponseBody
     public MyJsonResult getReport(@RequestParam("order_id")String order_id){
+        logger.info("/get_report");
         Process process = processService.get_one_info2(order_id);
         String report_id = process.getReport_id();
         Report report = reportMapper.get_report_by_report_id(report_id);
         String reportPath = report.getReport_url();
         // 从数据库查询报告相对路径
         if (reportPath != null){
+            logger.info("返回PDF报告地址成功");
             return MyJsonResult.buildData(reportPath);
         }
+        logger.info("报告还未生成");
         return MyJsonResult.errorMsg("报告还未生成");
     }
 
@@ -329,6 +334,11 @@ public class ReportController {
             String dateString = formatter.format(date);
             report.setCreate_time(dateString);
             reportMapper.update_report_info(report);
+
+            Order order = orderService.selectByPrimaryKey(order_id);
+            order.setOrder_state(String.valueOf(OrderStateEnum.PDF.getIndex()));
+            orderService.update_order_state(order);
+
             logger.info("生成pdf报告成功");
             return MyJsonResult.buildData("ok");
         }
@@ -355,7 +365,7 @@ public class ReportController {
 
             Map<String,String> map1 = new HashMap<>();
 
-            map1.put("src", Tool.SERVICE_URL +"/temp/picture/"+fileName);
+            map1.put("src", "/temp/picture/"+fileName);
             map1.put("title",fileName);
             // 构造返回值
             map2.put("code",0);

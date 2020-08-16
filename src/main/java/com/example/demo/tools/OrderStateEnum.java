@@ -6,7 +6,7 @@ package com.example.demo.tools;
  */
 public enum OrderStateEnum {
     // 订单状态
-    PENDING("未处理", 0), PROCESSING("处理中", 1), FINISH("已完成", 2),
+    PENDING("未处理", 0), PROCESSING("处理中", 1), FINISH("已完成", 2),PDF("已生成", 3),
     // 操作员状态
     WORKING("工作中",10),KONGXIAN("空闲",11),XIUJIA("休假",12),
     // 流程状态
