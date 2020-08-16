@@ -17,5 +17,9 @@
         where user_role_id = #{user_role_id}
     </update>
 
+    <delete id="del_user_role">
+        delete from user_role
+        where user_id = #{user_id}
+    </delete>
 
 </mapper>

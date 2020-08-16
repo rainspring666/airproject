@@ -24,4 +24,8 @@ public class User_roleService {
     public boolean update_user_role(User_role user_role){
         return user_roleMapper.update_user_role_info(user_role);
     }
+
+    public boolean del_user_role(String user_id){
+        return user_roleMapper.del_user_role(user_id);
+    }
 }

@@ -176,7 +176,7 @@ public class AdminOrderController {
         User_role user_role = new User_role();
         user_role.setUser_id(user_id);
         if(user_info.getUser_nickname().contains("游客"))
-            user_role.setRole_id(2);//
+            user_role.setRole_id(4);//
         else if (user_info.getUser_nickname().contains("公司"))
             user_role.setRole_id(3);//
 

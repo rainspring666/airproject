@@ -44,4 +44,20 @@ public class UserService {
     public User selectByUserID(String userId){
         return userMapper.selectByUserID(userId);
     }
+
+    public List<User> selectAllUser(int role_id){
+        return userMapper.selectAllUser(role_id);
+    }
+
+    public List<User> selectUserByParams(String user_id,String user_name,String user_phone, int kind){
+        return userMapper.selectUserByParams(user_id, user_name, user_phone, kind);
+    }
+
+    public boolean del_user(String user_id){
+        return userMapper.del_user(user_id);
+    }
+
+    public boolean reset_user(String user_id){
+        return userMapper.reset_user(user_id);
+    }
 }

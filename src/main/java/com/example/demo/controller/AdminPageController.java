@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.entity.Equipment;
-import com.example.demo.entity.Material;
-import com.example.demo.entity.Order;
+import com.example.demo.entity.*;
 import com.example.demo.entity.Process;
 import com.example.demo.service.*;
 import com.example.demo.tools.MyJsonResult;
@@ -157,8 +155,6 @@ public class AdminPageController {
     //page/button.html?v=1
     //page/button.html?v=2"
 
-
-
     @RequestMapping("/page/error.html")
     public String error(){
         logger.info("/page/error.html");
@@ -265,6 +261,14 @@ public class AdminPageController {
         return "page/table/material_add";
     }
 
+    @GetMapping ("/page/table/user_add.html")
+    public String user_add( Model model){
+        logger.info("/page/table/user_add.html");
+        //
+
+        return "page/table/user_add";
+    }
+
     @GetMapping ("/page/table/equipment_edit")
     public String equipment_edit(@RequestParam("equipment") String strOrder, Model model){
         logger.info("/page/table/equipment_edit.html");
@@ -287,6 +291,18 @@ public class AdminPageController {
         logger.info(equipment.toString());
         model.addAttribute("equipment",equipment);
         return "page/table/equipment_detail";
+    }
+
+    @GetMapping ("/page/table/user_detail")
+    public String user_detail(@RequestParam("userHolder") String strOrder, Model model){
+        logger.info("/page/table/user_detail.html");
+        //
+        System.out.println(strOrder);
+        JSONObject jsonOrder = (JSONObject) JSONObject.parse(strOrder);
+        UserHolder userHolder = jsonOrder.toJavaObject(UserHolder.class);
+        logger.info(userHolder.toString());
+        model.addAttribute("userholder",userHolder);
+        return "page/table/user_detail";
     }
 
     @GetMapping ("/page/table/equipment_add.html")
@@ -343,6 +359,4 @@ public class AdminPageController {
         }
         return  MyJsonResult.errorMsg("error");
     }
-
-
 }

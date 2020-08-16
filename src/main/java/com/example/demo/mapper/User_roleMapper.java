@@ -12,4 +12,6 @@ public interface User_roleMapper {
     boolean add_user_role_info(User_role user_role);
 
     boolean update_user_role_info(User_role user_role);
+
+    boolean del_user_role(String user_id);
 }

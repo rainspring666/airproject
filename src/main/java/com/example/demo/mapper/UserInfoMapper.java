@@ -15,4 +15,6 @@ public interface UserInfoMapper {
     boolean add_user_info(User_info user_info);
 
     boolean update_user_info(User_info user_info);
+
+    boolean del_user_info(String user_id);
 }

@@ -128,8 +128,6 @@ public class AdminController {
     public Map<String,Object> selectAllMaterial(@RequestParam(required = false,defaultValue = "1") int page,
                                                 @RequestParam(required = false,defaultValue = "10") int limit){
         PageHelper.startPage(page, limit);
-
-
         List<Material> materialList = materialService.get_material_info();
 
         PageInfo pageInfo = new PageInfo(materialList);
@@ -150,7 +148,7 @@ public class AdminController {
     @ResponseBody
     public Map<String,Object> selectAllMaterial(HttpServletRequest request){
         JSONObject searchParams = JSONObject.parseObject(request.getParameter("searchParams"));
-        PageHelper.startPage(1, 10);
+
 
         System.out.println(searchParams.toString());
         String material_id = searchParams.getString("material_id");
@@ -158,11 +156,9 @@ public class AdminController {
         System.out.println("material_id:"+material_id);
         System.out.println("ma_name:"+ma_name);
 
+        PageHelper.startPage(1, 10);
         List<Material> materialList = materialService.get_material_by_params(material_id, ma_name);
 
-        for (Material i: materialList) {
-            System.out.println(i.getMaterial_id()+"----"+i.getMa_name());
-        }
 
         PageInfo pageInfo = new PageInfo(materialList);
         Map<String,Object> map = new HashMap<>();
@@ -205,19 +201,14 @@ public class AdminController {
     @ResponseBody
     public Map<String,Object> selectAllEquipment(HttpServletRequest request){
         JSONObject searchParams = JSONObject.parseObject(request.getParameter("searchParams"));
-        PageHelper.startPage(1, 10);
 
-        System.out.println(searchParams.toString());
+
         String equipment_id = searchParams.getString("equipment_id");
         String equipment_name = searchParams.getString("equipment_name");
-        System.out.println("equipment_id:"+equipment_id);
-        System.out.println("equipment_name:"+equipment_name);
 
+        PageHelper.startPage(1, 10);
         List<Equipment> equipmentList = equipService.get_equipment_by_params(equipment_id, equipment_name);
 
-        for (Equipment i: equipmentList) {
-            System.out.println(i.getEq_id()+"----"+i.getEq_name());
-        }
 
         PageInfo pageInfo = new PageInfo(equipmentList);
         Map<String,Object> map = new HashMap<>();

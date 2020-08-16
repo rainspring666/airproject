@@ -29,4 +29,8 @@ public class UserInfoService {
     public boolean add_user_info(User_info user_info){
         return userInfoMapper.add_user_info(user_info);
     }
+
+    public boolean del_user_info(String user_id){
+        return userInfoMapper.del_user_info(user_id);
+    }
 }

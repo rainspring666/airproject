@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
+    <select id="selectAllUser" resultType="com.example.demo.entity.User">
+        select user.* from user,user_role
+        where user.user_id = user_role.user_id and user_role.role_id = #{role_id}
+    </select>
+
+    <select id="selectUserByParams" resultType="com.example.demo.entity.User">
+        select user.* from user, user_role, user_info
+        where (user.user_id = user_role.user_id and user.user_id = user_info.user_id and user_role.role_id = #{param4})
+        <if test="param1 != null and param1 != ''">
+            and user.user_id like "%"#{param1}"%"
+        </if>
+        <if test="param2 != null and param2 != ''">
+            and (user_info.user_name like "%"#{param2}"%" or user_info.user_nickname like "%"#{param2}"%")
+        </if>
+        <if test="param3 != null and param3 != ''">
+            and user.user_phone like "%"#{param3}"%"
+        </if>
+    </select>
+
     <select id="login_user" resultType="com.example.demo.entity.User">
         select  * from user where user_phone = #{phone} and user_pwd =#{pwd}
     </select>
@@ -24,4 +43,13 @@
         select * from user where user_id = #{userId}
     </select>
 
+    <delete id="del_user">
+        delete from user where user_id = #{user_id}
+    </delete>
+
+    <update id="reset_user">
+        update user
+        set user_pwd = "123456"
+        where user_id = #{user_id}
+    </update>
 </mapper>
