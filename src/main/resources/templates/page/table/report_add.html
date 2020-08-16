@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
+<link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
+<style type="text/css">
+    .layui-form-label.layui-required:before{
+        content:"*";
+        color:red;
+    }
+</style>
+<body>
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <div class="layui-fluid">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding-top: 15px;">
+                    <div class="layui-carousel" id="stepForm" lay-filter="stepForm" style="margin: 0 auto;">
+                        <div carousel-item>
+                            <div>
+                                <form class="layui-form"
+                                      style="margin: 0 auto;max-width: 980px;padding-top: 40px;" id="add_temp_user_form">
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required required">客户名称</label>
+                                        <div class="layui-input-block">
+                                            <input type="hidden" id="order_id" th:value="${order.order_id}">
+                                            <input type="text" style="width: 400px" name="order_contact" lay-verify="required"
+                                                   lay-reqtext="客户名称不能为空" placeholder="请输入客户名称"
+                                                   class="layui-input" th:value="${order.order_contact}">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required required">施工地址</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="width: 400px" name="order_address" lay-verify="required"
+                                                   lay-reqtext="施工地址不能为空" placeholder="请输施工地址"
+                                                   class="layui-input" th:value="${order.order_address}">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required">实施日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="hidden" id="processDate" th:value="${process.pro_starttime}">
+                                            <input type="text" style="width: 400px" class="layui-input" id="test2" name="order_time">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required required">服务项目</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="width: 400px"  name="service_item" lay-verify="required"
+                                                   lay-reqtext="服务项目能为空" placeholder="请输入服务项目" value=""
+                                                   class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required">报告日期</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="width: 400px" class="layui-input" id="test1" name="report_time">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button class="layui-btn" lay-submit lay-filter="formStep">
+                                                &emsp;下一步&emsp;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 900px;padding-top: 40px;">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label layui-required">概述</label>
+                                        <div class="layui-input-block">
+                                                <textarea name="op_describe"  class="layui-textarea" style="width:80%;height:120px;"
+                                                          placeholder="请输入概述" lay-verify="required"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label layui-required">现场情况描述</label>
+                                        <div class="layui-input-block">
+                                                <textarea name="op_situation"  class="layui-textarea" style="width:80%;height:200px;"
+                                                          placeholder="请输入标的现场情况描述" lay-verify="required" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep2">下一步</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 900px;padding-top: 40px;">
+                                    <div class="layui-form-item" >
+                                        <label class="layui-form-label layui-required">作业过程</label>
+                                        <div class="layui-input-block" style="width: 800px">
+                                            <textarea id="lay_edit" lay-verify="content|required" name = "op_process" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" style="text-align: center">
+                                        <div class="layui-input-block" style="display: inline-block">
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep3">下一步</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 900px;padding-top: 40px;">
+                                    <div class="layui-form-item layui-form-text">
+                                        <label class="layui-form-label layui-required">效果描述</label>
+                                        <div class="layui-input-block">
+                                                <textarea name="valid"  class="layui-textarea" style="width:80%;height:200px;"
+                                                          placeholder="请输入消毒杀菌效果描述" lay-verify="required" ></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required required">现场负责</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="width: 80%" name="op_id" lay-verify="required"
+                                                   lay-reqtext="现场负责不能为空" placeholder="请输现场负责人"
+                                                   class="layui-input" th:value="${order.op_id}">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label layui-required required">审核人员</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" style="width: 80%" name="checker" lay-verify="required"
+                                                   lay-reqtext="审核人不能为空" placeholder="请输入审核人"
+                                                   class="layui-input" value=" " >
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item" >
+                                        <div class="layui-input-block" >
+                                            <button type="button" class="layui-btn layui-btn-primary pre">上一步</button>
+                                            <button class="layui-btn" lay-submit lay-filter="formStep4">完成</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div>
+                                <div style="text-align: center;margin-top: 90px;">
+                                    <i class="layui-icon layui-circle"
+                                       style="color: white;font-size:30px;font-weight:bold;background: #52C41A;padding: 20px;line-height: 80px;">&#xe605;</i>
+                                    <div style="font-size: 24px;color: #333;font-weight: 500;margin-top: 30px;">
+                                        报告已经生成
+                                    </div>
+                                    <div style="font-size: 14px;color: #666;margin-top: 20px;">请关闭当前页面</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script th:src="@{/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<script>
+
+    const processDate = document.getElementById("processDate").value;
+    var order_id = document.getElementById("order_id").value;
+
+    layui.use(['form', 'step','laydate','layer','layedit'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            step = layui.step,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            layedit = layui.layedit;
+
+        layer.photos({
+            photos: '#layer-photos-demo'
+            , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+        });
+
+
+        //使用laydate实例
+        laydate.render({
+            elem: '#test1'   // 指定元素
+        });
+        laydate.render({
+            elem: '#test2',   // 指定元素
+            value: processDate
+        });
+
+        /////////////////////////  使用富文本 //////////////////////////
+        layedit.set({	//设置图片接口
+            uploadImage: {
+                url: '/api/report/temp/picture', //接口url
+                type: 'post'
+            }
+        });
+        //创建一个编辑器
+        var index = layedit.build('lay_edit',{
+            height: 300,
+            tool: [
+                'strong' //加粗
+                ,'italic' //斜体
+                ,'underline' //下划线
+                ,'left' //左对齐
+                ,'center' //居中对齐
+                ,'right' //右对齐
+                ,'image' //插入图片
+            ]
+        });
+        //提交时把值同步到文本域中
+        form.verify({
+            //content富文本域中的lay-verify值
+            content: function(value) {
+                return layedit.sync(index);
+            }
+        });
+        ///////////////////////// end  使用富文本 ///////////////////////////
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        form.render();
+
+        step.render({
+            elem: '#stepForm',
+            filter: 'stepForm',
+            width: '100%', //设置容器宽度
+            stepWidth: '1200px',
+            height: '500px',
+            stepItems: [{
+                title: '基本信息'
+            }, {
+                title: '情况描述'
+            }, {
+                title: '消杀作业'
+            }, {
+                title: '效果验证'
+            }, {
+                title: '报告完成'
+            }]
+        });
+
+        var formStep;
+        var formStep2;
+        var formStep3;
+        var formStep4;
+        form.on('submit(formStep)', function (data) {
+            formStep = data.field;
+            step.next('#stepForm');
+            return false;
+        });
+        form.on('submit(formStep2)', function (data) {
+            formStep2 = data.field;
+            step.next('#stepForm');
+            return false;
+        });
+        form.on('submit(formStep3)', function (data) {
+            formStep3 = data.field;
+            step.next('#stepForm');
+            return false;
+        });
+        form.on('submit(formStep4)', function (data) {
+            formStep4 = data.field;
+            let report_data = {order_id,formStep,formStep2,formStep3,formStep4};
+            var jsonData = JSON.stringify(report_data);
+            console.log(jsonData);
+            //异步传输
+            $.ajax({
+                type: "post",
+                url: "/api/report/create/report",
+                contentType:'application/json;charset=UTF-8',
+                data: jsonData,
+                dataType:"JSON",
+                success:function (data) {
+                    if(data.data === "ok"){
+                        layer.msg("成功");
+                    } else {
+                        layer.msg("失败");
+                    }
+                },
+                error:function (data) {
+                    layer.msg("生成报告失败");
+                }
+            });
+            step.next('#stepForm');
+            return false;
+        });
+
+        $('.pre').click(function () {
+            step.pre('#stepForm');
+        });
+
+    })
+</script>
+</body>
+</html>

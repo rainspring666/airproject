@@ -55,7 +55,13 @@
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="process">处理</a>
             <a class="layui-btn layui-btn-warm layui-btn-xs data-count-edit" lay-event="detail">查看</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="edit">编辑</a>
+<!--            <a class="layui-btn layui-btn-xs  data-count-delete" lay-event="report">报告</a>-->
+            {{# if(d.order_state === "已完成"){ }}
             <a class="layui-btn layui-btn-xs  data-count-delete" lay-event="report">报告</a>
+            {{# } }}
+            {{# if(d.order_state !== "已完成"){ }}
+            <a class="layui-btn layui-btn-xs  data-count-delete layui-btn-disabled" >报告</a>
+            {{# } }}
         </script>
 
     </div>
@@ -119,43 +125,14 @@
             return false;
         });
 
-        /**
-         * toolbar事件监听
-         */
-        table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {   // 监听添加操作
-                var content = miniPage.getHrefContent('page/table/add.html');
-                var openWH = miniPage.getOpenWidthHeight();
-
-                var index = layer.open({
-                    title: '添加用户',
-                    type: 1,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
-                    content: content,
-                    end:function(){
-                        location.reload();//弹出层结束后，刷新主页面
-                    }
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
-            }
-        });
-
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)
         });
 
-        //行内工具栏
+        /**
+         *  toolbar事件监听
+         */
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
             if (obj.event === 'process') {
@@ -212,8 +189,7 @@
                     layer.full(index);
                 });
                 return false;
-            }
-            else if (obj.event === 'edit') {
+            } else if (obj.event === 'edit') {
                 var order = obj.data;
                 var jsonData = JSON.stringify(order);
                 jsonData = encodeURIComponent(jsonData);
@@ -231,7 +207,45 @@
                     content: content,
                     anim: 2,
                     resize: false,
+                    end:function(){
+                        table.reload('currentTableId', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallorderinfo',
+                        }, 'data');
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            }  else if (obj.event === 'report') {
+                var orderID = data.order_id;
 
+                var content = miniPage.getHrefContent('/admin/page/table/report_add?orderID='+orderID);
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '施工报告生成',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:false,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                    anim: 2,
+                    resize: false,
+                    end:function(){
+                        // location.reload();//弹出层结束后，刷新主页面
+                        table.reload('currentTableId', {
+                            page: {
+                                curr: 1
+                            },
+                            url: '/api/bg/admin/getallorderinfo',
+                        }, 'data');
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

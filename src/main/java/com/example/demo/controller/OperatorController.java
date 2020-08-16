@@ -253,7 +253,6 @@ public class OperatorController {
         Process process = processService.get_one_info(process_id);
         process.setPro_state("21");
         processService.update_info(process);
-        logger.info(process_id);
         return MyJsonResult.buildData("ok");
     }
 
@@ -337,7 +336,6 @@ public class OperatorController {
         Process process = processService.get_one_info(process_id);
         process.setPro_state("21");
         processService.update_info(process);
-        logger.info(process_id);
         return MyJsonResult.buildData("ok");
     }
 

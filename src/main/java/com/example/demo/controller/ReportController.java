@@ -2,16 +2,14 @@ package com.example.demo.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.example.demo.entity.Order;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.Process;
 import com.example.demo.entity.Report;
 import com.example.demo.mapper.ReportMapper;
 import com.example.demo.service.*;
 import com.example.demo.tools.MyJsonResult;
-import com.example.demo.tools.SystemClock;
+import com.example.demo.tools.MyPdfPage;
 import com.example.demo.tools.Tool;
-import com.example.demo.tools.pdfUtil;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -280,37 +278,93 @@ public class ReportController {
     }
     @PostMapping ("/get_report")
     @ResponseBody
-    public MyJsonResult getReport(){
-        Map<String, String> map = new HashMap();
-        map.put("customer", "武汉理工大学");
-        map.put("address", "珞狮路122号");
-        map.put("operate_plan", "办公空间消毒杀菌");
-        map.put("operate_date", "2020-7-30");
-        map.put("report_date", "2020-7-31");
-        map.put("describes",
-                "客户复工前办公空间消毒杀菌，保证复工后企业员工办公环境的公共卫生安全。收到客户确认委托后，我司立即和委托单位现场代 表取得联系，协调安排相关现场情况初步查勘及现场实施事宜。根据安排，我司消毒作业组于 2020 年 03 月 15 日到达委托单位位于南岗区的办公地点进行了消杀作业。");
-        map.put("site_condition",
-                "办公区包括 5 层综合办公楼，含综合办公室、各业务办公室、厨房餐厅、活动室等空间，办公空间分区较多，作业空间也较为复杂。 办公区域摆放办公用品、家具较多，办公物品表面和办公家具摆放形 成的缝隙等卫生死角很多，传统的液体喷洒、雾化和熏蒸消杀形式， 在这种物品和家具较多的作业空间中很难应用。");
-        map.put("operate",
-                "针对标的现场实际情况，经与委托方代表沟通确认，确定消毒杀菌作业要达到如下效果：对所有办公区空间进行一次性立体、无死 角、全覆盖消毒杀菌，在一次性处理过程中，把办公空间内所存在的 物品也做到一次性消毒杀菌处理。");
-        map.put("valid", "效果达标");
-        map.put("operator", "张三丰");
-        map.put("checker", "韦小宝");
-
-        Map<String, String> map2 = new HashMap();
-        map2.put("image1", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image2", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image3", "D:/OldFiles/photoes/download.jpg");
-        map2.put("image4", "D:/OldFiles/photoes/download.jpg");
-
-        Map<String, Object> o = new HashMap();
-        o.put("datemap", map);
-        o.put("imgmap", map2);
-        String reportPath = pdfUtil.pdfout(o);
-        // 成功则返回报告在服务器上的路径，否则返回错误消息提示
-         if (reportPath != null){
+    public MyJsonResult getReport(@RequestParam("order_id")String order_id){
+        Process process = processService.get_one_info2(order_id);
+        String report_id = process.getReport_id();
+        Report report = reportMapper.get_report_by_report_id(report_id);
+        String reportPath = report.getReport_url();
+        // 从数据库查询报告相对路径
+        if (reportPath != null){
             return MyJsonResult.buildData(reportPath);
         }
-         return MyJsonResult.errorMsg("报告生成失败");
+        return MyJsonResult.errorMsg("报告还未生成");
+    }
+
+    @RequestMapping("create/report")
+    @ResponseBody
+    public MyJsonResult create_report (@RequestBody JSONObject jsonObject){
+        logger.info("create/report");
+        Map<String,String> map = new HashMap<String,String>();
+        String order_id = jsonObject.getString("order_id");
+        JSONObject formStep = jsonObject.getJSONObject("formStep");
+        JSONObject formStep2 = jsonObject.getJSONObject("formStep2");
+        JSONObject formStep3 = jsonObject.getJSONObject("formStep3");
+        JSONObject formStep4 = jsonObject.getJSONObject("formStep4");
+        map.put("order_contact", formStep.getString("order_contact"));
+        map.put("service_item", formStep.getString("service_item"));
+        map.put("order_time", formStep.getString("order_time"));
+        map.put("order_address", formStep.getString("order_address"));
+        map.put("report_time", formStep.getString("report_time"));
+
+        map.put("op_describe", formStep2.getString("op_describe"));
+        map.put("op_situation", formStep2.getString("op_situation"));
+
+        map.put("op_process", formStep3.getString("op_process"));
+
+        map.put("valid", formStep4.getString("valid"));
+        map.put("op_id", formStep4.getString("op_id"));
+        map.put("checker", formStep4.getString("checker"));
+
+        map.put("order_id", order_id);
+        String reportPath = MyPdfPage.createPdfDoc(map);
+        if (reportPath != null){
+            // 将路径存入数据库，方便之后访问
+            Process process = processService.get_one_info2(order_id);
+            String report_id = process.getReport_id();
+            Report report = new Report();
+            report.setReport_id(report_id);
+            report.setReport_url(reportPath);
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            String dateString = formatter.format(date);
+            report.setCreate_time(dateString);
+            reportMapper.update_report_info(report);
+            logger.info("生成pdf报告成功");
+            return MyJsonResult.buildData("ok");
+        }
+        logger.info("生成pdf报告失败");
+        return MyJsonResult.errorMsg("报告生成失败");
+    }
+
+    @RequestMapping("temp/picture")
+    @ResponseBody
+    public  Map<String,Object> richTxtPicture(@RequestParam(value = "file") MultipartFile file){
+        Map<String,Object> map2 = new HashMap<>();
+        try {
+            logger.info("temp/picture");
+            String path= Tool.UPLOAD_PICTURE_PATH + "/temp/picture/";
+            String fileName = file.getOriginalFilename();
+            File targetFile = new File(path, fileName);
+            if(!targetFile.exists()){
+                targetFile.mkdirs();
+            }
+            file.transferTo(targetFile);
+            String fileAbsolutePath = targetFile.getAbsolutePath();
+            String canonicalPath = targetFile.getCanonicalPath();
+            logger.info("图片上传成功"+ fileAbsolutePath);
+
+            Map<String,String> map1 = new HashMap<>();
+
+            map1.put("src", Tool.SERVICE_URL +"/temp/picture/"+fileName);
+            map1.put("title",fileName);
+            // 构造返回值
+            map2.put("code",0);
+            map2.put("msg","上传失败");
+            map2.put("data",map1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map2;
     }
 }

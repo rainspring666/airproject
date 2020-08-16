@@ -41,9 +41,9 @@
             <div class="layui-input-block">
                 <!-- 使用隐藏标签获取Model中的数据-->
                 <input type="hidden" id="orderClass" th:value="${order.order_class}">
-                <input type="radio" name="order_class" value="1" title="工装">
-                <input type="radio" name="order_class" value="2" title="家居">
-                <input type="radio" name="order_class" value="3" title="车辆">
+                <input type="radio" name="order_class" value="1" title="家居">
+                <input type="radio" name="order_class" value="2" title="车辆">
+                <input type="radio" name="order_class" value="3" title="工装">
             </div>
         </div>
     </div>
@@ -131,9 +131,9 @@
             laydate = layui.laydate;
 
         // 绑定radio
-        $("input[name=order_class][value='1']").attr("checked", order_class === "工装");
-        $("input[name=order_class][value='2']").attr("checked", order_class === "家居");
-        $("input[name=order_class][value='3']").attr("checked", order_class === "车辆");
+        $("input[name=order_class][value='1']").attr("checked", order_class === "家居");
+        $("input[name=order_class][value='2']").attr("checked", order_class === "车辆");
+        $("input[name=order_class][value='3']").attr("checked", order_class === "工装");
         // end 绑定radio
 
         // 绑定switch

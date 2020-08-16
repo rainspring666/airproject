@@ -8,6 +8,7 @@ public class Report {
     private String create_time;
     private String validation;
     private String site_condition;
+    private String report_url;
 
     public Report() {
         describes = "";
@@ -16,6 +17,15 @@ public class Report {
         create_time = "";
         validation = "";
         site_condition = "";
+        report_url = "";
+    }
+
+    public String getReport_url() {
+        return report_url;
+    }
+
+    public void setReport_url(String report_url) {
+        this.report_url = report_url;
     }
 
     public String getReport_id() {
@@ -84,6 +94,7 @@ public class Report {
                 ", create_time='" + create_time + '\'' +
                 ", validation='" + validation + '\'' +
                 ", site_condition='" + site_condition + '\'' +
+                ", report_url='" + report_url + '\'' +
                 '}';
     }
 }
