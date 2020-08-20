@@ -357,15 +357,11 @@ public class AdminPageController {
 
     @RequestMapping("api/upload")
     @ResponseBody
-
-    public   MyJsonResult webFileUpload(HttpServletRequest request,@RequestParam("order_id") String order_id, @RequestParam(value = "file") MultipartFile file){
+    public   MyJsonResult webFileUpload(@RequestParam("order_id") String order_id, @RequestParam(value = "file") MultipartFile file){
         try {
-
             logger.info("api/upload");
-            String path= tools.UPLOAD_PICTURE_PATH + "/order/"+ order_id+"/";
-            String fileName = file.getOriginalFilename();
-            String  suffix = fileName.substring(fileName.lastIndexOf("."));
-            String newFileName =	UUID.randomUUID().toString() + suffix;
+            String path= Tool.UPLOAD_PICTURE_PATH + "/order/"+ order_id+"/";
+            String newFileName =	UUID.randomUUID().toString() + ".jpg";
             File targetFile = new File(path, newFileName);
             if(!targetFile.exists()){
                 targetFile.mkdirs();
@@ -373,11 +369,12 @@ public class AdminPageController {
             file.transferTo(targetFile);
             // 保存布点图路径
             Process process = processService.get_one_info2(order_id);
-            process.setPro_generator("/order/"+ order_id+"/" + fileName);
+            String tempPro_generator = process.getPro_generator();
+            String pro_generator = "/order/" + order_id + "/" + newFileName;
+            process.setPro_generator(tempPro_generator+"@"+pro_generator);
             processService.update_info(process);
-            logger.info("图片上传成功"+targetFile.getAbsolutePath());
+            logger.info("布点图上传成功："+targetFile.getAbsolutePath());
             return MyJsonResult.buildData("ok");
-
         } catch (Exception e) {
             e.printStackTrace();
         }

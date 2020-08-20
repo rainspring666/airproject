@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" th:href="@{/layuimini/js/lay-module/step-lay/step.css}" media="all">
 <link rel="stylesheet" th:href="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.css}" media="all">
-
 <body>
 
 <div class="layuimini-container layuimini-page-anim">
@@ -116,7 +115,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">检测报告:</label>
                                                 <div class="layui-input-block">
-                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_moremoney}">null</div>
+                                                    <div class="layui-form-mid layui-word-aux" th:text="${order.order_moremoney}"></div>
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
@@ -160,22 +159,18 @@
                                 </form>
                             </div>
                             <div>
-                                <form class="layui-form" style="margin: 0 auto;max-width: 9000px;padding-top: 40px;">
-                                    <div class="layui-form-item">
-                                        <div class="layui-upload">
-                                            <button type="button" class="layui-btn layui-btn-normal" id="testList">选择多文件</button>
-                                            <div class="layui-upload-list" style="height: 200px; display: block; overflow: auto">
-                                                <table class="layui-table">
-                                                    <thead>
-                                                    <tr><th>文件名</th>
-                                                        <th>大小</th>
-                                                        <th>状态</th>
-                                                        <th>操作</th>
-                                                    </tr></thead>
-                                                    <tbody id="demoList"></tbody>
-                                                </table>
-                                            </div>
-                                            <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                                <form class="layui-form" style="margin: 0 auto;max-width: 900px;padding-top: 40px;">
+                                    <div class="layui-form-item"  style="text-align: left">
+                                        <div>
+                                            <canvas id="canvas" width="500" height="350" style="border: 0.5px solid #c5c0ba;">
+                                                <span>您的浏览器不支持画布元素 请您换成谷歌浏览器</span>
+                                            </canvas>
+                                        </div>
+                                        <div class="layui-input-block" style="display: inline-block;text-align: left">
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm prePhoto" ><i class="layui-icon"></i></button>
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm nextPhoto" ><i class="layui-icon"></i></button>
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm choseColor" ><i class="layui-icon">&#xe62f;</i></button>
+                                            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm cleanCanvas" ><i class="layui-icon"></i></button>
                                         </div>
                                     </div>
                                     <div class="layui-form-item" style="text-align: center">
@@ -196,21 +191,14 @@
                                     </div>
                                     <div style="font-size: 14px;color: #666;margin-top: 20px;">请关闭当前页面</div>
                                 </div>
-                                <div style="text-align: center;margin-top: 50px;">
-                                    <button class="layui-btn next">查看详情</button>
-                                    <button class="layui-btn layui-btn-primary">撤销操作</button>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
                         <h3>说明</h3><br>
-<!--                        <h4>入款到保险箱</h4>-->
                         <p>核验预约信息：请审查预约信息的完整性和有效性，如有误，请联系处理。</p>
                         <p>预约处理：请分配预约信息的操作员，同时上传点位分布图。</p>
-<!--                        <br><h4>入款到现金</h4>-->
-<!--                        <p>如果需要，这里可以放一些关于产品的常见问题说明。</p>-->
                     </div>
                 </div>
             </div>
@@ -221,88 +209,50 @@
 <script th:src="@{/layuimini/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/layuimini/lib/jq-module/zyupload/zyupload-1.0.0.min.js}" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'step','tableSelect','layer','upload'], function () {
-        var $ = layui.jquery,
+    layui.use(['form', 'step','tableSelect','layer'], function () {
+        var $ = layui.$,
             form = layui.form,
             step = layui.step,
             tableSelect = layui.tableSelect,
             layer = layui.layer,
-            upload = layui.upload,
             chooseOpID = 0,
-            chooseOrderID = document.getElementById("order_id").textContent;
-
-        //多文件列表示例
-        var demoListView = $('#demoList')
-            ,uploadListIns = upload.render({
-            elem: '#testList'
-            ,url: "api/upload?order_id="+chooseOrderID //改成您自己的上传接口
-            ,accept: 'images'
-            ,acceptMime: 'image/*'
-            ,multiple: true
-            ,auto: false
-            ,size:0
-            ,bindAction: '#testListAction'
-            ,choose: function(obj){
-                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-                //读取本地文件
-                obj.preview(function(index, file, result){
-                    var tr = $(['<tr id="upload-'+ index +'">'
-                        ,'<td>'+ file.name +'</td>'
-                        ,'<td>'+ (file.size/1024).toFixed(1) +'kb</td>'
-                        ,'<td>等待上传</td>'
-                        ,'<td>'
-                        ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                        ,'<button class="layui-btn layui-btn-xs demo-clean layui-hide">清除</button>'
-                        ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                        ,'</td>'
-                        ,'</tr>'].join(''));
-
-                    //单个重传
-                    tr.find('.demo-reload').on('click', function(){
-                        obj.upload(index, file);
-                    });
-
-                    //删除
-                    tr.find('.demo-delete').on('click', function(){
-                        delete files[index]; //删除对应的文件
-                        tr.remove();
-                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                    });
-
-                    // 清除
-                    tr.find('.demo-clean').on('click', function(){
-                        tr.remove();
-                        uploadListIns.config.elem.next()[0].value = '';
-                    });
-
-                    demoListView.append(tr);
-                });
-
-            }
-            ,done: function(res, index, upload){
-                if(res.data == "ok"){ //上传成功
-                    var tr = demoListView.find('tr#upload-'+ index)
-                        ,tds = tr.children();
-                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                    tds.eq(3).find('.demo-clean').removeClass('layui-hide'); //显示清除
-                    tds.eq(3).find('.demo-delete').addClass('layui-hide'); //显示重传
-                    return delete this.files[index]; //删除文件队列已经上传成功的文件
-                }
-                this.error(index, upload);
-            }
-            ,error: function(index, upload){
-                var tr = demoListView.find('tr#upload-'+ index)
-                    ,tds = tr.children();
-                tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-            }
-        });
+            chooseOrderID = document.getElementById("order_id").textContent,
+            canvas = document.getElementById('canvas'),
+            ctx = canvas.getContext("2d"),
+            picList = [],
+            index = 0;
+        // 获取户型图
+        getPictureUrl(chooseOrderID);
+        // 对canvas画图填充
+        drawImage(picList[index]);
+        // 监听画布进行
+        canvas.onmousedown = function(e){
+            /*找到鼠标（画笔）的坐标*/
+            var cRect = canvas.getBoundingClientRect();
+            var canvasX = Math.round(e.clientX - cRect.left);
+            var canvasY = Math.round(e.clientY - cRect.top);
+            ctx.beginPath();    //开始本次绘画
+            ctx.moveTo(canvasX, canvasY);   //画笔起始点
+            /*设置画笔属性*/
+            ctx.lineCap = 'round';
+            ctx.lineJoin ="round";
+            ctx.strokeStyle = "yellow";     //画笔颜色
+            ctx.lineWidth = 8;      //画笔粗细
+            canvas.onmouseup = function(e){
+                //根据鼠标位置绘点
+                ctx.lineTo(canvasX, canvasY);
+                //立即渲染
+                ctx.stroke();
+                //结束本次绘画
+                ctx.closePath();
+                canvas.onmouseup = null;
+            };
+        };
 
         layer.photos({
             photos: '#layer-photos-demo'
             , anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
         });
-
         /**
          * 初始化表单，要加上，不然刷新部分组件可能会不加载
          */
@@ -368,7 +318,7 @@
                 },
                 dataType:"json",
                 success:function (data) {
-                    if(data.data=="ok"){
+                    if(data.data === "ok"){
                         layer.msg("ok");
                     } else {
                         layer.msg("失败");
@@ -390,16 +340,90 @@
             step.next('#stepForm');
             return false;
         });
-        $('.pre').click(function () {
+        $(".pre").click(function () {
             step.pre('#stepForm');
         });
 
-        $('.next').click(function () {
+        $(".next").click(function () {
             // step.next('#stepForm');
             //查看详情
-
         });
+        $(".choseColor").click(function(){
+            var b64Image = canvas.toDataURL('image/jpeg');
+            var u8Image  = b64ToUint8Array(b64Image);
+            var formData = new FormData();
+            formData.append("file", new Blob([ u8Image ], {type: "image/jpg"}));
+            $.ajax({
+                type:'post',
+                url:"api/upload?order_id="+chooseOrderID,
+                data:formData,
+                processData:false,
+                contentType:false,
+                success:function(data){
+                    if (data.msg === "OK"){
+                        layer.msg("上传成功");
+                    }
+                }
+            });
+        });
+        $(".prePhoto").click(function(){
+            index = index - 1;
+            if(index < 0){
+                index = index + 1;
+                layer.msg("别点了，到头了");
+            }else{
+                drawImage(picList[index]);
+            }
+        });
+        $(".nextPhoto").click(function(){
+            index = index + 1;
+            if(index >= picList.length-1){
+                layer.msg("亲~ 到底了");
+                index = index - 1;
+            }else{
+                drawImage(picList[index]);
+            }
+        });
+        $(".cleanCanvas").click(function(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            drawImage(picList[index]);
+        });
+        function b64ToUint8Array(b64Image) {
+            var img = atob(b64Image.split(',')[1]);
+            var img_buffer = [];
+            var i = 0;
+            while (i < img.length) {
+                img_buffer.push(img.charCodeAt(i));
+                i++;
+            }
+            return new Uint8Array(img_buffer);
+        }
+        function drawImage(path) {
+            var img = new Image();
+            img.src = "../" + path;
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            };
+        }
 
+        function getPictureUrl(order_id) {
+            $.ajax({
+                type: "get",
+                url: "/api/order/check_detail",
+                data: {
+                    order_id: order_id
+                },
+                async: false,
+                contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                success: function (data) {
+                    let order_modelf = data.data.order_modelf;
+                    picList = order_modelf.split("@");
+                },
+                error: function (data) {
+                    layer.msg("获取户型图失败");
+                }
+            });
+        }
     })
 </script>
 </body>
