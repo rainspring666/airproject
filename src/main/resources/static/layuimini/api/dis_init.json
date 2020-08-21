@@ -1,0 +1,47 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/home_page.html"
+  },
+  "logoInfo": {
+    "title": "中检空气治理",
+    "image": "/layuimini/images/logocic.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "公司管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "派单管理",
+          "href": "page/distribute.html",
+          "icon": "fa fa-tachometer",
+          "target": "_self"
+        },
+        {
+          "title": "物料设备",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "target": "_self",
+          "child": [
+            {
+              "title": "物料试剂",
+              "href": "page/upload.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "检测设备",
+              "href": "page/editor.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
