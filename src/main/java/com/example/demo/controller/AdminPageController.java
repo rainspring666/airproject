@@ -51,6 +51,12 @@ public class AdminPageController {
         logger.info("layuimini_index.html");
         return "index";
     }
+
+    @RequestMapping("/distribute_index.html")
+    public String distribute_index(){
+        logger.info("distribute_index.html");
+        return "distribute_index";
+    }
     @RequestMapping("/page/welcome-1.html")
     public String welcome1(){
         logger.info("page/welcome-1.html");
@@ -379,5 +385,18 @@ public class AdminPageController {
             e.printStackTrace();
         }
         return  MyJsonResult.errorMsg("error");
+    }
+
+
+    @RequestMapping("/page/login.html")
+    public String login(){
+        logger.info("/page/login.html");
+        return "page/login.html";
+    }
+
+    @RequestMapping("/page/register.html")
+    public String register(){
+        logger.info("/page/register.html");
+        return "page/register.html";
     }
 }
