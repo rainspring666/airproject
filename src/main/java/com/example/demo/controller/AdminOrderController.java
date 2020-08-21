@@ -59,9 +59,6 @@ public class AdminOrderController {
     @Autowired
     private Tool tools;
 
-    private String user_id_global="";
-    private String order_id_global="";
-
     Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
