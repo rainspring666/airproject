@@ -42,7 +42,8 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">其他描述</label>
         <div class="layui-input-block">
-            <textarea placeholder="物料描述" class="layui-textarea"  name ="add_ma_other"></textarea>
+            <textarea placeholder="物料描述" class="layui-textarea"  name ="add_ma_other"
+                      onkeydown="if(event.keyCode==13)return false"></textarea>
         </div>
     </div>
     <div class="layui-form-item" style="text-align: center">
@@ -56,16 +57,12 @@
 
         //监听提交
         form.on('submit(material_add)', function(data){
-            layer.msg("123");
-            console.log($("input[name='add_material_id']").val());
-            console.log($("input[name='add_ma_name']").val());
-            console.log(JSON.stringify(data.field));
-            console.log("hahah");
+
             var jsonData = '{"material_id":"' + $("input[name='add_material_id']").val() +'","ma_name":"'
                 +$("input[name='add_ma_name']").val() + '","ma_number":"'
                 +$("input[name='add_ma_number']").val() + '","ma_other":"'
                 +$("textarea[name='add_ma_other']").val()+'"}';
-            console.log(jsonData);
+            //console.log(jsonData);
             $.ajax({
                 type: "post",
                 url:"/api/bg/admin/bg_add_material",
@@ -73,7 +70,7 @@
                 contentType:"application/json;charset=UTF-8",
                 success:function (data) {
                     if(data.data=="ok"){
-                        layer.msg("ok");
+                        layer.msg("添加成功");
                     } else {
                         layer.msg(data.msg);
                     }

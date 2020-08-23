@@ -337,9 +337,9 @@
             // 创建游客账户
 
             var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
+            // layer.alert(result, {
+            //     title: '最终的搜索信息'
+            // });
             $.ajax({
                 type: "post",
                 url:"/api/bg/admin/order/add_one_order_user_info",
@@ -365,9 +365,9 @@
             //后台更新数据
             //异步传输
             var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
+            // layer.alert(result, {
+            //     title: '最终的搜索信息'
+            // });
             $.ajax({
                 type: "post",
                 url: "/api/bg/admin/order/add_one_order",

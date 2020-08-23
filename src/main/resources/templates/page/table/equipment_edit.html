@@ -52,8 +52,8 @@
             </div>
         </div>
 
-        <div class="layui-form-item">
-            <button class="layui-btn"  lay-submit lay-filter="equipment_edit">提交申请</button>
+        <div class="layui-form-item" style="text-align: center">
+            <button class="layui-btn" style="text-align: center"  lay-submit lay-filter="equipment_edit">提交申请</button>
         </div>
     </form>
 </div>
@@ -65,8 +65,8 @@
 
         //监听提交
         form.on('submit(equipment_edit)', function(data){
-            console.log(data.field);
-            console.log(JSON.stringify(data.field));
+            // console.log(data.field);
+            // console.log(JSON.stringify(data.field));
             $.ajax({
                 type: "post",
                 url:"/api/bg/admin/bg_update_equipment",

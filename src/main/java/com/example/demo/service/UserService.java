@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.tools.Tool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    private Tool tools;
 
     public User login_user(String user_phone, String user_pwd){
         return userMapper.login_user(user_phone,user_pwd);
@@ -58,6 +61,7 @@ public class UserService {
     }
 
     public boolean reset_user(String user_id){
-        return userMapper.reset_user(user_id);
+        String pwd = tools.pwdMD5("123456").substring(8, 24);
+        return userMapper.reset_user(user_id,pwd);
     }
 }

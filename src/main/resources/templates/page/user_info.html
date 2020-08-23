@@ -170,8 +170,8 @@
                     maxmin:false,
                     shadeClose: true,
                     resize:false,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    area: ['1200px', '360px'],
+                    offset: 'auto',
                     content: content,
                     anim: 2,
                     resize: false,
@@ -182,7 +182,7 @@
                 return false;
             }
             else if (obj.event === 'edit') {
-                layer.confirm('是否将该用户的密码充值为123456？', function(index){
+                layer.confirm('是否将该用户的密码重置为123456？', function(index){
                     var user_id = data.user_id;
                     console.log(user_id);
                     layer.close(index);

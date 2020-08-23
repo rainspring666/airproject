@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <a href="login.html" >已有账号？前往登录</a>
+                    <a href="/admin/page/login.html" >已有账号？前往登录</a>
                 </div>
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="register">注 册</button>
@@ -136,7 +136,9 @@
                 contentType:"application/x-www-form-urlencoded",
                 success: function (data) {
                     if (data.data == "ok") {
-                        layer.msg("ok");
+                        layer.msg('注册成功', function () {
+                            window.location = '/admin/page/login.html';
+                        });
                     } else {
                         layer.msg(data.msg);
                         draw(verification_code);
