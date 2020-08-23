@@ -321,20 +321,31 @@ public class ReportController {
         map.put("checker", formStep4.getString("checker"));
 
         map.put("order_id", order_id);
+
+        // 获得布点图
+        Process process = processService.get_one_info2(order_id);
+        String pro_generator = process.getPro_generator();
+        map.put("pro_generator",pro_generator);
+
+        // 获得施工描述以及施工图片
+        String report_id = process.getReport_id();
+        Report report = reportMapper.get_report_by_report_id(report_id);
+        String describes = report.getDescribes();
+        String picurl = report.getPicurl();
+        map.put("describes",describes);
+        map.put("picurl",picurl);
+
+        // 生成施工报告并获得报告路径
         String reportPath = MyPdfPage.createPdfDoc(map);
         if (reportPath != null){
             // 将路径存入数据库，方便之后访问
-            Process process = processService.get_one_info2(order_id);
-            String report_id = process.getReport_id();
-            Report report = new Report();
-            report.setReport_id(report_id);
             report.setReport_url(reportPath);
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
             String dateString = formatter.format(date);
             report.setCreate_time(dateString);
             reportMapper.update_report_info(report);
-
+            // 更新订单状态
             Order order = orderService.selectByPrimaryKey(order_id);
             order.setOrder_state(String.valueOf(OrderStateEnum.PDF.getIndex()));
             orderService.update_order_state(order);

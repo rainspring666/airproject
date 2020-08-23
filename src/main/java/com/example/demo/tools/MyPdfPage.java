@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyPdfPage {
 	// main测试
@@ -59,24 +61,81 @@ public class MyPdfPage {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
 			// 3.打开文档
 			document.open();
-			document.addTitle("Title@PDF-Java");// 标题
+			document.addTitle("项目施工报告");// 标题
 			document.addAuthor("Author@whut");// 作者
-			document.addSubject("Subject@iTextpdf");// 主题
+			document.addSubject("Subject@pdf");// 主题
 			document.addKeywords("Keywords@iTextpdf");// 关键字
-			document.addCreator("Creator@mhh");// 创建者
+			document.addCreator("Creator@hhm");// 创建者
 
 			createFirstPage(document, map);
+
 			document.add(new MyHead("一、概述"));
 			document.add(new MyParagraph(map.get("op_describe")));
+
 			document.add(new MyHead("二、标的现场情况描述"));
 			document.add(new MyParagraph(map.get("op_situation")));
+
 			document.add(new MyHead("三、 消杀作业"));
-			MyImage image = new MyImage("C:/Users/mhh/Desktop/A/1.png");
-			image.scaleAbsoluteImageHeight(100f);
-			MyTable table = new MyTable(2);
-			table.addImage(image.getImage());
-			table.addImage(image.getImage());
-			document.add(table);
+			document.add(new MyParagraph(delHTMLTag(map.get("op_process"))));
+
+			document.add(new MyParagraph("1.消毒消杀点位"));
+			String pro_generator = map.get("pro_generator");
+			String[] generators = pro_generator.split("@");
+			int length = generators.length;
+			int count  = length / 2;
+			int even = length % 2;
+			for (int i =0; i< 2*count; i=i+2){
+				MyImage image0 = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[i]);
+				MyImage image1 = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[i+1]);
+				image0.scaleAbsoluteImageHeight(100f);
+				image1.scaleAbsoluteImageHeight(100f);
+				MyTable table = new MyTable(2);
+				table.addImage(image0.getImage());
+				table.addImage(image1.getImage());
+				document.add(table);
+			}
+			// 如果是奇数张图
+			if (even == 1){
+				MyImage image = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[length-1]);
+				image.scaleAbsoluteImageHeight(100f);
+				MyTable table = new MyTable(1);
+				table.addImage(image.getImage());
+				document.add(table);
+			}
+
+			document.add(new MyParagraph("2.作业描述"));
+			String describes = map.get("describes");
+			String[] str_describes = describes.split("#");
+			length = str_describes.length;
+			for (int i = 0; i<length; i++){
+				document.add(new MyParagraph(str_describes[i]));
+			}
+
+			document.add(new MyParagraph("3.作业现场图片"));
+			String picurl = map.get("picurl");
+			String[] pictureUrls = picurl.split("@#");
+			length = pictureUrls.length;
+			count  = length / 2;
+			even   = length % 2;
+			for (int i =0; i< 2*count; i=i+2){
+				MyImage image0 = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[i]);
+				MyImage image1 = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[i+1]);
+				image0.scaleAbsoluteImageHeight(100f);
+				image1.scaleAbsoluteImageHeight(100f);
+				MyTable table = new MyTable(2);
+				table.addImage(image0.getImage());
+				table.addImage(image1.getImage());
+				document.add(table);
+			}
+			// 如果是奇数张图
+			if (even == 1){
+				MyImage image = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[length-1]);
+				image.scaleAbsoluteImageHeight(100f);
+				MyTable table = new MyTable(1);
+				table.addImage(image.getImage());
+				document.add(table);
+			}
+
 			document.add(new MyHead("四、 效果验证"));
 			document.add(new MyParagraph(map.get("valid")));
 			final String blank = "                                                ";
@@ -108,6 +167,25 @@ public class MyPdfPage {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	private  static  String delHTMLTag(String htmlStr){
+		String regEx_script="<script[^>]*?>[\\s\\S]*?<\\/script>"; //定义script的正则表达式
+		String regEx_style="<style[^>]*?>[\\s\\S]*?<\\/style>"; //定义style的正则表达式
+		String regEx_html="<[^>]+>"; //定义HTML标签的正则表达式
+
+		Pattern p_script= Pattern.compile(regEx_script,Pattern.CASE_INSENSITIVE);
+		Matcher m_script=p_script.matcher(htmlStr);
+		htmlStr=m_script.replaceAll(""); //过滤script标签
+
+		Pattern p_style=Pattern.compile(regEx_style,Pattern.CASE_INSENSITIVE);
+		Matcher m_style=p_style.matcher(htmlStr);
+		htmlStr=m_style.replaceAll(""); //过滤style标签
+
+		Pattern p_html=Pattern.compile(regEx_html,Pattern.CASE_INSENSITIVE);
+		Matcher m_html=p_html.matcher(htmlStr);
+		htmlStr=m_html.replaceAll(""); //过滤html标签
+
+		return htmlStr.trim(); //返回文本字符串
 	}
 
 	private static PdfPTable addQRCodeImage(String path) {

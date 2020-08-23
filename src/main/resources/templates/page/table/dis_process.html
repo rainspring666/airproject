@@ -171,13 +171,7 @@
                                             <button type="button" class="layui-btn layui-btn-primary layui-btn-sm nextPhoto" ><i class="layui-icon"></i></button>
                                             <button type="button" class="layui-btn layui-btn-primary layui-btn-sm choseColor" ><i class="layui-icon">&#xe62f;</i></button>
                                             <button type="button" class="layui-btn layui-btn-primary layui-btn-sm cleanCanvas" ><i class="layui-icon"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="layui-form-item" style="text-align: center">
-                                        <div class="layui-input-block" style="display: inline-block">
-                                            <button class="layui-btn" lay-submit lay-filter="formStep3">
-                                                &emsp;完成&emsp;
-                                            </button>
+                                            <button class="layui-btn layui-btn-sm" lay-submit lay-filter="formStep3">完成</button>
                                         </div>
                                     </div>
                                 </form>
@@ -198,7 +192,8 @@
                     <div style="color: #666;margin-top: 30px;margin-bottom: 40px;padding-left: 30px;">
                         <h3>说明</h3><br>
                         <p>核验预约信息：请审查预约信息的完整性和有效性，如有误，请联系处理。</p>
-                        <p>预约处理：请分配预约信息的操作员，同时上传点位分布图。</p>
+                        <p>操作员分配：请给订单分配操作员。</p>
+                        <p>布点图上传：在图片上点击鼠标按钮，即可对户型图进行标注；每标注完一张户型图，点击图片下方第三个按钮上传。</p>
                     </div>
                 </div>
             </div>
@@ -236,7 +231,7 @@
             /*设置画笔属性*/
             ctx.lineCap = 'round';
             ctx.lineJoin ="round";
-            ctx.strokeStyle = "yellow";     //画笔颜色
+            ctx.strokeStyle = "red";     //画笔颜色
             ctx.lineWidth = 8;      //画笔粗细
             canvas.onmouseup = function(e){
                 //根据鼠标位置绘点
