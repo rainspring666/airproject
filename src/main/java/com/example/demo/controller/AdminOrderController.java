@@ -158,10 +158,11 @@ public class AdminOrderController {
     public MyJsonResult add_user_info(@RequestBody User_info user_info, HttpServletRequest request){
         logger.info("add_one_order_user_info----  user_info:"+user_info.toString());
         String user_id = tools.createUserId(0,1);
+        String pwd = tools.pwdMD5("123456").substring(8, 24);
         //更新用户
         User user = new User();
         user.setUser_id(user_id);
-        user.setUser_pwd("Temp00000000");
+        user.setUser_pwd(pwd);
         user.setUser_phone(user_info.getUser_id());//phone临时做id
 
         user.setUser_name(user_info.getUser_name());

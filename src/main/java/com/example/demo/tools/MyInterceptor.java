@@ -2,12 +2,15 @@ package com.example.demo.tools;
 
 
 import com.example.demo.entity.Admin;
+import com.sun.java.swing.plaf.windows.resources.windows;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.slf4j.Logger;
 
 /*
 *初步查看，后台端的代码使用的接口均为api/bg/*以及admin/*,对这两类接口进行拦截
@@ -15,17 +18,19 @@ import java.io.IOException;
 
 public class MyInterceptor implements HandlerInterceptor { // 自定义拦截器
 
+    Logger logger = LoggerFactory.getLogger(getClass());
+
     // 该数组存放着派单员可以被放行的uri，如果传入的参数包含数组中的某一个就可以被放行，可以进行添加
     private String[] URI = {
             "getallorderinfo","page/distribute.html","page/table/dis_process","order/search",
             "page/table/order_detail","page/table/order_edit","page/table/report_add","getalloperatorinfo",
-            "api/upload","distribute_index",
+            "api/upload","distribute_index","page/home_page","admin/lay/modules/form.js",
     };
 
     // 该函数用来判断派单员是否可以放行
     private boolean distributorPass(String uri){
 
-        System.out.println(uri);
+
         // 放行物料、设备的界面
         if(uri.contains("material") || uri.contains("equipment") || uri.contains("editor") || uri.contains("upload"))
             return true;
@@ -40,7 +45,7 @@ public class MyInterceptor implements HandlerInterceptor { // 自定义拦截器
                 return true;
             }
         }
-
+        logger.info(uri+"被拦截");
         return false;
     }
 
@@ -48,8 +53,8 @@ public class MyInterceptor implements HandlerInterceptor { // 自定义拦截器
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 在请求发送过来时执行，可以在此处进行拦截
         String uri = request.getRequestURI();
-
-        if(uri.contains("/login") || uri.contains("/register")){
+        logger.info(uri+"进入拦截器");
+        if(uri.contains("/login") || uri.contains("/register") || uri.contains("404")){
             //对于登录注册模块一律放行
             return true;
         }
@@ -59,7 +64,8 @@ public class MyInterceptor implements HandlerInterceptor { // 自定义拦截器
         if(admin == null){
             try {
                 // 重定向到登录界面
-                response.sendRedirect("/admin/page/login.html");
+
+                response.sendRedirect("/admin/page/404.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }

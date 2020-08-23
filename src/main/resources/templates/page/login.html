@@ -30,6 +30,7 @@
         .captcha-img {display:inline-block;width:34%;float:right;}
         .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
+
 </head>
 <body>
 <div class="layui-container">
@@ -56,7 +57,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <a href="register.html" >还未有账号？前往注册</a>
+                    <a href="/admin/page/register.html" >还未有账号？前往注册</a>
                 </div>
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
@@ -73,7 +74,6 @@
         var form = layui.form,
             layer = layui.layer,
             $ = layui.jquery;
-
         //验证码
         var verification_code = [];
         draw(verification_code);

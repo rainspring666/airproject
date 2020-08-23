@@ -49,7 +49,7 @@
 
     <update id="reset_user">
         update user
-        set user_pwd = "123456"
-        where user_id = #{user_id}
+        set user_pwd = #{param2}
+        where user_id = #{param1}
     </update>
 </mapper>

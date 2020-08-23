@@ -29,6 +29,6 @@ public interface UserMapper {
 
     boolean del_user(String user_id);
 
-    boolean reset_user(String user_id);
+    boolean reset_user(String user_id, String user_pwd);
 
 }

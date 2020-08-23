@@ -42,11 +42,12 @@
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">其他描述</label>
         <div class="layui-input-block">
-            <textarea  class="layui-textarea"  name ="ma_other" th:text="${material.ma_other}"></textarea>
+            <textarea  class="layui-textarea"  name ="ma_other" th:text="${material.ma_other}"
+                       onkeydown="if(event.keyCode==13)return false"></textarea>
         </div>
     </div>
-    <div class="layui-form-item">
-        <button class="layui-btn"  lay-submit lay-filter="material_edit">提交</button>
+    <div class="layui-form-item" style="text-align: center">
+        <button class="layui-btn" style="text-align: center"  lay-submit lay-filter="material_edit">提交</button>
     </div>
 </form>
 <script>
@@ -57,7 +58,6 @@
 
         //监听提交
         form.on('submit(material_edit)', function(data){
-            console.log(data.field);
             console.log(JSON.stringify(data.field));
             $.ajax({
                 type: "post",

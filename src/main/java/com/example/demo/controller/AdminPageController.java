@@ -47,14 +47,18 @@ public class AdminPageController {
 
     //主页index
     @RequestMapping("/index.html")
-    public String demo(){
+    public String demo(Model model, HttpServletRequest request){
         logger.info("layuimini_index.html");
+        Admin admin = (Admin)request.getSession().getAttribute("ADMIN_SESSION");
+        model.addAttribute("ADMIN_MODEL", admin);
         return "index";
     }
 
     @RequestMapping("/distribute_index.html")
-    public String distribute_index(){
+    public String distribute_index(Model model, HttpServletRequest request){
         logger.info("distribute_index.html");
+        Admin admin = (Admin)request.getSession().getAttribute("ADMIN_SESSION");
+        model.addAttribute("ADMIN_MODEL", admin);
         return "distribute_index";
     }
     @RequestMapping("/page/welcome-1.html")
@@ -389,8 +393,9 @@ public class AdminPageController {
 
 
     @RequestMapping("/page/login.html")
-    public String login(){
+    public String login(HttpServletRequest request){
         logger.info("/page/login.html");
+        request.getSession().invalidate();
         return "page/login.html";
     }
 

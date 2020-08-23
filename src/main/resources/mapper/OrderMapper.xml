@@ -43,9 +43,11 @@
   </select>
   <select id="selectAll" resultType="com.example.demo.entity.Order">
     select * from userorder
+    ORDER BY order_state,order_createtime DESC
   </select>
   <select id="selectByOrderState" parameterType="java.lang.Integer" resultType="com.example.demo.entity.Order">
     select *from userorder where order_state = #{order_state}
+    order by order_createtime DESC
   </select>
   <select id="selectByUserId" parameterType="java.lang.String" resultType="com.example.demo.entity.Order">
     select * from userorder where user_id = #{user_id}
@@ -86,6 +88,7 @@
     <if test="param3 != null and param3 != ''">
       and order_phone like "%"#{param3}"%"
     </if>
+    order by order_createtime DESC
   </select>
 
   <select id="searchByMultiConditions" resultType="com.example.demo.entity.Order">
@@ -100,6 +103,7 @@
     <if test="param3 != null and param3 != ''">
       and order_phone like "%"#{param3}"%"
     </if>
+    order by order_createtime DESC
   </select>
 
 

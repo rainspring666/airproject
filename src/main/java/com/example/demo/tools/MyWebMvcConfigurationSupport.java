@@ -12,7 +12,7 @@ public class MyWebMvcConfigurationSupport implements WebMvcConfigurer  {
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加拦截器
         registry.addInterceptor(interceptor)
-                .addPathPatterns("/api/bg/*","/admin/*");
+                .addPathPatterns("/api/bg/**","/admin/**");
     }
 
     @Override

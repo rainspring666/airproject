@@ -116,8 +116,8 @@
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    area: ['800px', '400px'],
+                    offset: 'auto',
                     content: content,
                     end:function(){
                         // location.reload();//弹出层结束后，刷新主页面
@@ -133,33 +133,38 @@
                     layer.full(index);
                 });
             }else if(obj.event === 'delete'){
-                var checkStatus = table.checkStatus('equipmentTable'); //idTest 即为基础参数 id 对应的值
+                layer.confirm('确定删除？',function (index) {
+                    layer.close(index);
+                    var checkStatus = table.checkStatus('equipmentTable'); //idTest 即为基础参数 id 对应的值
 
-                 //获取选中行的数据
-                var arr = [];
-                for(var i = 0; i < checkStatus.data.length; i++){
-                    arr.push(checkStatus.data[i].eq_id);
-                }
-                $.ajax({
-                    type: "post",
-                    url:"/api/bg/admin/del_equipments",
-                    data:JSON.stringify(arr),
-                    contentType: "application/json;charset=UTF-8",
-                    success:function (data) {
-                        if(data.data =="ok"){
-                            layer.msg("delete ok");
-                            table.reload('equipmentTable', {
-                                page: {
-                                    curr:1
-                                },
-                                url: '/api/bg/admin/getallequipmentinfo',
-                            }, 'data');
-                        } else {
-                            layer.msg("失败");
-                        }
-
+                    //获取选中行的数据
+                    var arr = [];
+                    for(var i = 0; i < checkStatus.data.length; i++){
+                        arr.push(checkStatus.data[i].eq_id);
                     }
-                });
+                    $.ajax({
+                        type: "post",
+                        url:"/api/bg/admin/del_equipments",
+                        data:JSON.stringify(arr),
+                        contentType: "application/json;charset=UTF-8",
+                        success:function (data) {
+                            if(data.data =="ok"){
+                                layer.msg("delete ok");
+                                table.reload('equipmentTable', {
+                                    page: {
+                                        curr:1
+                                    },
+                                    url: '/api/bg/admin/getallequipmentinfo',
+                                }, 'data');
+                            } else {
+                                layer.msg("失败");
+                            }
+
+                        }
+                    });
+                    }
+                );
+
             }
         });
 
@@ -186,8 +191,8 @@
                     shade: 0.2,
                     maxmin:false,
                     shadeClose: true,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    area: ['800px', '380px'],
+                    offset: 'auto',
                     content: content,
                     anim: 2,
                     resize: false,
@@ -211,8 +216,8 @@
                     shade: 0.2,
                     maxmin:false,
                     shadeClose: true,
-                    area: [openWH[0] + 'px', openWH[1] + 'px'],
-                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    area: ['800px', '400px'],
+                    offset: 'auto',
                     content: content,
                     anim: 2,
                     resize: false,
