@@ -4,8 +4,10 @@ package com.example.demo.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.entity.User;
 import com.example.demo.entity.User_info;
+import com.example.demo.entity.User_role;
 import com.example.demo.service.UserInfoService;
 import com.example.demo.service.UserService;
+import com.example.demo.service.User_roleService;
 import com.example.demo.tools.HttpClientUtil;
 import com.example.demo.tools.MyJsonResult;
 import com.example.demo.tools.Tool;
@@ -32,7 +34,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserInfoService userInfoService;
-
+    @Autowired
+    private User_roleService user_roleService;
     Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -174,6 +177,11 @@ public class UserController {
         user.setUser_id(user_id);
         user.setOpen_id(open_id);
 
+        //更新user_role表的信息
+        User_role user_role = new User_role();
+        user_role.setUser_id(user_id);
+        user_role.setRole_id(2);
+
         //更新user_info的信息
         User_info user_info = new User_info();
         user_info.setUser_id(user_id);
@@ -184,7 +192,7 @@ public class UserController {
         user_info.setUser_nickname("Nick"+open_id.substring(6,10));
 
         // 存入数据库
-        if(userService.save_user(user) && userInfoService.add_user_info(user_info)){
+        if(userService.save_user(user) && userInfoService.add_user_info(user_info) && user_roleService.add_user_role(user_role)){
             logger.trace("new user {} register ",user.getUser_phone());
             return MyJsonResult.buildData("ok");
         }

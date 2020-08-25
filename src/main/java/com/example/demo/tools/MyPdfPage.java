@@ -87,8 +87,8 @@ public class MyPdfPage {
 			for (int i =0; i< 2*count; i=i+2){
 				MyImage image0 = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[i]);
 				MyImage image1 = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[i+1]);
-				image0.scaleAbsoluteImageHeight(100f);
-				image1.scaleAbsoluteImageHeight(100f);
+				image0.scaleAbsoluteImageHeight(120f);
+				image1.scaleAbsoluteImageHeight(120f);
 				MyTable table = new MyTable(2);
 				table.addImage(image0.getImage());
 				table.addImage(image1.getImage());
@@ -97,7 +97,7 @@ public class MyPdfPage {
 			// 如果是奇数张图
 			if (even == 1){
 				MyImage image = new MyImage(Tool.UPLOAD_PICTURE_PATH+generators[length-1]);
-				image.scaleAbsoluteImageHeight(100f);
+				image.scaleAbsoluteImageHeight(120f);
 				MyTable table = new MyTable(1);
 				table.addImage(image.getImage());
 				document.add(table);
@@ -120,8 +120,8 @@ public class MyPdfPage {
 			for (int i =0; i< 2*count; i=i+2){
 				MyImage image0 = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[i]);
 				MyImage image1 = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[i+1]);
-				image0.scaleAbsoluteImageHeight(100f);
-				image1.scaleAbsoluteImageHeight(100f);
+				image0.scaleAbsoluteImageHeight(120f);
+				image1.scaleAbsoluteImageHeight(120f);
 				MyTable table = new MyTable(2);
 				table.addImage(image0.getImage());
 				table.addImage(image1.getImage());
@@ -130,7 +130,7 @@ public class MyPdfPage {
 			// 如果是奇数张图
 			if (even == 1){
 				MyImage image = new MyImage(Tool.UPLOAD_PICTURE_PATH+pictureUrls[length-1]);
-				image.scaleAbsoluteImageHeight(100f);
+				image.scaleAbsoluteImageHeight(120f);
 				MyTable table = new MyTable(1);
 				table.addImage(image.getImage());
 				document.add(table);
@@ -153,7 +153,7 @@ public class MyPdfPage {
 			MyForm myForm2 = new MyForm(stringDate + blank + "空气治理溯源二维码", MyFontUtil.TEXT_NORMAL_FONT, 0);
 			myForm2.setLayout(80f, 40f, 20f, 8f, 8f);
 
-			final String path = "C:/Users/mhh/Desktop/A/QRCode.png";
+			final String path = "whut/QRCode.png";
 			PdfPTable qrTable = addQRCodeImage(path);
 
 			document.add(myForm);
@@ -212,7 +212,7 @@ public class MyPdfPage {
 		myForm1.setLayout(40f, 40f, 10f, 0f, 10f);
 		MyForm myForm2 = new MyForm(map.get("order_contact"), MyFontUtil.TITLE_FONT, 1);
 		myForm2.setLayout(85f, 85f, 40f, 60f, 60f);
-		MyForm myForm3 = new MyForm("办公空间消毒杀菌作业报告", MyFontUtil.SUB_TITLE_FONT, 1);
+		MyForm myForm3 = new MyForm("消毒杀菌作业报告", MyFontUtil.SUB_TITLE_FONT, 1);
 		myForm3.setLayout(40f, 40f, 40f, 60f, 120f);
 		MyForm myForm4 = new MyForm("客户名称：   " + map.get("order_contact"), MyFontUtil.TEXT_NORMAL_FONT, 0);
 		myForm4.setLayout(130f, 130f, 10f, 8f, 8f);

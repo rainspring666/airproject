@@ -381,7 +381,13 @@ public class AdminPageController {
             Process process = processService.get_one_info2(order_id);
             String tempPro_generator = process.getPro_generator();
             String pro_generator = "/order/" + order_id + "/" + newFileName;
-            process.setPro_generator(tempPro_generator+"@"+pro_generator);
+            String generator;
+            if(tempPro_generator == null){
+                generator = pro_generator;
+            }else{
+                generator = tempPro_generator+"@"+pro_generator;
+            }
+            process.setPro_generator(generator);
             processService.update_info(process);
             logger.info("布点图上传成功："+targetFile.getAbsolutePath());
             return MyJsonResult.buildData("ok");

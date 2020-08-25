@@ -56,8 +56,8 @@ public class MyImage {
 	}
 
 	private void initImage() {
-		this.image.setAlignment(Image.ALIGN_CENTER);
-		this.image.setIndentationLeft(40f);
+		this.image.setAlignment(Image.ALIGN_LEFT);
+		this.image.setIndentationLeft(64f);
 		this.image.setIndentationRight(40f);
 	}
 
